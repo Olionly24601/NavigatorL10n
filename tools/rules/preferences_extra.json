@@ -1,0 +1,52 @@
+{
+  "rules": [
+    {
+      "path": "widgets/dialogs/preferences.py",
+      "id": "preferences.ssl_warning.first",
+      "original": "'<i>Disabling this option is not <br>'",
+      "template": "{text}",
+      "count": 1,
+      "translation": "<i>不建议关闭此选项，<br>"
+    },
+    {
+      "path": "widgets/dialogs/preferences.py",
+      "id": "preferences.ssl_warning.second",
+      "original": "'recommended for security reasons</i>'",
+      "template": "{text}",
+      "count": 1,
+      "translation": "以免降低连接安全性</i>"
+    },
+    {
+      "path": "widgets/dialogs/preferences.py",
+      "id": "preferences.app_help.first",
+      "original": "'Directory path where {0} is installed on your machine. \\n'",
+      "template": "{text}",
+      "count": 1,
+      "translation": "在此填写 {0} 在本机的安装目录。\n"
+    },
+    {
+      "path": "widgets/dialogs/preferences.py",
+      "id": "preferences.app_help.second",
+      "original": "'To see {0} on the home tab, you will also need to click \\n'",
+      "template": "{text}",
+      "count": 1,
+      "translation": "若要在主页中显示 {0}，还需要点击主页上的\n"
+    },
+    {
+      "path": "widgets/dialogs/preferences.py",
+      "id": "preferences.app_help.third",
+      "original": "'the Refresh button on the home tab.'",
+      "template": "{text}",
+      "count": 1,
+      "translation": "“刷新”按钮。"
+    },
+    {
+      "path": "widgets/dialogs/preferences.py",
+      "id": "preferences.app_path",
+      "original": "f'{app_spec.display_name} path'",
+      "template": "f'{{app_spec.display_name}}' + {text}",
+      "count": 1,
+      "translation": " 路径"
+    }
+  ]
+}

@@ -1149,6 +1149,42 @@
           "original": "        ssl_cert_widget.setPlaceholderText('Certificate to verify SSL connections')\r\n",
           "template": "        ssl_cert_widget.setPlaceholderText({text})\r\n",
           "count": 1
+        },
+        {
+          "id": "preferences.ssl_warning.first",
+          "original": "'<i>Disabling this option is not <br>'",
+          "template": "{text}",
+          "count": 1
+        },
+        {
+          "id": "preferences.ssl_warning.second",
+          "original": "'recommended for security reasons</i>'",
+          "template": "{text}",
+          "count": 1
+        },
+        {
+          "id": "preferences.app_help.first",
+          "original": "'Directory path where {0} is installed on your machine. \\n'",
+          "template": "{text}",
+          "count": 1
+        },
+        {
+          "id": "preferences.app_help.second",
+          "original": "'To see {0} on the home tab, you will also need to click \\n'",
+          "template": "{text}",
+          "count": 1
+        },
+        {
+          "id": "preferences.app_help.third",
+          "original": "'the Refresh button on the home tab.'",
+          "template": "{text}",
+          "count": 1
+        },
+        {
+          "id": "preferences.app_path",
+          "original": "f'{app_spec.display_name} path'",
+          "template": "f'{{app_spec.display_name}}' + {text}",
+          "count": 1
         }
       ]
     }

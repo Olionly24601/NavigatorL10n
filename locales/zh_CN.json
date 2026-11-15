@@ -198,6 +198,12 @@
     "preferences.high_dpi": "启用高 DPI 缩放",
     "preferences.startup_errors": "显示应用启动错误信息",
     "preferences.hidden_channels": "显示隐藏的 PSM 本地部署软件源",
-    "preferences.certificate_placeholder": "用于验证 SSL 连接的证书"
+    "preferences.certificate_placeholder": "用于验证 SSL 连接的证书",
+    "preferences.ssl_warning.first": "<i>不建议关闭此选项，<br>",
+    "preferences.ssl_warning.second": "以免降低连接安全性</i>",
+    "preferences.app_help.first": "在此填写 {0} 在本机的安装目录。\n",
+    "preferences.app_help.second": "若要在主页中显示 {0}，还需要点击主页上的\n",
+    "preferences.app_help.third": "“刷新”按钮。",
+    "preferences.app_path": " 路径"
   }
 }
