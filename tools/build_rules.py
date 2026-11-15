@@ -344,12 +344,15 @@ def add(spec_path, config, locale):
     changes = spec["rules"]
 
     if not changes:
-        raise ValueError("没有新增规则")
+        raise ValueError("没有新增规则候选")
 
     file_map = {
-        item["path"]: item
-        for item in config["files"]
+        entry["path"]: entry
+        for entry in config["files"]
     }
+
+    added = 0
+    skipped = 0
 
     for item in changes:
         relative = item["path"]
@@ -369,15 +372,54 @@ def add(spec_path, config, locale):
             item,
         )
 
-        if (
-            rule["id"] in locale["messages"]
-            and locale["messages"][rule["id"]] != translation
-        ):
-            raise ValueError(
-                f"共享翻译 ID 内容冲突：{rule['id']}"
+        rule_id = rule["id"]
+        entry = file_map.get(relative)
+
+        existing = None
+
+        if entry is not None:
+            existing = next(
+                (
+                    candidate
+                    for candidate in entry["rules"]
+                    if candidate["id"] == rule_id
+                ),
+                None,
             )
 
-        if relative not in file_map:
+        if existing is not None:
+            if existing != rule:
+                raise ValueError(
+                    f"规则 ID 冲突："
+                    f"{relative} / {rule_id}"
+                )
+
+            if locale["messages"].get(rule_id) != translation:
+                raise ValueError(
+                    f"现有翻译内容不一致：{rule_id}"
+                )
+
+            skipped += 1
+            continue
+
+        if (
+            rule_id in locale["messages"]
+            and locale["messages"][rule_id] != translation
+        ):
+            raise ValueError(
+                f"共享翻译 ID 内容冲突：{rule_id}"
+            )
+
+        if entry is not None:
+            if any(
+                candidate["original"] == rule["original"]
+                for candidate in entry["rules"]
+            ):
+                raise ValueError(
+                    f"源码位置已有不同补丁："
+                    f"{relative} / {rule_id}"
+                )
+        else:
             entry = {
                 "path": relative,
                 "rules": [],
@@ -386,20 +428,14 @@ def add(spec_path, config, locale):
             config["files"].append(entry)
             file_map[relative] = entry
 
-        if any(
-            existing == rule
-            for existing in file_map[relative]["rules"]
-        ):
-            raise ValueError(
-                f"重复补丁规则：{relative} / {rule['id']}"
-            )
+        entry["rules"].append(rule)
+        locale["messages"][rule_id] = translation
 
-        file_map[relative]["rules"].append(rule)
-        locale["messages"][rule["id"]] = translation
+        added += 1
 
     verify(config, locale, sources)
 
-    return len(changes)
+    return added, skipped
 
 
 def save(config, locale):
@@ -499,18 +535,30 @@ def main():
                 "add 需要指定规则草稿 JSON 路径"
             )
 
-        number = add(
+        added, skipped = add(
             args.spec,
             config,
             locale,
         )
 
-        save(config, locale)
+        if added:
+            save(config, locale)
 
-        print(
-            f"新增 {number} 条规则，检查通过；"
-            "Navigator 安装文件未修改"
-        )
+        print(f"新增规则：{added}")
+        print(f"已存在并跳过：{skipped}")
+
+        if added:
+            print(
+                "所有规则检查通过，"
+                "已更新规则文件"
+            )
+        else:
+            print(
+                "规则内容没有变化，"
+                "未重新写入规则文件"
+            )
+
+        print("Navigator 安装文件未修改")
 
 
 if __name__ == "__main__":
