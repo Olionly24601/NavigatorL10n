@@ -303,12 +303,6 @@
           "count": 1
         },
         {
-          "id": "account.sign_in",
-          "original": "            result.action = 'SIGN IN'\r\n",
-          "template": "            result.action = {text}\r\n",
-          "count": 1
-        },
-        {
           "id": "account.sign_in_link",
           "original": "f'<a'\r\n                f' href=\"navigator://{html.escape(alias)}/login\"'\r\n                f' style=\"color: #0075A9; text-decoration: none\">'\r\n                f'SIGN IN'\r\n                f'</a>'",
           "template": "f'<a'\r\n                f' href=\"navigator://{{html.escape(alias)}}/login\"'\r\n                f' style=\"color: #0075A9; text-decoration: none\">'\r\n                f'{{{text}}}'\r\n                f'</a>'",
