@@ -823,6 +823,30 @@
           "original": "self.setWindowTitle('Install Packages')",
           "template": "self.setWindowTitle({text})",
           "count": 1
+        },
+        {
+          "id": "operations.packages_remove_heading",
+          "original": "            text = 'The following packages will be removed:<br>'\r\n",
+          "template": "            text = {text}\r\n",
+          "count": 1
+        },
+        {
+          "id": "operations.packages_modify_heading",
+          "original": "            text = 'The following packages will be modified:<br>'\r\n",
+          "template": "            text = {text}\r\n",
+          "count": 1
+        },
+        {
+          "id": "operations.solving_packages",
+          "original": "        self.update_status('Solving package specifications', value=0, max_value=0)\r\n",
+          "template": "        self.update_status({text}, value=0, max_value=0)\r\n",
+          "count": 1
+        },
+        {
+          "id": "errors.navigator_dependencies",
+          "original": "            error = 'Downgrading/removing these packages will modify Anaconda Navigator dependencies.'\r\n",
+          "template": "            error = {text}\r\n",
+          "count": 1
         }
       ]
     },
@@ -906,6 +930,30 @@
           "original": "        pip_files: typing.Final[str] = 'Pip requirement files (*.txt)'\r\n",
           "template": "        pip_files: typing.Final[str] = {text}\r\n",
           "count": 1
+        },
+        {
+          "id": "errors.import_rename",
+          "original": "                content='Please rename environment to continue.',\r\n",
+          "template": "                content={text},\r\n",
+          "count": 1
+        },
+        {
+          "id": "errors.import_invalid_yaml",
+          "original": "                content='Invalid Conda environment YAML file.',\r\n",
+          "template": "                content={text},\r\n",
+          "count": 1
+        },
+        {
+          "id": "errors.import_fetch",
+          "original": "            self.error_label.text = 'Unable to fetch available environments.'\r\n",
+          "template": "            self.error_label.text = {text}\r\n",
+          "count": 1
+        },
+        {
+          "id": "operations.environment_downloaded",
+          "original": "            title='Environment File Downloaded',\r\n",
+          "template": "            title={text},\r\n",
+          "count": 1
         }
       ]
     },
@@ -952,6 +1000,30 @@
           "id": "batch9.25",
           "original": "        filter_any: typing.Final[str] = 'All files (*)'\r\n",
           "template": "        filter_any: typing.Final[str] = {text}\r\n",
+          "count": 1
+        },
+        {
+          "id": "errors.backup_local_export",
+          "original": "            self.set_busy(False)\r\n            self.add_heading_error(multiaccount_dialogs.HEADING_ERROR_TEMPLATE.format(\r\n                content='Unable to create requested file.',\r\n",
+          "template": "            self.set_busy(False)\r\n            self.add_heading_error(multiaccount_dialogs.HEADING_ERROR_TEMPLATE.format(\r\n                content={text},\r\n",
+          "count": 1
+        },
+        {
+          "id": "errors.backup_local_inject",
+          "original": "            super()._process_accept()\r\n            return\r\n\r\n        try:\r\n            os.remove(result.call.kwargs['target_file'])\r\n        except OSError:\r\n            pass\r\n\r\n        if result.status == workers.TaskStatus.FAILED:\r\n            self.add_heading_error(multiaccount_dialogs.HEADING_ERROR_TEMPLATE.format(\r\n                content='Unable to create requested file.',\r\n",
+          "template": "            super()._process_accept()\r\n            return\r\n\r\n        try:\r\n            os.remove(result.call.kwargs['target_file'])\r\n        except OSError:\r\n            pass\r\n\r\n        if result.status == workers.TaskStatus.FAILED:\r\n            self.add_heading_error(multiaccount_dialogs.HEADING_ERROR_TEMPLATE.format(\r\n                content={text},\r\n",
+          "count": 1
+        },
+        {
+          "id": "errors.backup_cloud_export",
+          "original": "                content='System error creating a backup.',\r\n",
+          "template": "                content={text},\r\n",
+          "count": 1
+        },
+        {
+          "id": "errors.backup_cloud_inject",
+          "original": "            new_worker.start()\r\n            return\r\n\r\n        try:\r\n            os.remove(result.call.kwargs['target_file'])\r\n        except OSError:\r\n            pass\r\n\r\n        if result.status == workers.TaskStatus.FAILED:\r\n            self.add_heading_error(multiaccount_dialogs.HEADING_ERROR_TEMPLATE.format(\r\n                content='Unable to create requested file.',\r\n",
+          "template": "            new_worker.start()\r\n            return\r\n\r\n        try:\r\n            os.remove(result.call.kwargs['target_file'])\r\n        except OSError:\r\n            pass\r\n\r\n        if result.status == workers.TaskStatus.FAILED:\r\n            self.add_heading_error(multiaccount_dialogs.HEADING_ERROR_TEMPLATE.format(\r\n                content={text},\r\n",
           "count": 1
         }
       ]
@@ -1184,6 +1256,36 @@
           "id": "preferences.app_path",
           "original": "f'{app_spec.display_name} path'",
           "template": "f'{{app_spec.display_name}}' + {text}",
+          "count": 1
+        },
+        {
+          "id": "errors.navigator_save_title",
+          "original": "                title='Navigator Settings Save Error',\r\n",
+          "template": "                title={text},\r\n",
+          "count": 1
+        },
+        {
+          "id": "errors.conda_save_title",
+          "original": "                title='Conda Settings Save Error',\r\n",
+          "template": "                title={text},\r\n",
+          "count": 1
+        },
+        {
+          "id": "errors.conda_invalid_yaml",
+          "original": "                text='The saved data is not a valid yaml config! Please fix.',\r\n",
+          "template": "                text={text},\r\n",
+          "count": 1
+        },
+        {
+          "id": "errors.invalid_certificate",
+          "original": "            return valid_certificate, '' if valid_certificate else 'Invalid certificate!'\r\n",
+          "template": "            return valid_certificate, '' if valid_certificate else {text}\r\n",
+          "count": 1
+        },
+        {
+          "id": "errors.invalid_api_url",
+          "original": "            error = 'Invalid api url.'\r\n",
+          "template": "            error = {text}\r\n",
           "count": 1
         }
       ]

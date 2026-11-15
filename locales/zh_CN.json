@@ -204,6 +204,23 @@
     "preferences.app_help.first": "在此填写 {0} 在本机的安装目录。\n",
     "preferences.app_help.second": "若要在主页中显示 {0}，还需要点击主页上的\n",
     "preferences.app_help.third": "“刷新”按钮。",
-    "preferences.app_path": " 路径"
+    "preferences.app_path": " 路径",
+    "errors.navigator_save_title": "Navigator 设置保存失败",
+    "errors.conda_save_title": "Conda 设置保存失败",
+    "errors.conda_invalid_yaml": "保存的数据不是有效的 YAML 配置，请检查并修正。",
+    "errors.invalid_certificate": "无效的证书！",
+    "errors.invalid_api_url": "无效的 API 地址。",
+    "operations.packages_remove_heading": "将删除以下软件包：<br>",
+    "operations.packages_modify_heading": "将修改以下软件包：<br>",
+    "operations.solving_packages": "正在解析软件包依赖关系",
+    "errors.navigator_dependencies": "降级或删除这些软件包将改变 Anaconda Navigator 的依赖关系。",
+    "errors.import_rename": "请重命名环境后继续。",
+    "errors.import_invalid_yaml": "Conda 环境 YAML 文件无效。",
+    "errors.import_fetch": "无法获取可用环境列表。",
+    "operations.environment_downloaded": "环境文件下载完成",
+    "errors.backup_local_export": "无法创建指定文件。",
+    "errors.backup_local_inject": "无法创建指定文件。",
+    "errors.backup_cloud_export": "创建备份时发生系统错误。",
+    "errors.backup_cloud_inject": "无法创建指定文件。"
   }
 }

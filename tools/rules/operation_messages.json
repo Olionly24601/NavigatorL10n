@@ -1,0 +1,123 @@
+{
+  "rules": [
+    {
+      "path": "widgets/dialogs/preferences.py",
+      "scope": "NavigatorSettingsDialog._save",
+      "id": "errors.navigator_save_title",
+      "find": "Navigator Settings Save Error",
+      "translation": "Navigator 设置保存失败"
+    },
+    {
+      "path": "widgets/dialogs/preferences.py",
+      "scope": "CondaSettingsDialog._save",
+      "id": "errors.conda_save_title",
+      "find": "Conda Settings Save Error",
+      "translation": "Conda 设置保存失败"
+    },
+    {
+      "path": "widgets/dialogs/preferences.py",
+      "scope": "CondaSettingsDialog._save",
+      "id": "errors.conda_invalid_yaml",
+      "find": "The saved data is not a valid yaml config! Please fix.",
+      "translation": "保存的数据不是有效的 YAML 配置，请检查并修正。"
+    },
+    {
+      "path": "widgets/dialogs/preferences.py",
+      "scope": "PreferencesDialog.setup.ssl_certificate_checker",
+      "id": "errors.invalid_certificate",
+      "find": "Invalid certificate!",
+      "translation": "无效的证书！"
+    },
+    {
+      "path": "widgets/dialogs/preferences.py",
+      "scope": "PreferencesDialog.is_valid_url",
+      "id": "errors.invalid_api_url",
+      "find": "Invalid api url.",
+      "translation": "无效的 API 地址。"
+    },
+    {
+      "path": "widgets/dialogs/packages.py",
+      "scope": "PackagesDialog.__init__",
+      "id": "operations.packages_remove_heading",
+      "find": "The following packages will be removed:<br>",
+      "translation": "将删除以下软件包：<br>"
+    },
+    {
+      "path": "widgets/dialogs/packages.py",
+      "scope": "PackagesDialog.__init__",
+      "id": "operations.packages_modify_heading",
+      "find": "The following packages will be modified:<br>",
+      "translation": "将修改以下软件包：<br>"
+    },
+    {
+      "path": "widgets/dialogs/packages.py",
+      "scope": "PackagesDialog.__init__",
+      "id": "operations.solving_packages",
+      "find": "Solving package specifications",
+      "translation": "正在解析软件包依赖关系"
+    },
+    {
+      "path": "widgets/dialogs/packages.py",
+      "scope": "PackagesDialog.setup",
+      "id": "errors.navigator_dependencies",
+      "find": "Downgrading/removing these packages will modify Anaconda Navigator dependencies.",
+      "translation": "降级或删除这些软件包将改变 Anaconda Navigator 的依赖关系。"
+    },
+    {
+      "path": "widgets/dialogs/environment/import_dialogs.py",
+      "scope": "ImportSelectorDialog._process_accept",
+      "id": "errors.import_rename",
+      "find": "Please rename environment to continue.",
+      "translation": "请重命名环境后继续。"
+    },
+    {
+      "path": "widgets/dialogs/environment/import_dialogs.py",
+      "scope": "ImportSelectorDialog._process_accept",
+      "id": "errors.import_invalid_yaml",
+      "find": "Invalid Conda environment YAML file.",
+      "translation": "Conda 环境 YAML 文件无效。"
+    },
+    {
+      "path": "widgets/dialogs/environment/import_dialogs.py",
+      "scope": "EnvSelectorDialog.__process_load_result",
+      "id": "errors.import_fetch",
+      "find": "Unable to fetch available environments.",
+      "translation": "无法获取可用环境列表。"
+    },
+    {
+      "path": "widgets/dialogs/environment/import_dialogs.py",
+      "scope": "EnvSelectorItem.show_success_dialog",
+      "id": "operations.environment_downloaded",
+      "find": "Environment File Downloaded",
+      "translation": "环境文件下载完成"
+    },
+    {
+      "path": "widgets/dialogs/environment/backup_dialogs.py",
+      "scope": "BackupSelectorDialog.__check_local_export",
+      "id": "errors.backup_local_export",
+      "find": "Unable to create requested file.",
+      "translation": "无法创建指定文件。"
+    },
+    {
+      "path": "widgets/dialogs/environment/backup_dialogs.py",
+      "scope": "BackupSelectorDialog.__check_local_inject",
+      "id": "errors.backup_local_inject",
+      "find": "Unable to create requested file.",
+      "translation": "无法创建指定文件。"
+    },
+    {
+      "path": "widgets/dialogs/environment/backup_dialogs.py",
+      "scope": "BackupSelectorDialog.__check_cloud_export",
+      "id": "errors.backup_cloud_export",
+      "find": "System error creating a backup.",
+      "translation": "创建备份时发生系统错误。"
+    },
+    {
+      "path": "widgets/dialogs/environment/backup_dialogs.py",
+      "scope": "BackupSelectorDialog.__check_cloud_inject",
+      "id": "errors.backup_cloud_inject",
+      "find": "Unable to create requested file.",
+      "translation": "无法创建指定文件。"
+    }
+  ]
+}
