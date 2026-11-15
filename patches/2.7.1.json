@@ -1,0 +1,959 @@
+{
+  "version": "2.7.1",
+  "files": [
+    {
+      "path": "widgets/dialogs/quit.py",
+      "rules": [
+        {
+          "id": "quit.confirm",
+          "original": "QLabel('Quit Anaconda Navigator?')",
+          "template": "QLabel({text})",
+          "count": 1
+        },
+        {
+          "id": "quit.yes",
+          "original": "ButtonPrimary('Yes')",
+          "template": "ButtonPrimary({text})",
+          "count": 1
+        },
+        {
+          "id": "quit.no",
+          "original": "ButtonNormal('No')",
+          "template": "ButtonNormal({text})",
+          "count": 1
+        },
+        {
+          "id": "quit.remember",
+          "original": "CheckBoxBase(\"Don't show again\")",
+          "template": "CheckBoxBase({text})",
+          "count": 1
+        },
+        {
+          "id": "quit.title",
+          "original": "setWindowTitle('Quit application')",
+          "template": "setWindowTitle({text})",
+          "count": 2
+        },
+        {
+          "id": "quit.busy",
+          "original": "self.label_about.setText('Anaconda Navigator is still busy.<br><br>Do you want to quit?')",
+          "template": "self.label_about.setText({text})",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "path": "widgets/main_window/__init__.py",
+      "rules": [
+        {
+          "id": "header.update",
+          "original": "ButtonHeaderUpdate('Update Now')",
+          "template": "ButtonHeaderUpdate({text})",
+          "count": 1
+        },
+        {
+          "id": "menu.file",
+          "original": "menubar.addMenu('&File')",
+          "template": "menubar.addMenu({text})",
+          "count": 1
+        },
+        {
+          "id": "menu.help",
+          "original": "menubar.addMenu('&Help')",
+          "template": "menubar.addMenu({text})",
+          "count": 1
+        },
+        {
+          "id": "menu.preferences",
+          "original": "create_action(self, '&Preferences',",
+          "template": "create_action(self, {text},",
+          "count": 1
+        },
+        {
+          "id": "menu.restart",
+          "original": "create_action(self, '&Restart',",
+          "template": "create_action(self, {text},",
+          "count": 1
+        },
+        {
+          "id": "menu.quit",
+          "original": "create_action(self, '&Quit',",
+          "template": "create_action(self, {text},",
+          "count": 1
+        },
+        {
+          "id": "menu.documentation",
+          "original": "create_action(self, '&Online Documentation',",
+          "template": "create_action(self, {text},",
+          "count": 1
+        },
+        {
+          "id": "menu.logs",
+          "original": "create_action(self, '&Logs viewer',",
+          "template": "create_action(self, {text},",
+          "count": 1
+        },
+        {
+          "id": "menu.about",
+          "original": "create_action(self, '&About',",
+          "template": "create_action(self, {text},",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "path": "widgets/main_window/account_components.py",
+      "rules": [
+        {
+          "id": "header.connect",
+          "original": "self.__login_button.setText('Connect')",
+          "template": "self.__login_button.setText({text})",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "path": "widgets/tabs/tabwidget.py",
+      "rules": [
+        {
+          "id": "nav.tabs",
+          "original": "button.setText(text)\r\n        button.setFocusPolicy(Qt.StrongFocus)",
+          "template": "button.setText({text}.get(text, text))\r\n        button.setFocusPolicy(Qt.StrongFocus)",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "path": "widgets/tabs/home.py",
+      "rules": [
+        {
+          "id": "home.channels",
+          "original": "ButtonHomeChannels('Channels')",
+          "template": "ButtonHomeChannels({text})",
+          "count": 1
+        },
+        {
+          "id": "home.on",
+          "original": "LabelHome('on')",
+          "template": "LabelHome({text})",
+          "count": 1
+        },
+        {
+          "id": "home.filter_all",
+          "original": "ApplicationFilterDetails('All applications', lambda application: True)",
+          "template": "ApplicationFilterDetails({text}, lambda application: True)",
+          "count": 1
+        },
+        {
+          "id": "home.filter_installed",
+          "original": "ApplicationFilterDetails('Installed applications', CheckInstalled(True))",
+          "template": "ApplicationFilterDetails({text}, CheckInstalled(True))",
+          "count": 1
+        },
+        {
+          "id": "home.filter_uninstalled",
+          "original": "ApplicationFilterDetails('Not installed applications', CheckInstalled(False))",
+          "template": "ApplicationFilterDetails({text}, CheckInstalled(False))",
+          "count": 1
+        },
+        {
+          "id": "home.filter_updatable",
+          "original": "ApplicationFilterDetails('Updatable applications', check_updatable)",
+          "template": "ApplicationFilterDetails({text}, check_updatable)",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "path": "widgets/tabs/environments.py",
+      "rules": [
+        {
+          "id": "env.create",
+          "original": "ButtonToolNormal(text='Create')",
+          "template": "ButtonToolNormal(text={text})",
+          "count": 1
+        },
+        {
+          "id": "env.clone",
+          "original": "ButtonToolNormal(text='Clone')",
+          "template": "ButtonToolNormal(text={text})",
+          "count": 1
+        },
+        {
+          "id": "env.import",
+          "original": "ButtonToolNormal(text='Import')",
+          "template": "ButtonToolNormal(text={text})",
+          "count": 1
+        },
+        {
+          "id": "env.backup",
+          "original": "ButtonToolNormal(text='Backup')",
+          "template": "ButtonToolNormal(text={text})",
+          "count": 1
+        },
+        {
+          "id": "env.remove",
+          "original": "ButtonToolNormal(text='Remove')",
+          "template": "ButtonToolNormal(text={text})",
+          "count": 1
+        },
+        {
+          "id": "env.search",
+          "original": "self.text_search.setPlaceholderText('Search Environments')",
+          "template": "self.text_search.setPlaceholderText({text})",
+          "count": 1
+        },
+        {
+          "id": "env.terminal",
+          "original": "self.menu_list.addAction('Open Terminal')",
+          "template": "self.menu_list.addAction({text})",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "path": "widgets/lists/apps.py",
+      "rules": [
+        {
+          "id": "apps.install",
+          "original": "ButtonApplicationInstall('Install')",
+          "template": "ButtonApplicationInstall({text})",
+          "count": 1
+        },
+        {
+          "id": "apps.launch",
+          "original": "ButtonApplicationLaunch('Launch')",
+          "template": "ButtonApplicationLaunch({text})",
+          "count": 1
+        },
+        {
+          "id": "apps.options",
+          "original": "QMenu('Application options')",
+          "template": "QMenu({text})",
+          "count": 1
+        },
+        {
+          "id": "apps.version",
+          "original": "QMenu('Install specific version')",
+          "template": "QMenu({text})",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "path": "widgets/dialogs/login/reminder/login_welcome.py",
+      "rules": [
+        {
+          "id": "welcome.assistant",
+          "original": "QLabel('Access Anaconda Assistant in Jupyter Notebooks and JupyterLab.')",
+          "template": "QLabel({text})",
+          "count": 1
+        },
+        {
+          "id": "welcome.remember",
+          "original": "CheckBoxBase('Do not show again')",
+          "template": "CheckBoxBase({text})",
+          "count": 1
+        },
+        {
+          "id": "welcome.sign_in",
+          "original": "ButtonPrimary('Sign In')",
+          "template": "ButtonPrimary({text})",
+          "count": 1
+        },
+        {
+          "id": "welcome.repository",
+          "original": "ButtonSecondaryTextual('Connect to a Repository')",
+          "template": "ButtonSecondaryTextual({text})",
+          "count": 1
+        },
+        {
+          "id": "welcome.no_account",
+          "original": "QLabel('Don’t have an account? ')",
+          "template": "QLabel({text})",
+          "count": 1
+        },
+        {
+          "id": "welcome.sign_up",
+          "original": "ButtonLink('Sign Up')",
+          "template": "ButtonLink({text})",
+          "count": 1
+        },
+        {
+          "id": "welcome.title",
+          "original": "'Sign in for AI Coding Help'",
+          "template": "{text}",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "path": "widgets/dialogs/login/account_dialogs.py",
+      "rules": [
+        {
+          "id": "account.title",
+          "original": "'Connect to Anaconda'",
+          "template": "{text}",
+          "count": 1
+        },
+        {
+          "id": "account.repositories",
+          "original": "'REPOSITORIES'",
+          "template": "{text}",
+          "count": 1
+        },
+        {
+          "id": "account.sign_in",
+          "original": "            result.action = 'SIGN IN'\r\n",
+          "template": "            result.action = {text}\r\n",
+          "count": 1
+        },
+        {
+          "id": "account.sign_in_link",
+          "original": "f'<a'\r\n                f' href=\"navigator://{html.escape(alias)}/login\"'\r\n                f' style=\"color: #0075A9; text-decoration: none\">'\r\n                f'SIGN IN'\r\n                f'</a>'",
+          "template": "f'<a'\r\n                f' href=\"navigator://{{html.escape(alias)}}/login\"'\r\n                f' style=\"color: #0075A9; text-decoration: none\">'\r\n                f'{{{text}}}'\r\n                f'</a>'",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "path": "widgets/tabs/community.py",
+      "rules": [
+        {
+          "id": "community.search",
+          "original": "self.__text_filter.setPlaceholderText('Search')",
+          "template": "self.__text_filter.setPlaceholderText({text})",
+          "count": 1
+        },
+        {
+          "id": "content.category_labels",
+          "original": "f'{tag.capitalize()} ({count})'.strip()",
+          "template": "f'{{ {text}.get(tag.lower(), tag.capitalize())}} ({{count}})'.strip()",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "path": "widgets/dialogs/channels.py",
+      "rules": [
+        {
+          "id": "channels.intro",
+          "original": "LabelBase('Manage channels you want Navigator to include.')",
+          "template": "LabelBase({text})",
+          "count": 1
+        },
+        {
+          "id": "channels.collecting",
+          "original": "LabelBase('Collecting sources...')",
+          "template": "LabelBase({text})",
+          "count": 1
+        },
+        {
+          "id": "channels.add",
+          "original": "ButtonNormal('Add...')",
+          "template": "ButtonNormal({text})",
+          "count": 1
+        },
+        {
+          "id": "channels.cancel",
+          "original": "ButtonNormal('Cancel')",
+          "template": "ButtonNormal({text})",
+          "count": 1
+        },
+        {
+          "id": "channels.update",
+          "original": "ButtonPrimary('Update channels')",
+          "template": "ButtonPrimary({text})",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "path": "widgets/dialogs/update.py",
+      "rules": [
+        {
+          "id": "update.notice",
+          "original": "QLabel(\r\n            'There\\'s a new version of Anaconda Navigator available. '\r\n            'We strongly recommend you to update. <br><br>'\r\n            'If you click yes, Anaconda Navigator will close and then the '\r\n            'Anaconda Navigator Updater will start.<br><br><br>'\r\n            f'Do you wish to update to <b>Anaconda Navigator {version}</b> now?<br>{extra_text}<br>'\r\n        )",
+          "template": "QLabel(f{text})",
+          "count": 1
+        },
+        {
+          "id": "update.title",
+          "original": "self.setWindowTitle('Update Application')",
+          "template": "self.setWindowTitle({text})",
+          "count": 1
+        },
+        {
+          "id": "update.yes",
+          "original": "ButtonPrimary('Yes')",
+          "template": "ButtonPrimary({text})",
+          "count": 1
+        },
+        {
+          "id": "update.remind",
+          "original": "ButtonNormal('No, remind me later')",
+          "template": "ButtonNormal({text})",
+          "count": 1
+        },
+        {
+          "id": "update.suppress",
+          "original": "ButtonNormal(\"No, don't show again\")",
+          "template": "ButtonNormal({text})",
+          "count": 1
+        },
+        {
+          "id": "update.no",
+          "original": "self.button_no.setText('No')",
+          "template": "self.button_no.setText({text})",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "path": "widgets/manager/packages.py",
+      "rules": [
+        {
+          "id": "packages.channels",
+          "original": "_('Channels')",
+          "template": "_({text})",
+          "count": 1
+        },
+        {
+          "id": "packages.update_index",
+          "original": "_('Update index...')",
+          "template": "_({text})",
+          "count": 1
+        },
+        {
+          "id": "packages.search",
+          "original": "self.textbox_search.setPlaceholderText('Search Packages')",
+          "template": "self.textbox_search.setPlaceholderText({text})",
+          "count": 1
+        },
+        {
+          "id": "packages.filter_labels",
+          "original": "self.combobox_filter.addItems(C.COMBOBOX_VALUES_ORDERED[:])",
+          "template": "self.combobox_filter.addItems([{text}.get(label, label) for label in C.COMBOBOX_VALUES_ORDERED])",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "path": "widgets/manager/model.py",
+      "rules": [
+        {
+          "id": "packages.column_name",
+          "original": "'Name'",
+          "template": "{text}",
+          "count": 1
+        },
+        {
+          "id": "packages.column_version",
+          "original": "'Version'",
+          "template": "{text}",
+          "count": 1
+        },
+        {
+          "id": "packages.column_description",
+          "original": "'Description'",
+          "template": "{text}",
+          "count": 1
+        },
+        {
+          "id": "packages.column_status",
+          "original": "'Status'",
+          "template": "{text}",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "path": "widgets/lists/content.py",
+      "rules": [
+        {
+          "id": "content.card_actions",
+          "original": "{\r\n            'documentation': 'Read',\r\n            'webinar': 'Explore',\r\n            'event': 'Learn More',\r\n            'video': 'View',\r\n            'training': 'Explore',\r\n            'forum': 'Explore',\r\n            'social': 'Engage'\r\n        }",
+          "template": "{text}",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "path": "widgets/manager/table.py",
+      "rules": [
+        {
+          "id": "packages.filter_labels",
+          "original": "self._filterbox = C.COMBOBOX_VALUES.get(text)",
+          "template": "self._filterbox = C.COMBOBOX_VALUES.get({{value: key for key, value in {text}.items()}}.get(text, text))",
+          "count": 1
+        },
+        {
+          "id": "batch9.08",
+          "original": "            count_text = _('0 packages available ')\r\n",
+          "template": "            count_text = _({text})\r\n",
+          "count": 1
+        },
+        {
+          "id": "batch9.09",
+          "original": "            count_text = _('1 package available ')\r\n",
+          "template": "            count_text = _({text})\r\n",
+          "count": 1
+        },
+        {
+          "id": "batch9.10",
+          "original": "            count_text = to_text_string(count) + _(' packages available ')\r\n",
+          "template": "            count_text = to_text_string(count) + _({text})\r\n",
+          "count": 1
+        },
+        {
+          "id": "batch9.11",
+          "original": "            count_text = count_text + _('matching \"{0}\"').format(text)\r\n",
+          "template": "            count_text = count_text + _({text}).format(text)\r\n",
+          "count": 1
+        },
+        {
+          "id": "batch9.12",
+          "original": "                _('Unmark'),\r\n",
+          "template": "                _({text}),\r\n",
+          "count": 1
+        },
+        {
+          "id": "batch9.13",
+          "original": "                self, _('Mark for installation'), toggled=lambda: self.set_action_status(model_index, C.ACTION_INSTALL)\r\n",
+          "template": "                self, _({text}), toggled=lambda: self.set_action_status(model_index, C.ACTION_INSTALL)\r\n",
+          "count": 1
+        },
+        {
+          "id": "batch9.14",
+          "original": "                self, _('Mark for update'), toggled=lambda: self.set_action_status(model_index, C.ACTION_UPDATE, None)\r\n",
+          "template": "                self, _({text}), toggled=lambda: self.set_action_status(model_index, C.ACTION_UPDATE, None)\r\n",
+          "count": 1
+        },
+        {
+          "id": "batch9.15",
+          "original": "                _('Mark for removal'),\r\n",
+          "template": "                _({text}),\r\n",
+          "count": 1
+        },
+        {
+          "id": "batch9.16",
+          "original": "            install_versions_menu = QMenu('Mark for specific version installation', self)\r\n",
+          "template": "            install_versions_menu = QMenu({text}, self)\r\n",
+          "count": 1
+        },
+        {
+          "id": "batch9.17",
+          "original": "                    create_action(self, _('Python Package Index'), icon=q_pypi, triggered=lambda: self.open_url(pypi))\r\n",
+          "template": "                    create_action(self, _({text}), icon=q_pypi, triggered=lambda: self.open_url(pypi))\r\n",
+          "count": 1
+        },
+        {
+          "id": "batch9.18",
+          "original": "                actions.append(create_action(self, _('Homepage'), icon=q_home, triggered=lambda: self.open_url(home)))\r\n",
+          "template": "                actions.append(create_action(self, _({text}), icon=q_home, triggered=lambda: self.open_url(home)))\r\n",
+          "count": 1
+        },
+        {
+          "id": "batch9.19",
+          "original": "                    create_action(self, _('Documentation'), icon=q_docs, triggered=lambda: self.open_url(docs))\r\n",
+          "template": "                    create_action(self, _({text}), icon=q_docs, triggered=lambda: self.open_url(docs))\r\n",
+          "count": 1
+        },
+        {
+          "id": "batch9.20",
+          "original": "                actions.append(create_action(self, _('Development'), icon=q_dev, triggered=lambda: self.open_url(dev)))\r\n",
+          "template": "                actions.append(create_action(self, _({text}), icon=q_dev, triggered=lambda: self.open_url(dev)))\r\n",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "path": "widgets/dialogs/__init__.py",
+      "rules": [
+        {
+          "id": "batch7.dialog.01",
+          "original": "ButtonDanger('Cancel')",
+          "template": "ButtonDanger({text})",
+          "count": 1
+        },
+        {
+          "id": "batch7.dialog.02",
+          "original": "        self.button_accept = ButtonPrimary('Ok')\r\n",
+          "template": "        self.button_accept = ButtonPrimary({text})\r\n",
+          "count": 1
+        },
+        {
+          "id": "batch7.dialog.03",
+          "original": "self.setWindowTitle('Proceed with the following actions?')",
+          "template": "self.setWindowTitle({text})",
+          "count": 1
+        },
+        {
+          "id": "batch7.dialog.04",
+          "original": "        self.text = LineEditBase()\r\n        self.button_ok = ButtonPrimary('Ok')\r\n",
+          "template": "        self.text = LineEditBase()\r\n        self.button_ok = ButtonPrimary({text})\r\n",
+          "count": 1
+        },
+        {
+          "id": "batch7.dialog.06",
+          "original": "        self.textbox_error = QTextEdit()\r\n        self.button_ok = ButtonPrimary('Ok')\r\n",
+          "template": "        self.textbox_error = QTextEdit()\r\n        self.button_ok = ButtonPrimary({text})\r\n",
+          "count": 1
+        },
+        {
+          "id": "batch7.dialog.07",
+          "original": "ButtonPrimary('Yes')",
+          "template": "ButtonPrimary({text})",
+          "count": 1
+        },
+        {
+          "id": "batch7.dialog.08",
+          "original": "ButtonNormal('No')",
+          "template": "ButtonNormal({text})",
+          "count": 1
+        },
+        {
+          "id": "batch7.dialog.09",
+          "original": "ButtonNormal('Copy text')",
+          "template": "ButtonNormal({text})",
+          "count": 1
+        },
+        {
+          "id": "batch7.dialog.10",
+          "original": "ButtonNormal('Learn more')",
+          "template": "ButtonNormal({text})",
+          "count": 1
+        },
+        {
+          "id": "batch7.dialog.11",
+          "original": "ButtonDanger('Remove')",
+          "template": "ButtonDanger({text})",
+          "count": 1
+        },
+        {
+          "id": "batch7.dialog.13",
+          "original": "ButtonNormal('Report Issue', parent=self)",
+          "template": "ButtonNormal({text}, parent=self)",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "path": "widgets/dialogs/environment/create_dialogs.py",
+      "rules": [
+        {
+          "id": "batch7.dialog.14",
+          "original": "self.setWindowTitle('Create new environment')",
+          "template": "self.setWindowTitle({text})",
+          "count": 1
+        },
+        {
+          "id": "batch7.dialog.15",
+          "original": "widgets.LabelBase('Name:')",
+          "template": "widgets.LabelBase({text})",
+          "count": 1
+        },
+        {
+          "id": "batch7.dialog.16",
+          "original": "self.text_name.setPlaceholderText('New environment name')",
+          "template": "self.text_name.setPlaceholderText({text})",
+          "count": 1
+        },
+        {
+          "id": "batch7.dialog.17",
+          "original": "widgets.LabelBase('Location:')",
+          "template": "widgets.LabelBase({text})",
+          "count": 1
+        },
+        {
+          "id": "batch7.dialog.18",
+          "original": "widgets.LabelBase('Packages:')",
+          "template": "widgets.LabelBase({text})",
+          "count": 1
+        },
+        {
+          "id": "batch7.dialog.19",
+          "original": "widgets.ButtonPrimary('Create')",
+          "template": "widgets.ButtonPrimary({text})",
+          "count": 1
+        },
+        {
+          "id": "batch7.dialog.20",
+          "original": "widgets.ButtonNormal('Cancel')",
+          "template": "widgets.ButtonNormal({text})",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "path": "widgets/dialogs/environment/clone_dialogs.py",
+      "rules": [
+        {
+          "id": "batch7.dialog.21",
+          "original": "widgets.LabelBase('Name:')",
+          "template": "widgets.LabelBase({text})",
+          "count": 1
+        },
+        {
+          "id": "batch7.dialog.22",
+          "original": "widgets.LabelBase('Location:')",
+          "template": "widgets.LabelBase({text})",
+          "count": 1
+        },
+        {
+          "id": "batch7.dialog.23",
+          "original": "widgets.ButtonPrimary('Clone')",
+          "template": "widgets.ButtonPrimary({text})",
+          "count": 1
+        },
+        {
+          "id": "batch7.dialog.24",
+          "original": "widgets.ButtonNormal('Cancel')",
+          "template": "widgets.ButtonNormal({text})",
+          "count": 1
+        },
+        {
+          "id": "batch7.dialog.26",
+          "original": "self.text_name.setPlaceholderText('New environment name')",
+          "template": "self.text_name.setPlaceholderText({text})",
+          "count": 1
+        },
+        {
+          "id": "batch8.environment.13",
+          "original": "        self.setWindowTitle('Clone from environment: ' + clone_from_name)\r\n",
+          "template": "        self.setWindowTitle({text} + clone_from_name)\r\n",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "path": "widgets/dialogs/about.py",
+      "rules": [
+        {
+          "id": "batch7.dialog.27",
+          "original": "ButtonLink('Issue Tracker')",
+          "template": "ButtonLink({text})",
+          "count": 1
+        },
+        {
+          "id": "batch7.dialog.28",
+          "original": "ButtonLabel('on GitHub.')",
+          "template": "ButtonLabel({text})",
+          "count": 1
+        },
+        {
+          "id": "batch7.dialog.29",
+          "original": "ButtonNormal('Ok')",
+          "template": "ButtonNormal({text})",
+          "count": 1
+        },
+        {
+          "id": "batch7.dialog.30",
+          "original": "self.setWindowTitle('About Anaconda Navigator')",
+          "template": "self.setWindowTitle({text})",
+          "count": 1
+        },
+        {
+          "id": "batch8.about_description",
+          "original": "f'''<b>Anaconda Navigator {__about__.__version__}</b><br>\r\n            <br>Copyright &copy; 2016 Anaconda, Inc.\r\n            <p>Created by Anaconda\r\n            <br>\r\n            <p>For bug reports and feature requests, please visit our\r\n            '''",
+          "template": "f'''<b>Anaconda Navigator {{__about__.__version__}}</b><br>\r\n            <br>Copyright &copy; 2016 Anaconda, Inc.\r\n            <p>Created by Anaconda\r\n            <br>\r\n            <p>{{{text}}}\r\n            '''",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "path": "widgets/dialogs/packages.py",
+      "rules": [
+        {
+          "id": "batch7.dialog.31",
+          "original": "ButtonPrimary('Apply')",
+          "template": "ButtonPrimary({text})",
+          "count": 1
+        },
+        {
+          "id": "batch7.dialog.32",
+          "original": "ButtonNormal('Cancel')",
+          "template": "ButtonNormal({text})",
+          "count": 1
+        },
+        {
+          "id": "batch7.dialog.33",
+          "original": "self.setWindowTitle('Remove Packages')",
+          "template": "self.setWindowTitle({text})",
+          "count": 1
+        },
+        {
+          "id": "batch7.dialog.34",
+          "original": "self.setWindowTitle('Update Packages')",
+          "template": "self.setWindowTitle({text})",
+          "count": 1
+        },
+        {
+          "id": "batch7.dialog.35",
+          "original": "self.setWindowTitle('Install Packages')",
+          "template": "self.setWindowTitle({text})",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "path": "widgets/dialogs/environment/import_dialogs.py",
+      "rules": [
+        {
+          "id": "batch8.environment.01",
+          "original": "        self.setWindowTitle('Import Environment')\r\n",
+          "template": "        self.setWindowTitle({text})\r\n",
+          "count": 1
+        },
+        {
+          "id": "batch8.environment.02",
+          "original": "            caption_text: str = 'Import from:',\r\n",
+          "template": "            caption_text: str = {text},\r\n",
+          "count": 1
+        },
+        {
+          "id": "batch8.environment.03",
+          "original": "            caption_text: str = 'New environment name:',\r\n",
+          "template": "            caption_text: str = {text},\r\n",
+          "count": 1
+        },
+        {
+          "id": "batch8.environment.04",
+          "original": "            accept_text: str = 'Import',\r\n",
+          "template": "            accept_text: str = {text},\r\n",
+          "count": 1
+        },
+        {
+          "id": "batch8.environment.05",
+          "original": "            reject_text: str = 'Cancel',\r\n",
+          "template": "            reject_text: str = {text},\r\n",
+          "count": 1
+        },
+        {
+          "id": "batch9.03",
+          "original": "        heading_label.setText('<span style=\"font-size: 16px; font-weight: 500\">Select environment from Cloud:</span>')\r\n",
+          "template": "        heading_label.setText({text})\r\n",
+          "count": 1
+        },
+        {
+          "id": "batch9.04",
+          "original": "        self.button_cancel: typing.Final[widgets.ButtonNormal] = widgets.ButtonNormal('Cancel')\r\n",
+          "template": "        self.button_cancel: typing.Final[widgets.ButtonNormal] = widgets.ButtonNormal({text})\r\n",
+          "count": 1
+        },
+        {
+          "id": "batch9.05",
+          "original": "        self.button_ok: typing.Final[widgets.ButtonPrimary] = widgets.ButtonPrimary('Select')\r\n",
+          "template": "        self.button_ok: typing.Final[widgets.ButtonPrimary] = widgets.ButtonPrimary({text})\r\n",
+          "count": 1
+        },
+        {
+          "id": "batch9.06",
+          "original": "        self.setWindowTitle('Import New Environment')\r\n",
+          "template": "        self.setWindowTitle({text})\r\n",
+          "count": 1
+        },
+        {
+          "id": "batch9.07",
+          "original": "        button.setToolTip('Download environment file')\r\n",
+          "template": "        button.setToolTip({text})\r\n",
+          "count": 1
+        },
+        {
+          "id": "batch9.21",
+          "original": "        environment_files: typing.Final[str] = 'Conda environment files (*.yaml *.yml)'\r\n",
+          "template": "        environment_files: typing.Final[str] = {text}\r\n",
+          "count": 1
+        },
+        {
+          "id": "batch9.22",
+          "original": "        specification_files: typing.Final[str] = 'Conda explicit specification files (*.txt)'\r\n",
+          "template": "        specification_files: typing.Final[str] = {text}\r\n",
+          "count": 1
+        },
+        {
+          "id": "batch9.23",
+          "original": "        pip_files: typing.Final[str] = 'Pip requirement files (*.txt)'\r\n",
+          "template": "        pip_files: typing.Final[str] = {text}\r\n",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "path": "widgets/dialogs/environment/backup_dialogs.py",
+      "rules": [
+        {
+          "id": "batch8.environment.06",
+          "original": "        self.setWindowTitle('Backup Environment')\r\n",
+          "template": "        self.setWindowTitle({text})\r\n",
+          "count": 1
+        },
+        {
+          "id": "batch8.environment.07",
+          "original": "            caption_text: str = 'Select location to backup environment:',\r\n",
+          "template": "            caption_text: str = {text},\r\n",
+          "count": 1
+        },
+        {
+          "id": "batch8.environment.08",
+          "original": "            caption_text: str = 'Backup as:',\r\n",
+          "template": "            caption_text: str = {text},\r\n",
+          "count": 1
+        },
+        {
+          "id": "batch8.environment.09",
+          "original": "            accept_text: str = 'Backup',\r\n",
+          "template": "            accept_text: str = {text},\r\n",
+          "count": 1
+        },
+        {
+          "id": "batch8.environment.10",
+          "original": "            reject_text: str = 'Cancel',\r\n",
+          "template": "            reject_text: str = {text},\r\n",
+          "count": 1
+        },
+        {
+          "id": "batch9.24",
+          "original": "        filter_yaml: typing.Final[str] = 'Conda environment files (*.yaml *.yml)'\r\n",
+          "template": "        filter_yaml: typing.Final[str] = {text}\r\n",
+          "count": 1
+        },
+        {
+          "id": "batch9.25",
+          "original": "        filter_any: typing.Final[str] = 'All files (*)'\r\n",
+          "template": "        filter_any: typing.Final[str] = {text}\r\n",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "path": "widgets/dialogs/environment/multiaccount_dialogs.py",
+      "rules": [
+        {
+          "id": "batch8.environment.11",
+          "original": "            SelectorRecord(value=SelectorValue.LOCAL, title='Local drive'),\r\n",
+          "template": "            SelectorRecord(value=SelectorValue.LOCAL, title={text}),\r\n",
+          "count": 1
+        },
+        {
+          "id": "batch8.environment.12",
+          "original": "        self.__environment_override.setText('Overwrite existing environment')\r\n",
+          "template": "        self.__environment_override.setText({text})\r\n",
+          "count": 1
+        },
+        {
+          "id": "batch9.01",
+          "original": "                '<span style=\"font-size: 12px; font-weight: 500\">'  # pylint: disable=implicit-str-concat\r\n                '<a href=\"navigator://cloud/login\" style=\"color: #43B049; text-decoration: none\">Sign in</a>'\r\n                ' to save your environment</span>'\r\n",
+          "template": "                {text}\r\n",
+          "count": 1
+        },
+        {
+          "id": "batch9.02",
+          "original": "                '<span style=\"font-size: 12px; font-weight: 500\">'  # pylint: disable=implicit-str-concat\r\n                'You are in offline mode, cloud options are disabled</span>'\r\n",
+          "template": "                {text}\r\n",
+          "count": 1
+        }
+      ]
+    }
+  ]
+}
