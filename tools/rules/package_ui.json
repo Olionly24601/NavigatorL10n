@@ -1,0 +1,28 @@
+{
+  "rules": [
+    {
+      "path": "widgets/manager/model.py",
+      "id": "packages.tooltip.conda",
+      "original": "return 'Conda package'",
+      "template": "return {text}",
+      "count": 1,
+      "translation": "Conda 软件包"
+    },
+    {
+      "path": "widgets/manager/packages.py",
+      "id": "packages.apply_action",
+      "original": "self.button_apply = ButtonPackageApply(_('Apply'))",
+      "template": "self.button_apply = ButtonPackageApply(_({text}))",
+      "count": 1,
+      "translation": "应用"
+    },
+    {
+      "path": "widgets/manager/packages.py",
+      "id": "packages.clear_action",
+      "original": "self.button_clear = ButtonPackageClear(_('Clear'))",
+      "template": "self.button_clear = ButtonPackageClear(_({text}))",
+      "count": 1,
+      "translation": "清除标记"
+    }
+  ]
+}

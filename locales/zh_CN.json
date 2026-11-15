@@ -161,6 +161,9 @@
     "batch9.22": "Conda 显式规格文件 (*.txt)",
     "batch9.23": "pip 依赖文件 (*.txt)",
     "batch9.24": "Conda 环境文件 (*.yaml *.yml)",
-    "batch9.25": "所有文件 (*)"
+    "batch9.25": "所有文件 (*)",
+    "packages.tooltip.conda": "Conda 软件包",
+    "packages.apply_action": "应用",
+    "packages.clear_action": "清除标记"
   }
 }
