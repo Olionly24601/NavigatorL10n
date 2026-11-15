@@ -1,0 +1,28 @@
+{
+  "rules": [
+    {
+      "path": "widgets/dialogs/packages.py",
+      "id": "packages.offline_warning_1",
+      "original": "'Some of the functionality of Anaconda Navigator will be '",
+      "template": "{text}",
+      "count": 1,
+      "translation": "Anaconda Navigator 的部分功能在"
+    },
+    {
+      "path": "widgets/dialogs/packages.py",
+      "id": "packages.offline_warning_2",
+      "original": "'limited in <b>offline mode</b>.<br><br>Installation and update actions will be subject to the '",
+      "template": "{text}",
+      "count": 1,
+      "translation": "<b>离线模式</b>下将受到限制。<br><br>安装和更新操作只能使用"
+    },
+    {
+      "path": "widgets/dialogs/packages.py",
+      "id": "packages.offline_warning_3",
+      "original": "'packages currently available on your package cache.'",
+      "template": "{text}",
+      "count": 1,
+      "translation": "本地软件包缓存中的可用软件包。"
+    }
+  ]
+}

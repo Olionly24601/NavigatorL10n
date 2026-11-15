@@ -221,6 +221,35 @@
     "errors.backup_local_export": "无法创建指定文件。",
     "errors.backup_local_inject": "无法创建指定文件。",
     "errors.backup_cloud_export": "创建备份时发生系统错误。",
-    "errors.backup_cloud_inject": "无法创建指定文件。"
+    "errors.backup_cloud_inject": "无法创建指定文件。",
+    "packages.manager_cancel": "取消",
+    "packages.manager_ok": "确定",
+    "packages.manager_title": "Conda 软件包管理器",
+    "packages.no_modifications": "没有需要修改的软件包。",
+    "packages.action_table_headers": [
+      "名称",
+      "移除版本",
+      "安装版本",
+      "软件源",
+      "操作"
+    ],
+    "packages.action_table_headers_spaced": [
+      "名称  ",
+      "移除版本  ",
+      "安装版本  ",
+      "软件源  ",
+      "操作  "
+    ],
+    "packages.summary_modified": "个软件包将被修改",
+    "packages.summary_removed": "个软件包将被删除",
+    "packages.summary_installed": "个软件包将被安装",
+    "packages.action_modify": "修改",
+    "packages.action_remove": "删除",
+    "packages.action_install": "安装",
+    "packages.action_undetermined": "未确定",
+    "packages.dependency_note": "<b>*</b> 表示该软件包是所选软件包的依赖项<br>",
+    "packages.offline_warning_1": "Anaconda Navigator 的部分功能在",
+    "packages.offline_warning_2": "<b>离线模式</b>下将受到限制。<br><br>安装和更新操作只能使用",
+    "packages.offline_warning_3": "本地软件包缓存中的可用软件包。"
   }
 }

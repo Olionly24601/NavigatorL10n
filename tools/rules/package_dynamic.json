@@ -1,0 +1,68 @@
+{
+  "rules": [
+    {
+      "path": "widgets/dialogs/packages.py",
+      "id": "packages.summary_modified",
+      "original": "description = f'{description} {modified_count} package{plural_total_modified} will be modified'",
+      "template": "description = f'{{description}} {{modified_count}} ' + {text}",
+      "count": 1,
+      "translation": "个软件包将被修改"
+    },
+    {
+      "path": "widgets/dialogs/packages.py",
+      "id": "packages.summary_removed",
+      "original": "description = f'{description} {removed_count} package{plural_total_removed} will be removed'",
+      "template": "description = f'{{description}} {{removed_count}} ' + {text}",
+      "count": 1,
+      "translation": "个软件包将被删除"
+    },
+    {
+      "path": "widgets/dialogs/packages.py",
+      "id": "packages.summary_installed",
+      "original": "description = f'{description} {installed_count} package{plural_total_installed} will be installed'",
+      "template": "description = f'{{description}} {{installed_count}} ' + {text}",
+      "count": 1,
+      "translation": "个软件包将被安装"
+    },
+    {
+      "path": "widgets/dialogs/packages.py",
+      "id": "packages.action_modify",
+      "original": "action = 'Modify'",
+      "template": "action = {text}",
+      "count": 1,
+      "translation": "修改"
+    },
+    {
+      "path": "widgets/dialogs/packages.py",
+      "id": "packages.action_remove",
+      "original": "action = 'Remove'",
+      "template": "action = {text}",
+      "count": 1,
+      "translation": "删除"
+    },
+    {
+      "path": "widgets/dialogs/packages.py",
+      "id": "packages.action_install",
+      "original": "action = 'Install'",
+      "template": "action = {text}",
+      "count": 1,
+      "translation": "安装"
+    },
+    {
+      "path": "widgets/dialogs/packages.py",
+      "id": "packages.action_undetermined",
+      "original": "action = 'Undetermined'",
+      "template": "action = {text}",
+      "count": 1,
+      "translation": "未确定"
+    },
+    {
+      "path": "widgets/dialogs/packages.py",
+      "id": "packages.dependency_note",
+      "original": "message = f'<b>*</b> indicates the package is a dependency of a selected package{plural_selected}<br>'",
+      "template": "message = {text}",
+      "count": 1,
+      "translation": "<b>*</b> 表示该软件包是所选软件包的依赖项<br>"
+    }
+  ]
+}

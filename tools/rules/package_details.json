@@ -1,0 +1,64 @@
+{
+  "rules": [
+    {
+      "path": "widgets/manager/packages.py",
+      "id": "packages.manager_cancel",
+      "original": "ButtonPackageCancel('Cancel')",
+      "template": "ButtonPackageCancel({text})",
+      "count": 1,
+      "translation": "取消"
+    },
+    {
+      "path": "widgets/manager/packages.py",
+      "id": "packages.manager_ok",
+      "original": "ButtonPackageOk(_('Ok'))",
+      "template": "ButtonPackageOk(_({text}))",
+      "count": 1,
+      "translation": "确定"
+    },
+    {
+      "path": "widgets/manager/packages.py",
+      "id": "packages.manager_title",
+      "original": "_('Conda Package Manager')",
+      "template": "_({text})",
+      "count": 1,
+      "translation": "Conda 软件包管理器"
+    },
+    {
+      "path": "widgets/dialogs/packages.py",
+      "id": "packages.no_modifications",
+      "original": "'No packages will be modified.'",
+      "template": "{text}",
+      "count": 2,
+      "translation": "没有需要修改的软件包。"
+    },
+    {
+      "path": "widgets/dialogs/packages.py",
+      "id": "packages.action_table_headers",
+      "original": "self.table.setHorizontalHeaderLabels(['Name', 'Unlink', 'Link', 'Channel', 'Action'])",
+      "template": "self.table.setHorizontalHeaderLabels({text})",
+      "count": 1,
+      "translation": [
+        "名称",
+        "移除版本",
+        "安装版本",
+        "软件源",
+        "操作"
+      ]
+    },
+    {
+      "path": "widgets/dialogs/packages.py",
+      "id": "packages.action_table_headers_spaced",
+      "original": "self.table.setHorizontalHeaderLabels(['Name  ', 'Unlink  ', 'Link  ', 'Channel  ', 'Action  '])",
+      "template": "self.table.setHorizontalHeaderLabels({text})",
+      "count": 1,
+      "translation": [
+        "名称  ",
+        "移除版本  ",
+        "安装版本  ",
+        "软件源  ",
+        "操作  "
+      ]
+    }
+  ]
+}
