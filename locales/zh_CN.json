@@ -164,6 +164,9 @@
     "batch9.25": "所有文件 (*)",
     "packages.tooltip.conda": "Conda 软件包",
     "packages.apply_action": "应用",
-    "packages.clear_action": "清除标记"
+    "packages.clear_action": "清除标记",
+    "account.sign_out_link": "退出登录",
+    "account.connected_user": "已连接用户：{username}",
+    "account.connected": "已连接"
   }
 }

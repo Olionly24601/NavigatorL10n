@@ -1,0 +1,28 @@
+{
+  "rules": [
+    {
+      "path": "widgets/dialogs/login/account_dialogs.py",
+      "id": "account.sign_out_link",
+      "original": "f'SIGN OUT'",
+      "template": "{text}",
+      "count": 1,
+      "translation": "退出登录"
+    },
+    {
+      "path": "widgets/dialogs/login/account_dialogs.py",
+      "id": "account.connected_user",
+      "original": "result.postfix = f'connected as {state.username}'",
+      "template": "result.postfix = {text}.format(username=state.username)",
+      "count": 1,
+      "translation": "已连接用户：{username}"
+    },
+    {
+      "path": "widgets/dialogs/login/account_dialogs.py",
+      "id": "account.connected",
+      "original": "result.postfix = 'connected'",
+      "template": "result.postfix = {text}",
+      "count": 1,
+      "translation": "已连接"
+    }
+  ]
+}

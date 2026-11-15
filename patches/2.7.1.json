@@ -307,6 +307,24 @@
           "original": "f'<a'\r\n                f' href=\"navigator://{html.escape(alias)}/login\"'\r\n                f' style=\"color: #0075A9; text-decoration: none\">'\r\n                f'SIGN IN'\r\n                f'</a>'",
           "template": "f'<a'\r\n                f' href=\"navigator://{{html.escape(alias)}}/login\"'\r\n                f' style=\"color: #0075A9; text-decoration: none\">'\r\n                f'{{{text}}}'\r\n                f'</a>'",
           "count": 1
+        },
+        {
+          "id": "account.sign_out_link",
+          "original": "f'SIGN OUT'",
+          "template": "{text}",
+          "count": 1
+        },
+        {
+          "id": "account.connected_user",
+          "original": "result.postfix = f'connected as {state.username}'",
+          "template": "result.postfix = {text}.format(username=state.username)",
+          "count": 1
+        },
+        {
+          "id": "account.connected",
+          "original": "result.postfix = 'connected'",
+          "template": "result.postfix = {text}",
+          "count": 1
         }
       ]
     },
