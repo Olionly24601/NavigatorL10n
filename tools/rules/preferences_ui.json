@@ -1,0 +1,198 @@
+{
+  "rules": [
+    {
+      "path": "widgets/dialogs/preferences.py",
+      "scope": "SettingsDialog.__init__",
+      "id": "settings.reset",
+      "find": "Reset to defaults",
+      "translation": "恢复默认设置"
+    },
+    {
+      "path": "widgets/dialogs/preferences.py",
+      "scope": "SettingsDialog.__init__",
+      "id": "settings.cancel",
+      "find": "Cancel",
+      "translation": "取消"
+    },
+    {
+      "path": "widgets/dialogs/preferences.py",
+      "scope": "SettingsDialog.__init__",
+      "id": "settings.save_restart",
+      "find": "Save and Restart",
+      "translation": "保存并重启"
+    },
+    {
+      "path": "widgets/dialogs/preferences.py",
+      "scope": "NavigatorSettingsDialog.__init__",
+      "id": "settings.navigator_title",
+      "find": "Navigator settings (anaconda-navigator.ini)",
+      "translation": "Navigator 设置 (anaconda-navigator.ini)"
+    },
+    {
+      "path": "widgets/dialogs/preferences.py",
+      "scope": "CondaSettingsDialog.__init__",
+      "id": "settings.conda_title",
+      "find": "Conda settings (.condarc)",
+      "translation": "Conda 设置 (.condarc)"
+    },
+    {
+      "path": "widgets/dialogs/preferences.py",
+      "id": "preferences.action_buttons",
+      "original": "        self.button_ok = ButtonPrimary('Apply')\r\n        self.button_cancel = ButtonNormal('Cancel')\r\n        self.button_reset = ButtonNormal('Reset to defaults')\r\n",
+      "template": "        self.button_ok = ButtonPrimary({text}['Apply'])\r\n        self.button_cancel = ButtonNormal({text}['Cancel'])\r\n        self.button_reset = ButtonNormal({text}['Reset to defaults'])\r\n",
+      "count": 1,
+      "translation": {
+        "Apply": "应用",
+        "Cancel": "取消",
+        "Reset to defaults": "恢复默认设置"
+      }
+    },
+    {
+      "path": "widgets/dialogs/preferences.py",
+      "scope": "PreferencesDialog.__init__",
+      "id": "preferences.configure_navigator",
+      "find": "Configure Navigator",
+      "translation": "配置 Navigator"
+    },
+    {
+      "path": "widgets/dialogs/preferences.py",
+      "scope": "PreferencesDialog.__init__",
+      "id": "preferences.configure_conda",
+      "find": "Configure Conda",
+      "translation": "配置 Conda"
+    },
+    {
+      "path": "widgets/dialogs/preferences.py",
+      "scope": "PreferencesDialog.__init__",
+      "id": "preferences.title",
+      "find": "Preferences",
+      "translation": "首选项"
+    },
+    {
+      "path": "widgets/dialogs/preferences.py",
+      "scope": "PreferencesDialog.setup",
+      "id": "preferences.api_domain",
+      "find": "Anaconda.org API domain",
+      "translation": "Anaconda.org API 域名"
+    },
+    {
+      "path": "widgets/dialogs/preferences.py",
+      "scope": "PreferencesDialog.setup",
+      "id": "preferences.psm_domain",
+      "find": "PSM On-prem API domain",
+      "translation": "PSM 本地部署 API 域名"
+    },
+    {
+      "path": "widgets/dialogs/preferences.py",
+      "scope": "PreferencesDialog.setup",
+      "id": "preferences.enterprise_domain",
+      "find": "Enterprise 4 Repository API domain",
+      "translation": "Enterprise 4 仓库 API 域名"
+    },
+    {
+      "path": "widgets/dialogs/preferences.py",
+      "scope": "PreferencesDialog.setup",
+      "id": "preferences.ssl_verification",
+      "find": "Enable SSL verification",
+      "translation": "启用 SSL 验证"
+    },
+    {
+      "path": "widgets/dialogs/preferences.py",
+      "scope": "PreferencesDialog.setup",
+      "id": "preferences.ssl_certificate",
+      "find": "SSL certificate path (Optional)",
+      "translation": "SSL 证书路径（可选）"
+    },
+    {
+      "path": "widgets/dialogs/preferences.py",
+      "scope": "PreferencesDialog.setup",
+      "id": "preferences.default_environment",
+      "find": "Default conda environment",
+      "translation": "默认 Conda 环境"
+    },
+    {
+      "path": "widgets/dialogs/preferences.py",
+      "scope": "PreferencesDialog.setup",
+      "id": "preferences.analytics",
+      "find": "Quality improvement reporting",
+      "translation": "质量改进数据报告"
+    },
+    {
+      "path": "widgets/dialogs/preferences.py",
+      "scope": "PreferencesDialog.setup",
+      "id": "preferences.offline_mode",
+      "find": "Enable offline mode",
+      "translation": "启用离线模式"
+    },
+    {
+      "path": "widgets/dialogs/preferences.py",
+      "scope": "PreferencesDialog.setup",
+      "id": "preferences.dark_mode",
+      "find": "Enable dark mode",
+      "translation": "启用深色模式"
+    },
+    {
+      "path": "widgets/dialogs/preferences.py",
+      "scope": "PreferencesDialog.setup",
+      "id": "preferences.hide_offline_dialog",
+      "find": "Hide offline mode dialog",
+      "translation": "隐藏离线模式弹窗"
+    },
+    {
+      "path": "widgets/dialogs/preferences.py",
+      "scope": "PreferencesDialog.setup",
+      "id": "preferences.hide_quit_dialog",
+      "find": "Hide quit dialog",
+      "translation": "隐藏退出确认弹窗"
+    },
+    {
+      "path": "widgets/dialogs/preferences.py",
+      "scope": "PreferencesDialog.setup",
+      "id": "preferences.hide_update_dialog",
+      "find": "Hide update dialog on startup",
+      "translation": "启动时隐藏更新提示"
+    },
+    {
+      "path": "widgets/dialogs/preferences.py",
+      "scope": "PreferencesDialog.setup",
+      "id": "preferences.hide_running_dialog",
+      "find": "Hide running applications dialog",
+      "translation": "隐藏正在运行的应用提示"
+    },
+    {
+      "path": "widgets/dialogs/preferences.py",
+      "scope": "PreferencesDialog.setup",
+      "id": "preferences.hide_whats_new",
+      "find": "Hide \"what's new\" dialog on startup",
+      "translation": "启动时隐藏“新功能介绍”弹窗"
+    },
+    {
+      "path": "widgets/dialogs/preferences.py",
+      "scope": "PreferencesDialog.setup",
+      "id": "preferences.high_dpi",
+      "find": "Enable high DPI scaling",
+      "translation": "启用高 DPI 缩放"
+    },
+    {
+      "path": "widgets/dialogs/preferences.py",
+      "scope": "PreferencesDialog.setup",
+      "id": "preferences.startup_errors",
+      "find": "Show application startup error messages",
+      "translation": "显示应用启动错误信息"
+    },
+    {
+      "path": "widgets/dialogs/preferences.py",
+      "scope": "PreferencesDialog.setup",
+      "id": "preferences.hidden_channels",
+      "find": "Show hidden PSM On-prem channels",
+      "translation": "显示隐藏的 PSM 本地部署软件源"
+    },
+    {
+      "path": "widgets/dialogs/preferences.py",
+      "scope": "PreferencesDialog.setup",
+      "id": "preferences.certificate_placeholder",
+      "find": "Certificate to verify SSL connections",
+      "translation": "用于验证 SSL 连接的证书"
+    }
+  ]
+}

@@ -167,6 +167,37 @@
     "packages.clear_action": "清除标记",
     "account.sign_out_link": "退出登录",
     "account.connected_user": "已连接用户：{username}",
-    "account.connected": "已连接"
+    "account.connected": "已连接",
+    "settings.reset": "恢复默认设置",
+    "settings.cancel": "取消",
+    "settings.save_restart": "保存并重启",
+    "settings.navigator_title": "Navigator 设置 (anaconda-navigator.ini)",
+    "settings.conda_title": "Conda 设置 (.condarc)",
+    "preferences.action_buttons": {
+      "Apply": "应用",
+      "Cancel": "取消",
+      "Reset to defaults": "恢复默认设置"
+    },
+    "preferences.configure_navigator": "配置 Navigator",
+    "preferences.configure_conda": "配置 Conda",
+    "preferences.title": "首选项",
+    "preferences.api_domain": "Anaconda.org API 域名",
+    "preferences.psm_domain": "PSM 本地部署 API 域名",
+    "preferences.enterprise_domain": "Enterprise 4 仓库 API 域名",
+    "preferences.ssl_verification": "启用 SSL 验证",
+    "preferences.ssl_certificate": "SSL 证书路径（可选）",
+    "preferences.default_environment": "默认 Conda 环境",
+    "preferences.analytics": "质量改进数据报告",
+    "preferences.offline_mode": "启用离线模式",
+    "preferences.dark_mode": "启用深色模式",
+    "preferences.hide_offline_dialog": "隐藏离线模式弹窗",
+    "preferences.hide_quit_dialog": "隐藏退出确认弹窗",
+    "preferences.hide_update_dialog": "启动时隐藏更新提示",
+    "preferences.hide_running_dialog": "隐藏正在运行的应用提示",
+    "preferences.hide_whats_new": "启动时隐藏“新功能介绍”弹窗",
+    "preferences.high_dpi": "启用高 DPI 缩放",
+    "preferences.startup_errors": "显示应用启动错误信息",
+    "preferences.hidden_channels": "显示隐藏的 PSM 本地部署软件源",
+    "preferences.certificate_placeholder": "用于验证 SSL 连接的证书"
   }
 }

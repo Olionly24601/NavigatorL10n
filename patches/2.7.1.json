@@ -984,6 +984,173 @@
           "count": 1
         }
       ]
+    },
+    {
+      "path": "widgets/dialogs/preferences.py",
+      "rules": [
+        {
+          "id": "settings.reset",
+          "original": "        self.text_edit.setFixedSize(600, 600)\r\n\r\n        self.button_reset = ButtonNormal('Reset to defaults')\r\n",
+          "template": "        self.text_edit.setFixedSize(600, 600)\r\n\r\n        self.button_reset = ButtonNormal({text})\r\n",
+          "count": 1
+        },
+        {
+          "id": "settings.cancel",
+          "original": "        self.button_reset.clicked.connect(self.reset_to_defaults)\r\n\r\n        self.button_cancel = ButtonNormal('Cancel')\r\n",
+          "template": "        self.button_reset.clicked.connect(self.reset_to_defaults)\r\n\r\n        self.button_cancel = ButtonNormal({text})\r\n",
+          "count": 1
+        },
+        {
+          "id": "settings.save_restart",
+          "original": "        self.button_save = ButtonPrimary('Save and Restart')\r\n",
+          "template": "        self.button_save = ButtonPrimary({text})\r\n",
+          "count": 1
+        },
+        {
+          "id": "settings.navigator_title",
+          "original": "        self.setWindowTitle('Navigator settings (anaconda-navigator.ini)')\r\n",
+          "template": "        self.setWindowTitle({text})\r\n",
+          "count": 1
+        },
+        {
+          "id": "settings.conda_title",
+          "original": "        self.setWindowTitle('Conda settings (.condarc)')\r\n",
+          "template": "        self.setWindowTitle({text})\r\n",
+          "count": 1
+        },
+        {
+          "id": "preferences.action_buttons",
+          "original": "        self.button_ok = ButtonPrimary('Apply')\r\n        self.button_cancel = ButtonNormal('Cancel')\r\n        self.button_reset = ButtonNormal('Reset to defaults')\r\n",
+          "template": "        self.button_ok = ButtonPrimary({text}['Apply'])\r\n        self.button_cancel = ButtonNormal({text}['Cancel'])\r\n        self.button_reset = ButtonNormal({text}['Reset to defaults'])\r\n",
+          "count": 1
+        },
+        {
+          "id": "preferences.configure_navigator",
+          "original": "        self.button_nav_settings = ButtonPrimary('Configure Navigator')\r\n",
+          "template": "        self.button_nav_settings = ButtonPrimary({text})\r\n",
+          "count": 1
+        },
+        {
+          "id": "preferences.configure_conda",
+          "original": "        self.button_conda_settings = ButtonPrimary('Configure Conda')\r\n",
+          "template": "        self.button_conda_settings = ButtonPrimary({text})\r\n",
+          "count": 1
+        },
+        {
+          "id": "preferences.title",
+          "original": "        self.setWindowTitle('Preferences')\r\n",
+          "template": "        self.setWindowTitle({text})\r\n",
+          "count": 1
+        },
+        {
+          "id": "preferences.api_domain",
+          "original": "            'Anaconda.org API domain',\r\n",
+          "template": "            {text},\r\n",
+          "count": 1
+        },
+        {
+          "id": "preferences.psm_domain",
+          "original": "            'PSM On-prem API domain',\r\n",
+          "template": "            {text},\r\n",
+          "count": 1
+        },
+        {
+          "id": "preferences.enterprise_domain",
+          "original": "            'Enterprise 4 Repository API domain',\r\n",
+          "template": "            {text},\r\n",
+          "count": 1
+        },
+        {
+          "id": "preferences.ssl_verification",
+          "original": "            'Enable SSL verification',\r\n",
+          "template": "            {text},\r\n",
+          "count": 1
+        },
+        {
+          "id": "preferences.ssl_certificate",
+          "original": "            'SSL certificate path (Optional)',\r\n",
+          "template": "            {text},\r\n",
+          "count": 1
+        },
+        {
+          "id": "preferences.default_environment",
+          "original": "            'Default conda environment',\r\n",
+          "template": "            {text},\r\n",
+          "count": 1
+        },
+        {
+          "id": "preferences.analytics",
+          "original": "            'Quality improvement reporting',\r\n",
+          "template": "            {text},\r\n",
+          "count": 1
+        },
+        {
+          "id": "preferences.offline_mode",
+          "original": "            'Enable offline mode',\r\n",
+          "template": "            {text},\r\n",
+          "count": 1
+        },
+        {
+          "id": "preferences.dark_mode",
+          "original": "        self.create_checkbox('Enable dark mode', 'dark_mode')\r\n",
+          "template": "        self.create_checkbox({text}, 'dark_mode')\r\n",
+          "count": 1
+        },
+        {
+          "id": "preferences.hide_offline_dialog",
+          "original": "        self.create_checkbox('Hide offline mode dialog', 'hide_offline_dialog')\r\n",
+          "template": "        self.create_checkbox({text}, 'hide_offline_dialog')\r\n",
+          "count": 1
+        },
+        {
+          "id": "preferences.hide_quit_dialog",
+          "original": "        self.create_checkbox('Hide quit dialog', 'hide_quit_dialog')\r\n",
+          "template": "        self.create_checkbox({text}, 'hide_quit_dialog')\r\n",
+          "count": 1
+        },
+        {
+          "id": "preferences.hide_update_dialog",
+          "original": "        self.create_checkbox('Hide update dialog on startup', 'hide_update_dialog')\r\n",
+          "template": "        self.create_checkbox({text}, 'hide_update_dialog')\r\n",
+          "count": 1
+        },
+        {
+          "id": "preferences.hide_running_dialog",
+          "original": "        self.create_checkbox('Hide running applications dialog', 'hide_running_apps_dialog')\r\n",
+          "template": "        self.create_checkbox({text}, 'hide_running_apps_dialog')\r\n",
+          "count": 1
+        },
+        {
+          "id": "preferences.hide_whats_new",
+          "original": "        self.create_checkbox('Hide \"what\\'s new\" dialog on startup', 'hide_whats_new_dialog')\r\n",
+          "template": "        self.create_checkbox({text}, 'hide_whats_new_dialog')\r\n",
+          "count": 1
+        },
+        {
+          "id": "preferences.high_dpi",
+          "original": "        self.create_checkbox('Enable high DPI scaling', 'enable_high_dpi_scaling')\r\n",
+          "template": "        self.create_checkbox({text}, 'enable_high_dpi_scaling')\r\n",
+          "count": 1
+        },
+        {
+          "id": "preferences.startup_errors",
+          "original": "        self.create_checkbox('Show application startup error messages', 'show_application_launch_errors')\r\n",
+          "template": "        self.create_checkbox({text}, 'show_application_launch_errors')\r\n",
+          "count": 1
+        },
+        {
+          "id": "preferences.hidden_channels",
+          "original": "        self.create_checkbox('Show hidden PSM On-prem channels', 'anaconda_server_show_hidden_channels')\r\n",
+          "template": "        self.create_checkbox({text}, 'anaconda_server_show_hidden_channels')\r\n",
+          "count": 1
+        },
+        {
+          "id": "preferences.certificate_placeholder",
+          "original": "        ssl_cert_widget.setPlaceholderText('Certificate to verify SSL connections')\r\n",
+          "template": "        ssl_cert_widget.setPlaceholderText({text})\r\n",
+          "count": 1
+        }
+      ]
     }
   ]
 }
