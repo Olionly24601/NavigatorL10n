@@ -2,74 +2,105 @@ import json
 import unittest
 from pathlib import Path
 
+from tools import build_rules
+
 
 ROOT = Path(__file__).resolve().parents[1]
+VERSIONS = ("2.7.1", "2.7.4")
 
 
 class TestTranslationRules(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.rules = json.loads(
-            (ROOT / "patches" / "2.7.1.json").read_text(
-                encoding="utf-8"
+        cls.configs = {
+            version: json.loads(
+                (ROOT / "patches" / f"{version}.json").read_text(
+                    encoding="utf-8"
+                )
             )
-        )
+            for version in VERSIONS
+        }
         cls.locale = json.loads(
             (ROOT / "locales" / "zh_CN.json").read_text(
                 encoding="utf-8"
             )
         )
 
-    def test_version(self):
-        self.assertEqual(self.rules["version"], "2.7.1")
+    def test_versions(self):
+        self.assertEqual(
+            set(build_rules.available_versions()), set(VERSIONS)
+        )
+        for version, config in self.configs.items():
+            with self.subTest(version=version):
+                self.assertEqual(config["version"], version)
 
     def test_language(self):
         self.assertEqual(self.locale["language"], "zh_CN")
 
     def test_unique_paths(self):
-        paths = [item["path"] for item in self.rules["files"]]
-        self.assertEqual(len(paths), len(set(paths)))
+        for version, config in self.configs.items():
+            paths = [item["path"] for item in config["files"]]
+            with self.subTest(version=version):
+                self.assertEqual(len(paths), len(set(paths)))
 
-    def test_unique_ids(self):
-        ids = [
-            rule["id"]
-            for entry in self.rules["files"]
-            for rule in entry["rules"]
-        ]
-        self.assertEqual({k: ids.count(k) for k in set(ids) if ids.count(k) > 1}, {'packages.filter_labels': 2})
+    def test_rule_ids_unique_within_each_file(self):
+        for version, config in self.configs.items():
+            for entry in config["files"]:
+                ids = [rule["id"] for rule in entry["rules"]]
+                with self.subTest(version=version, path=entry["path"]):
+                    self.assertEqual(len(ids), len(set(ids)))
 
     def test_translation_completeness(self):
         messages = self.locale["messages"]
-
-        for entry in self.rules["files"]:
-            for rule in entry["rules"]:
-                with self.subTest(rule=rule["id"]):
-                    self.assertIn(rule["id"], messages)
+        for version, config in self.configs.items():
+            for entry in config["files"]:
+                for rule in entry["rules"]:
+                    with self.subTest(version=version, rule=rule["id"]):
+                        self.assertIn(rule["id"], messages)
 
     def test_template_rendering(self):
         messages = self.locale["messages"]
-
-        for entry in self.rules["files"]:
-            for rule in entry["rules"]:
-                with self.subTest(rule=rule["id"]):
-                    translated = json.dumps(
-                        messages[rule["id"]],
-                        ensure_ascii=False,
-                    )
-
-                    output = rule["template"].format(
-                        text=translated
-                    )
-
-                    self.assertIsInstance(output, str)
-                    self.assertTrue(output)
+        for version, config in self.configs.items():
+            for entry in config["files"]:
+                for rule in entry["rules"]:
+                    with self.subTest(version=version, rule=rule["id"]):
+                        translated = json.dumps(
+                            messages[rule["id"]], ensure_ascii=False
+                        )
+                        output = rule["template"].format(text=translated)
+                        self.assertIsInstance(output, str)
+                        self.assertTrue(output)
 
     def test_positive_match_counts(self):
-        for entry in self.rules["files"]:
-            for rule in entry["rules"]:
-                with self.subTest(rule=rule["id"]):
-                    self.assertGreater(rule["count"], 0)
+        for version, config in self.configs.items():
+            for entry in config["files"]:
+                for rule in entry["rules"]:
+                    with self.subTest(version=version, rule=rule["id"]):
+                        self.assertIs(type(rule["count"]), int)
+                        self.assertGreater(rule["count"], 0)
+
+    def test_shared_locale_references(self):
+        results = build_rules.validate_all(
+            list(self.configs.values()), self.locale
+        )
+        self.assertEqual(set(results), set(VERSIONS))
+        self.assertEqual(results["2.7.1"], (27, 223, 222))
+        self.assertEqual(results["2.7.4"], (31, 256, 255))
+
+    def test_274_preserves_existing_271_rules(self):
+        def indexed(config):
+            return {
+                (entry["path"], rule["id"]): rule
+                for entry in config["files"]
+                for rule in entry["rules"]
+            }
+
+        original = indexed(self.configs["2.7.1"])
+        updated = indexed(self.configs["2.7.4"])
+        for key, rule in original.items():
+            with self.subTest(path=key[0], rule=key[1]):
+                self.assertEqual(updated.get(key), rule)
 
 
 if __name__ == "__main__":

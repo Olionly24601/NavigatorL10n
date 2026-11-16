@@ -13,17 +13,32 @@ if str(PROJECT) not in sys.path:
 
 from core import engine
 
-RULES = PROJECT / "patches" / "2.7.1.json"
+PATCHES = PROJECT / "patches"
 LOCALE = PROJECT / "locales" / "zh_CN.json"
 
 
-def load():
-    return engine.read_json(RULES), engine.read_json(LOCALE)
+def available_versions():
+    return sorted(path.stem for path in PATCHES.glob("*.json"))
+
+
+def load(version=None):
+    if version is None:
+        _, version, _ = engine.installation()
+
+    rules = PATCHES / f"{version}.json"
+    if not rules.is_file():
+        raise ValueError(f"暂不支持 Navigator {version}")
+
+    config = engine.read_json(rules)
+    if config.get("version") != version:
+        raise ValueError(f"规则文件版本不一致：{rules.name}")
+
+    return config, engine.read_json(LOCALE)
 
 
 def validate(config, locale):
     if (
-        config.get("version") != "2.7.1"
+        not isinstance(config.get("version"), str)
         or locale.get("language") != "zh_CN"
     ):
         raise ValueError("规则版本或语言不匹配")
@@ -91,14 +106,25 @@ def validate(config, locale):
             used.add(key)
             total += 1
 
-    unused = set(locale["messages"]) - used
+    return len(paths), total, used
 
+
+def validate_all(configs, locale):
+    used = set()
+    results = {}
+
+    for config in configs:
+        files, rules, keys = validate(config, locale)
+        results[config["version"]] = (files, rules, len(keys))
+        used.update(keys)
+
+    unused = set(locale["messages"]) - used
     if unused:
         raise ValueError(
             f"语言包存在未引用的条目：{sorted(unused)}"
         )
 
-    return len(paths), total, len(used)
+    return results
 
 
 def originals(config):
@@ -439,7 +465,8 @@ def add(spec_path, config, locale):
 
 
 def save(config, locale):
-    old_rules = RULES.read_bytes()
+    rules_path = PATCHES / f"{config['version']}.json"
+    old_rules = rules_path.read_bytes()
     old_locale = LOCALE.read_bytes()
 
     folder = (
@@ -479,11 +506,11 @@ def save(config, locale):
     ).encode("utf-8")
 
     try:
-        engine.atomic_write(RULES, rules_new)
+        engine.atomic_write(rules_path, rules_new)
         engine.atomic_write(LOCALE, locale_new)
 
     except Exception:
-        engine.atomic_write(RULES, old_rules)
+        engine.atomic_write(rules_path, old_rules)
         engine.atomic_write(LOCALE, old_locale)
         raise
 
@@ -497,49 +524,66 @@ def main():
         "command",
         choices=("validate", "verify", "add"),
     )
-
     parser.add_argument(
         "spec",
         nargs="?",
         type=Path,
     )
+    parser.add_argument(
+        "--version",
+        help="Navigator 版本；validate 默认检查全部版本，其他命令默认当前环境",
+    )
 
     args = parser.parse_args()
 
-    config, locale = load()
-
     if args.command == "validate":
-        files, rules, keys = validate(
-            config,
-            locale,
-        )
+        versions = [args.version] if args.version else available_versions()
+        if not versions:
+            raise ValueError("没有找到版本规则文件")
 
-        print(
-            f"结构检查通过：{files} 个文件、"
-            f"{rules} 条规则、{keys} 个翻译条目"
-        )
+        configs = []
+        for version in versions:
+            config, locale = load(version)
+            configs.append(config)
 
-    elif args.command == "verify":
+        if args.version:
+            files, rules, keys = validate(configs[0], locale)
+            print(
+                f"Navigator {args.version}："
+                f"{files} 个文件、{rules} 条规则、"
+                f"{len(keys)} 个翻译条目，检查通过"
+            )
+        else:
+            results = validate_all(configs, locale)
+            for version, (files, rules, keys) in results.items():
+                print(
+                    f"Navigator {version}："
+                    f"{files} 个文件、{rules} 条规则、"
+                    f"{keys} 个翻译条目，检查通过"
+                )
+            print("共享语言包无未引用条目")
+        return
+
+    if args.spec is not None and args.command != "add":
+        parser.error("只有 add 命令接受规则草稿 JSON 路径")
+
+    version = args.version
+    config, locale = load(version)
+
+    if args.command == "verify":
         _, sources = originals(config)
-
         verify(config, locale, sources)
 
         print(
+            f"Navigator {config['version']}："
             "源码匹配和 Python 语法检查通过，"
             "未修改 Navigator"
         )
-
     else:
         if args.spec is None:
-            parser.error(
-                "add 需要指定规则草稿 JSON 路径"
-            )
+            parser.error("add 需要指定规则草稿 JSON 路径")
 
-        added, skipped = add(
-            args.spec,
-            config,
-            locale,
-        )
+        added, skipped = add(args.spec, config, locale)
 
         if added:
             save(config, locale)
