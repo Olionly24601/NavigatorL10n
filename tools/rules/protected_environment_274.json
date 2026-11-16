@@ -1,0 +1,134 @@
+
+{
+  "version": "2.7.4",
+  "rules": [
+    {
+      "path": "widgets/main_window/environment_components.py",
+      "id": "pbe.conda_self_missing",
+      "original": "text='The conda-self package is not installed in the base environment.'",
+      "template": "text={text}",
+      "count": 1,
+      "translation": "base 环境中未安装 conda-self 软件包。"
+    },
+    {
+      "path": "widgets/main_window/environment_components.py",
+      "id": "pbe.update_failed_message",
+      "original": "text=f'Failed to update conda: {error}'",
+      "template": "text={text} + str(error)",
+      "count": 1,
+      "translation": "更新 Conda 失败："
+    },
+    {
+      "path": "widgets/main_window/environment_components.py",
+      "id": "pbe.update_failed_title",
+      "original": "title='Update Failed'",
+      "template": "title={text}",
+      "count": 1,
+      "translation": "更新失败"
+    },
+    {
+      "path": "widgets/main_window/environment_components.py",
+      "id": "pbe.update_success_message",
+      "original": "text='Conda has been updated successfully.'",
+      "template": "text={text}",
+      "count": 1,
+      "translation": "Conda 已成功更新。"
+    },
+    {
+      "path": "widgets/main_window/environment_components.py",
+      "id": "pbe.update_success_title",
+      "original": "title='Update Complete'",
+      "template": "title={text}",
+      "count": 1,
+      "translation": "更新完成"
+    },
+    {
+      "path": "widgets/main_window/application_components.py",
+      "id": "pbe.app_cannot_modify",
+      "original": "f'<b>{package_name}</b> cannot be modified in this environment.<br><br>'",
+      "template": "f'<b>{{package_name}}</b> ' + {text} + '<br><br>' +",
+      "count": 1,
+      "translation": "无法在此环境中修改。"
+    },
+    {
+      "path": "widgets/main_window/application_components.py",
+      "id": "pbe.app_protected_message",
+      "original": "'This is a protected environment. Package modifications are disabled.<br><br>'",
+      "template": "{text}",
+      "count": 1,
+      "translation": "这是受保护的环境，已禁用软件包修改操作。<br><br>"
+    },
+    {
+      "path": "widgets/main_window/application_components.py",
+      "id": "pbe.select_environment",
+      "original": "'Please select an environment:'",
+      "template": "{text}",
+      "count": 1,
+      "translation": "请选择一个环境："
+    },
+    {
+      "path": "widgets/main_window/application_components.py",
+      "id": "pbe.creating_environment",
+      "original": "action_msg = f'Creating environment and installing <b>{packages[0]}</b>'",
+      "template": "action_msg = {text} + f'<b>{{packages[0]}}</b>'",
+      "count": 1,
+      "translation": "正在创建环境并安装 "
+    },
+    {
+      "path": "widgets/dialogs/environment/conflict_dialogs.py",
+      "id": "pbe.conflict_question_first",
+      "original": "'Do you want to install the package in an existing '",
+      "template": "{text}",
+      "count": 1,
+      "translation": "要将软件包安装到现有环境，"
+    },
+    {
+      "path": "widgets/dialogs/environment/conflict_dialogs.py",
+      "id": "pbe.conflict_question_second",
+      "original": "'environment or <br>create a new environment?'",
+      "template": "{text}",
+      "count": 1,
+      "translation": "还是<br>创建一个新环境？"
+    },
+    {
+      "path": "widgets/dialogs/environment/conflict_dialogs.py",
+      "id": "pbe.frozen_environment_warning",
+      "original": "'This environment is protected and cannot be modified.'",
+      "template": "{text}",
+      "count": 1,
+      "translation": "此环境受到保护，无法修改。"
+    },
+    {
+      "path": "widgets/main_window/account_components.py",
+      "id": "cloud.browser_sign_in",
+      "original": "action='Complete Anaconda Cloud sign-in in browser...'",
+      "template": "action={text}",
+      "count": 1,
+      "translation": "请在浏览器中完成 Anaconda Cloud 登录…"
+    },
+    {
+      "path": "widgets/manager/packages.py",
+      "id": "pbe.packages_banner",
+      "original": "text='<b>This is a protected environment.</b> Package modifications are disabled.'",
+      "template": "text={text}",
+      "count": 1,
+      "translation": "<b>这是受保护的环境。</b>已禁用软件包修改操作。"
+    },
+    {
+      "path": "widgets/manager/packages.py",
+      "id": "pbe.update_conda_button",
+      "original": "button='Update conda'",
+      "template": "button={text}",
+      "count": 1,
+      "translation": "更新 Conda"
+    },
+    {
+      "path": "widgets/tabs/home.py",
+      "id": "pbe.home_banner",
+      "original": "text='<b>This is a protected environment.</b> Application modifications are disabled.'",
+      "template": "text={text}",
+      "count": 1,
+      "translation": "<b>这是受保护的环境。</b>已禁用应用修改操作。"
+    }
+  ]
+}

@@ -109,6 +109,12 @@
           "original": "self.__login_button.setText('Connect')",
           "template": "self.__login_button.setText({text})",
           "count": 1
+        },
+        {
+          "id": "cloud.browser_sign_in",
+          "original": "action='Complete Anaconda Cloud sign-in in browser...'",
+          "template": "action={text}",
+          "count": 1
         }
       ]
     },
@@ -161,6 +167,12 @@
           "original": "ApplicationFilterDetails('Updatable applications', check_updatable)",
           "template": "ApplicationFilterDetails({text}, check_updatable)",
           "count": 1
+        },
+        {
+          "id": "pbe.home_banner",
+          "original": "text='<b>This is a protected environment.</b> Application modifications are disabled.'",
+          "template": "text={text}",
+          "count": 1
         }
       ]
     },
@@ -207,6 +219,12 @@
           "id": "env.terminal",
           "original": "self.menu_list.addAction('Open Terminal')",
           "template": "self.menu_list.addAction({text})",
+          "count": 1
+        },
+        {
+          "id": "env.open_with",
+          "original": "menu_item = self.menu_list.addAction('Open with ' + word)",
+          "template": "menu_item = self.menu_list.addAction({text}.format(name=word))",
           "count": 1
         }
       ]
@@ -401,6 +419,12 @@
           "original": "ButtonPrimary('Update channels')",
           "template": "ButtonPrimary({text})",
           "count": 1
+        },
+        {
+          "id": "channels.collecting_progress",
+          "original": "self.update_status(action='Collecting sources...', value=0, max_value=0)",
+          "template": "self.update_status(action={text}, value=0, max_value=0)",
+          "count": 1
         }
       ]
     },
@@ -500,6 +524,18 @@
           "id": "packages.manager_title",
           "original": "_('Conda Package Manager')",
           "template": "_({text})",
+          "count": 1
+        },
+        {
+          "id": "pbe.packages_banner",
+          "original": "text='<b>This is a protected environment.</b> Package modifications are disabled.'",
+          "template": "text={text}",
+          "count": 1
+        },
+        {
+          "id": "pbe.update_conda_button",
+          "original": "button='Update conda'",
+          "template": "button={text}",
           "count": 1
         }
       ]
@@ -1565,6 +1601,93 @@
           "id": "tos.continue",
           "original": "QPushButton('Continue to Navigator')",
           "template": "QPushButton({text})",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "path": "widgets/main_window/environment_components.py",
+      "rules": [
+        {
+          "id": "pbe.conda_self_missing",
+          "original": "text='The conda-self package is not installed in the base environment.'",
+          "template": "text={text}",
+          "count": 1
+        },
+        {
+          "id": "pbe.update_failed_message",
+          "original": "text=f'Failed to update conda: {error}'",
+          "template": "text={text} + str(error)",
+          "count": 1
+        },
+        {
+          "id": "pbe.update_failed_title",
+          "original": "title='Update Failed'",
+          "template": "title={text}",
+          "count": 1
+        },
+        {
+          "id": "pbe.update_success_message",
+          "original": "text='Conda has been updated successfully.'",
+          "template": "text={text}",
+          "count": 1
+        },
+        {
+          "id": "pbe.update_success_title",
+          "original": "title='Update Complete'",
+          "template": "title={text}",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "path": "widgets/dialogs/environment/conflict_dialogs.py",
+      "rules": [
+        {
+          "id": "pbe.conflict_question_first",
+          "original": "'Do you want to install the package in an existing '",
+          "template": "{text}",
+          "count": 1
+        },
+        {
+          "id": "pbe.conflict_question_second",
+          "original": "'environment or <br>create a new environment?'",
+          "template": "{text}",
+          "count": 1
+        },
+        {
+          "id": "pbe.frozen_environment_warning",
+          "original": "'This environment is protected and cannot be modified.'",
+          "template": "{text}",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "path": "widgets/main_window/application_components.py",
+      "rules": [
+        {
+          "id": "pbe.app_cannot_modify",
+          "original": "f'<b>{package_name}</b> cannot be modified in this environment.<br><br>'",
+          "template": "f'<b>{{package_name}}</b> ' + {text} + '<br><br>' +",
+          "count": 1
+        },
+        {
+          "id": "pbe.app_protected_message",
+          "original": "'This is a protected environment. Package modifications are disabled.<br><br>'",
+          "template": "{text}",
+          "count": 1
+        },
+        {
+          "id": "pbe.select_environment",
+          "original": "'Please select an environment:'",
+          "template": "{text}",
+          "count": 1
+        },
+        {
+          "id": "pbe.creating_environment",
+          "original": "action_msg = f'Creating environment and installing <b>{packages[0]}</b>'",
+          "template": "action_msg = {text} + f'<b>{{packages[0]}}</b>'",
           "count": 1
         }
       ]

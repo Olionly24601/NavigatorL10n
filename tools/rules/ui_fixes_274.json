@@ -1,0 +1,22 @@
+
+{
+  "version": "2.7.4",
+  "rules": [
+    {
+      "path": "widgets/tabs/environments.py",
+      "id": "env.open_with",
+      "original": "menu_item = self.menu_list.addAction('Open with ' + word)",
+      "template": "menu_item = self.menu_list.addAction({text}.format(name=word))",
+      "count": 1,
+      "translation": "使用 {name} 打开"
+    },
+    {
+      "path": "widgets/dialogs/channels.py",
+      "id": "channels.collecting_progress",
+      "original": "self.update_status(action='Collecting sources...', value=0, max_value=0)",
+      "template": "self.update_status(action={text}, value=0, max_value=0)",
+      "count": 1,
+      "translation": "正在收集软件源…"
+    }
+  ]
+}
