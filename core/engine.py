@@ -10,8 +10,6 @@ from pathlib import Path
 
 PROJECT = Path(__file__).resolve().parents[1]
 STATE = PROJECT / "state"
-BACKUPS = STATE / "backups"
-MANIFEST = STATE / "manifest.json"
 
 
 def digest(data):
@@ -21,6 +19,21 @@ def digest(data):
 def read_json(path):
     return json.loads(path.read_text(encoding="utf-8"))
 
+def select_state():
+    prefix = Path(sys.prefix).resolve()
+    legacy_manifest = STATE / "manifest.json"
+
+    if legacy_manifest.is_file():
+        record = read_json(legacy_manifest)
+        if record.get("prefix") == str(prefix):
+            return legacy_manifest, STATE / "backups"
+
+    key = digest(str(prefix).encode("utf-8"))[:16]
+    folder = STATE / "environments" / key
+    return folder / "manifest.json", folder / "backups"
+
+
+MANIFEST, BACKUPS = select_state()
 
 def atomic_write(path, data):
     path.parent.mkdir(parents=True, exist_ok=True)

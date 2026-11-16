@@ -1,0 +1,126 @@
+
+{
+  "version": "2.7.4",
+  "rules": [
+    {
+      "path": "widgets/dialogs/conda_tos.py",
+      "id": "tos.window_title",
+      "original": "self.setWindowTitle('Terms of Services & Privacy Policy Update')",
+      "template": "self.setWindowTitle({text})",
+      "count": 1,
+      "translation": "服务条款与隐私政策更新"
+    },
+    {
+      "path": "widgets/dialogs/conda_tos.py",
+      "id": "tos.heading",
+      "original": "header_label = QLabel('Terms of Services & Privacy Policy Update')",
+      "template": "header_label = QLabel({text})",
+      "count": 1,
+      "translation": "服务条款与隐私政策更新"
+    },
+    {
+      "path": "widgets/dialogs/conda_tos.py",
+      "id": "tos.whats_new",
+      "original": "'See what has changed '",
+      "template": "{text}",
+      "count": 1,
+      "translation": "查看本次变更请点击"
+    },
+    {
+      "path": "widgets/dialogs/conda_tos.py",
+      "id": "tos.whats_new_link",
+      "original": "f'<a style=\"color:#6D5BF6; text-decoration:none; font-weight: bold\" href=\"{TERMS_OF_SERVICE}\">here</a>.')",
+      "template": "f'<a style=\"color:#6D5BF6; text-decoration:none; font-weight: bold\" href=\"{{TERMS_OF_SERVICE}}\">' + {text} + '</a>。')",
+      "count": 1,
+      "translation": "此处"
+    },
+    {
+      "path": "widgets/dialogs/conda_tos.py",
+      "id": "tos.description",
+      "original": "'Please accept below in order to take advantage of Navigator’s capabilities to manage and access:'",
+      "template": "{text}",
+      "count": 1,
+      "translation": "请同意以下条款，以使用 Navigator 提供的功能："
+    },
+    {
+      "path": "widgets/dialogs/conda_tos.py",
+      "id": "tos.environments",
+      "original": "'Environments'",
+      "template": "{text}",
+      "count": 1,
+      "translation": "环境管理"
+    },
+    {
+      "path": "widgets/dialogs/conda_tos.py",
+      "id": "tos.packages",
+      "original": "'300+ Channels<br>& Packages'",
+      "template": "{text}",
+      "count": 1,
+      "translation": "300+ 软件源<br>与软件包"
+    },
+    {
+      "path": "widgets/dialogs/conda_tos.py",
+      "id": "tos.apps",
+      "original": "'25 Data<br>Science Apps'",
+      "template": "{text}",
+      "count": 1,
+      "translation": "25 款数据<br>科学应用"
+    },
+    {
+      "path": "widgets/dialogs/conda_tos.py",
+      "id": "tos.courses",
+      "original": "'50 Learning<br>Courses'",
+      "template": "{text}",
+      "count": 1,
+      "translation": "50 门<br>学习课程"
+    },
+    {
+      "path": "widgets/dialogs/conda_tos.py",
+      "id": "tos.decline_notice",
+      "original": "notice_label = QLabel('If you do not wish to accept, you will have no access and can close the app.')",
+      "template": "notice_label = QLabel({text})",
+      "count": 1,
+      "translation": "如果不同意上述条款，将无法继续使用 Navigator，可以直接关闭应用。"
+    },
+    {
+      "path": "widgets/dialogs/conda_tos.py",
+      "id": "tos.consent_intro",
+      "original": "'I acknowledge that I have read and consent to Anaconda\\'s<br> '",
+      "template": "{text}",
+      "count": 1,
+      "translation": "我确认已阅读并同意 Anaconda 的<br>"
+    },
+    {
+      "path": "widgets/dialogs/conda_tos.py",
+      "id": "tos.privacy_link",
+      "original": "'Privacy Policy</a> and '",
+      "template": "{text}",
+      "count": 1,
+      "translation": "隐私政策</a>与"
+    },
+    {
+      "path": "widgets/dialogs/conda_tos.py",
+      "id": "tos.terms_link",
+      "original": "'Terms of Service</a>, '",
+      "template": "{text}",
+      "count": 1,
+      "translation": "服务条款</a>，"
+    },
+    {
+      "path": "widgets/dialogs/conda_tos.py",
+      "id": "tos.personal_data",
+      "original": "'including the collection, use, and processing of my personal data as described therein.'",
+      "template": "{text}",
+      "count": 1,
+      "translation": "包括其中所述对我个人数据的收集、使用与处理。"
+    },
+    {
+      "path": "widgets/dialogs/conda_tos.py",
+      "id": "tos.continue",
+      "original": "QPushButton('Continue to Navigator')",
+      "template": "QPushButton({text})",
+      "count": 1,
+      "translation": "继续使用 Navigator"
+    }
+  ]
+}

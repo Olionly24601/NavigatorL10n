@@ -276,6 +276,21 @@
     },
     "apps.install_status_label": "安装",
     "sidebar.documentation": "使用文档",
-    "sidebar.anaconda_blog": "Anaconda 博客"
+    "sidebar.anaconda_blog": "Anaconda 博客",
+    "tos.window_title": "服务条款与隐私政策更新",
+    "tos.heading": "服务条款与隐私政策更新",
+    "tos.whats_new": "查看本次变更请点击",
+    "tos.whats_new_link": "此处",
+    "tos.description": "请同意以下条款，以使用 Navigator 提供的功能：",
+    "tos.environments": "环境管理",
+    "tos.packages": "300+ 软件源<br>与软件包",
+    "tos.apps": "25 款数据<br>科学应用",
+    "tos.courses": "50 门<br>学习课程",
+    "tos.decline_notice": "如果不同意上述条款，将无法继续使用 Navigator，可以直接关闭应用。",
+    "tos.consent_intro": "我确认已阅读并同意 Anaconda 的<br>",
+    "tos.privacy_link": "隐私政策</a>与",
+    "tos.terms_link": "服务条款</a>，",
+    "tos.personal_data": "包括其中所述对我个人数据的收集、使用与处理。",
+    "tos.continue": "继续使用 Navigator"
   }
 }
