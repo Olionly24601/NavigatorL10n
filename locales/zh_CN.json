@@ -250,6 +250,29 @@
     "packages.dependency_note": "<b>*</b> 表示该软件包是所选软件包的依赖项<br>",
     "packages.offline_warning_1": "Anaconda Navigator 的部分功能在",
     "packages.offline_warning_2": "<b>离线模式</b>下将受到限制。<br><br>安装和更新操作只能使用",
-    "packages.offline_warning_3": "本地软件包缓存中的可用软件包。"
+    "packages.offline_warning_3": "本地软件包缓存中的可用软件包。",
+    "logger.headers": {
+      "time": "时间",
+      "level": "级别",
+      "module": "模块",
+      "method": "方法",
+      "line": "行号",
+      "path": "路径",
+      "message": "消息",
+      "exception": "异常",
+      "traceback": "堆栈信息"
+    },
+    "logger.select_file": "选择日志文件：",
+    "logger.copy": "复制",
+    "logger.title": "日志查看器",
+    "logger.search": "搜索…",
+    "apps.menu_install": "安装应用",
+    "apps.menu_update": "更新应用",
+    "apps.menu_remove": "卸载应用",
+    "content.training_buttons": {
+      "Get Certified": "获取认证",
+      "Get Access": "获取访问权限",
+      "Get Free Access": "免费获取权限"
+    }
   }
 }

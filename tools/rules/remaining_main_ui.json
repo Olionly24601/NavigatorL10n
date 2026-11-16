@@ -1,0 +1,90 @@
+{
+  "rules": [
+    {
+      "path": "widgets/dialogs/logger.py",
+      "id": "logger.headers",
+      "original": "self._headers: typing.Sequence[str] = list(map(str.capitalize, self._columns))",
+      "template": "self._headers: typing.Sequence[str] = [{text}.get(column, column.capitalize()) for column in self._columns]",
+      "count": 1,
+      "translation": {
+        "time": "时间",
+        "level": "级别",
+        "module": "模块",
+        "method": "方法",
+        "line": "行号",
+        "path": "路径",
+        "message": "消息",
+        "exception": "异常",
+        "traceback": "堆栈信息"
+      }
+    },
+    {
+      "path": "widgets/dialogs/logger.py",
+      "id": "logger.select_file",
+      "original": "self.label = QLabel('Select log file:')",
+      "template": "self.label = QLabel({text})",
+      "count": 1,
+      "translation": "选择日志文件："
+    },
+    {
+      "path": "widgets/dialogs/logger.py",
+      "id": "logger.copy",
+      "original": "self.button_copy = ButtonPrimary('Copy')",
+      "template": "self.button_copy = ButtonPrimary({text})",
+      "count": 1,
+      "translation": "复制"
+    },
+    {
+      "path": "widgets/dialogs/logger.py",
+      "id": "logger.title",
+      "original": "self.setWindowTitle('Log Viewer')",
+      "template": "self.setWindowTitle({text})",
+      "count": 1,
+      "translation": "日志查看器"
+    },
+    {
+      "path": "widgets/dialogs/logger.py",
+      "id": "logger.search",
+      "original": "self.text_search.setPlaceholderText('Search...')",
+      "template": "self.text_search.setPlaceholderText({text})",
+      "count": 1,
+      "translation": "搜索…"
+    },
+    {
+      "path": "widgets/lists/apps.py",
+      "id": "apps.menu_install",
+      "original": "install_action = create_action(self.widget, 'Install application', triggered=self.install_application)",
+      "template": "install_action = create_action(self.widget, {text}, triggered=self.install_application)",
+      "count": 1,
+      "translation": "安装应用"
+    },
+    {
+      "path": "widgets/lists/apps.py",
+      "id": "apps.menu_update",
+      "original": "update_action = create_action(self.widget, 'Update application', triggered=self.update_application)",
+      "template": "update_action = create_action(self.widget, {text}, triggered=self.update_application)",
+      "count": 1,
+      "translation": "更新应用"
+    },
+    {
+      "path": "widgets/lists/apps.py",
+      "id": "apps.menu_remove",
+      "original": "remove_action = create_action(self.widget, 'Remove application', triggered=self.remove_application)",
+      "template": "remove_action = create_action(self.widget, {text}, triggered=self.remove_application)",
+      "count": 1,
+      "translation": "卸载应用"
+    },
+    {
+      "path": "widgets/lists/content.py",
+      "id": "content.training_buttons",
+      "original": "self.button_text.setText(self.button or valid_tags.get(self.tag, ''))",
+      "template": "self.button_text.setText({text}.get(self.button, self.button) if self.button else valid_tags.get(self.tag, ''))",
+      "count": 1,
+      "translation": {
+        "Get Certified": "获取认证",
+        "Get Access": "获取访问权限",
+        "Get Free Access": "免费获取权限"
+      }
+    }
+  ]
+}

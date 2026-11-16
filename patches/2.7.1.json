@@ -237,6 +237,24 @@
           "original": "QMenu('Install specific version')",
           "template": "QMenu({text})",
           "count": 1
+        },
+        {
+          "id": "apps.menu_install",
+          "original": "install_action = create_action(self.widget, 'Install application', triggered=self.install_application)",
+          "template": "install_action = create_action(self.widget, {text}, triggered=self.install_application)",
+          "count": 1
+        },
+        {
+          "id": "apps.menu_update",
+          "original": "update_action = create_action(self.widget, 'Update application', triggered=self.update_application)",
+          "template": "update_action = create_action(self.widget, {text}, triggered=self.update_application)",
+          "count": 1
+        },
+        {
+          "id": "apps.menu_remove",
+          "original": "remove_action = create_action(self.widget, 'Remove application', triggered=self.remove_application)",
+          "template": "remove_action = create_action(self.widget, {text}, triggered=self.remove_application)",
+          "count": 1
         }
       ]
     },
@@ -522,6 +540,12 @@
           "id": "content.card_actions",
           "original": "{\r\n            'documentation': 'Read',\r\n            'webinar': 'Explore',\r\n            'event': 'Learn More',\r\n            'video': 'View',\r\n            'training': 'Explore',\r\n            'forum': 'Explore',\r\n            'social': 'Engage'\r\n        }",
           "template": "{text}",
+          "count": 1
+        },
+        {
+          "id": "content.training_buttons",
+          "original": "self.button_text.setText(self.button or valid_tags.get(self.tag, ''))",
+          "template": "self.button_text.setText({text}.get(self.button, self.button) if self.button else valid_tags.get(self.tag, ''))",
           "count": 1
         }
       ]
@@ -1388,6 +1412,41 @@
           "id": "errors.invalid_api_url",
           "original": "            error = 'Invalid api url.'\r\n",
           "template": "            error = {text}\r\n",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "path": "widgets/dialogs/logger.py",
+      "rules": [
+        {
+          "id": "logger.headers",
+          "original": "self._headers: typing.Sequence[str] = list(map(str.capitalize, self._columns))",
+          "template": "self._headers: typing.Sequence[str] = [{text}.get(column, column.capitalize()) for column in self._columns]",
+          "count": 1
+        },
+        {
+          "id": "logger.select_file",
+          "original": "self.label = QLabel('Select log file:')",
+          "template": "self.label = QLabel({text})",
+          "count": 1
+        },
+        {
+          "id": "logger.copy",
+          "original": "self.button_copy = ButtonPrimary('Copy')",
+          "template": "self.button_copy = ButtonPrimary({text})",
+          "count": 1
+        },
+        {
+          "id": "logger.title",
+          "original": "self.setWindowTitle('Log Viewer')",
+          "template": "self.setWindowTitle({text})",
+          "count": 1
+        },
+        {
+          "id": "logger.search",
+          "original": "self.text_search.setPlaceholderText('Search...')",
+          "template": "self.text_search.setPlaceholderText({text})",
           "count": 1
         }
       ]
