@@ -83,3 +83,9 @@ NavigatorZH 主要翻译 Navigator 自身的菜单、按钮、设置项、弹窗
 NavigatorZH 是一个独立的社区汉化项目，与 Anaconda 官方无关联。
 
 Anaconda Navigator 及相关名称、标识归其各自权利人所有。
+
+## 许可证
+
+NavigatorZH 自行编写的代码采用 [MIT License](LICENSE)。
+
+Anaconda Navigator 的原始代码、名称及相关资源仍归其各自权利人所有。
