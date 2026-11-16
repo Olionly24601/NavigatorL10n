@@ -88,7 +88,7 @@ def verify_unchanged(target, expected_hash):
         raise RuntimeError(f"目标文件已发生其他变化，拒绝覆盖：{target}")
 
 
-def atomic_write(path, data):
+def atomic_write(path, data, *, expected_hash=None):
     path.parent.mkdir(parents=True, exist_ok=True)
     fd, temporary = tempfile.mkstemp(
         prefix=".navigatorzh-", dir=path.parent
@@ -100,6 +100,8 @@ def atomic_write(path, data):
             os.fsync(file.fileno())
         if path.exists():
             os.chmod(temporary, path.stat().st_mode)
+        if expected_hash is not None:
+            verify_unchanged(path, expected_hash)
         os.replace(temporary, path)
     finally:
         if os.path.exists(temporary):
@@ -309,8 +311,12 @@ def _apply(language):
 
     try:
         for plan in plans:
-            verify_unchanged(plan["target"], digest(plan["original"]))
-            atomic_write(plan["target"], plan["patched"])
+            original_hash = digest(plan["original"])
+            verify_unchanged(plan["target"], original_hash)
+            atomic_write(
+                plan["target"], plan["patched"],
+                expected_hash=original_hash,
+            )
     except Exception as error:
         try:
             _restore()
@@ -368,7 +374,7 @@ def _restore():
 
     for target, original, patched_hash in operations:
         verify_unchanged(target, patched_hash)
-        atomic_write(target, original)
+        atomic_write(target, original, expected_hash=patched_hash)
 
     for target, original_hash in expected:
         verify_unchanged(target, original_hash)

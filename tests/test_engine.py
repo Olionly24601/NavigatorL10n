@@ -213,8 +213,8 @@ class TestEngine(unittest.TestCase):
             "engine.restore()\n"
         )
 
-        def try_restore_when_manifest_written(path, data):
-            result = original_write(path, data)
+        def try_restore_when_manifest_written(path, data, **kwargs):
+            result = original_write(path, data, **kwargs)
             if Path(path) == engine.MANIFEST:
                 env = os.environ.copy()
                 env["PYTHONIOENCODING"] = "utf-8"
@@ -248,10 +248,10 @@ class TestEngine(unittest.TestCase):
         changed = b"title = 'Changed after planning'\n"
         original_write = engine.atomic_write
 
-        def change_when_manifest_written(path, data):
+        def change_when_manifest_written(path, data, **kwargs):
             if Path(path) == engine.MANIFEST:
                 target.write_bytes(changed)
-            return original_write(path, data)
+            return original_write(path, data, **kwargs)
 
         with patch.object(
             engine, "atomic_write", side_effect=change_when_manifest_written
@@ -277,8 +277,8 @@ class TestEngine(unittest.TestCase):
         changed = b"button = 'External edit'\n"
         original_write = engine.atomic_write
 
-        def change_after_first_restoration(path, data):
-            result = original_write(path, data)
+        def change_after_first_restoration(path, data, **kwargs):
+            result = original_write(path, data, **kwargs)
             if (
                 Path(path) == first_target
                 and data == self.originals["widgets/dialogs/quit.py"]
@@ -308,8 +308,8 @@ class TestEngine(unittest.TestCase):
         changed = b"title = 'Changed after restoration'\n"
         original_write = engine.atomic_write
 
-        def change_after_restoring_other_file(path, data):
-            result = original_write(path, data)
+        def change_after_restoring_other_file(path, data, **kwargs):
+            result = original_write(path, data, **kwargs)
             if Path(path) == self.source / "widgets/tabs/home.py":
                 first_target.write_bytes(changed)
             return result
@@ -324,6 +324,92 @@ class TestEngine(unittest.TestCase):
         self.assertEqual(first_target.read_bytes(), changed)
         first_target.write_bytes(self.originals["widgets/dialogs/quit.py"])
         self.execute(engine.restore)
+
+    def test_apply_rejects_change_during_temp_fsync(self):
+        target = self.source / "widgets/dialogs/quit.py"
+        external = b"title = 'External change during fsync'\n"
+        original_write = engine.atomic_write
+        original_fsync = os.fsync
+        active = False
+        changed = False
+
+        def interrupt_fsync(fd):
+            nonlocal changed
+            original_fsync(fd)
+            if active and not changed:
+                target.write_bytes(external)
+                changed = True
+
+        def observe_write(path, data, **kwargs):
+            nonlocal active
+            if Path(path) == target:
+                active = True
+                try:
+                    return original_write(path, data, **kwargs)
+                finally:
+                    active = False
+            return original_write(path, data, **kwargs)
+
+        with (
+            patch.object(engine, "atomic_write", side_effect=observe_write),
+            patch.object(engine.os, "fsync", side_effect=interrupt_fsync),
+        ):
+            with self.assertRaisesRegex(RuntimeError, "自动恢复也未完成"):
+                self.execute(engine.apply)
+
+        self.assertTrue(changed)
+        self.assertEqual(target.read_bytes(), external)
+        self.assertTrue(engine.MANIFEST.exists())
+        self.assertFalse(list(target.parent.glob(".navigatorzh-*")))
+        self.assertEqual(
+            (self.source / "widgets/tabs/home.py").read_bytes(),
+            self.originals["widgets/tabs/home.py"],
+        )
+        target.write_bytes(self.originals["widgets/dialogs/quit.py"])
+        self.execute(engine.restore)
+        self.assertFalse(engine.MANIFEST.exists())
+
+    def test_restore_rejects_change_during_temp_fsync(self):
+        self.execute(engine.apply)
+        target = self.source / "widgets/dialogs/quit.py"
+        patched = target.read_bytes()
+        external = b"title = 'External edit during restoration fsync'\n"
+        original_write = engine.atomic_write
+        original_fsync = os.fsync
+        active = False
+        changed = False
+
+        def interrupt_fsync(fd):
+            nonlocal changed
+            original_fsync(fd)
+            if active and not changed:
+                target.write_bytes(external)
+                changed = True
+
+        def observe_write(path, data, **kwargs):
+            nonlocal active
+            if Path(path) == target:
+                active = True
+                try:
+                    return original_write(path, data, **kwargs)
+                finally:
+                    active = False
+            return original_write(path, data, **kwargs)
+
+        with (
+            patch.object(engine, "atomic_write", side_effect=observe_write),
+            patch.object(engine.os, "fsync", side_effect=interrupt_fsync),
+        ):
+            with self.assertRaisesRegex(RuntimeError, "拒绝覆盖"):
+                self.execute(engine.restore)
+
+        self.assertTrue(changed)
+        self.assertEqual(target.read_bytes(), external)
+        self.assertTrue(engine.MANIFEST.exists())
+        self.assertFalse(list(target.parent.glob(".navigatorzh-*")))
+        target.write_bytes(patched)
+        self.execute(engine.restore)
+        self.assertFalse(engine.MANIFEST.exists())
 
     def test_separate_conda_environments(self):
         self.execute(engine.apply)
@@ -412,14 +498,14 @@ class TestEngine(unittest.TestCase):
         original_write = engine.atomic_write
         failed = False
 
-        def interrupted_write(path, data):
+        def interrupted_write(path, data, **kwargs):
             nonlocal failed
 
             if Path(path) == failed_target and not failed:
                 failed = True
                 raise OSError("Simulated installation failure")
 
-            return original_write(path, data)
+            return original_write(path, data, **kwargs)
 
         with patch.object(
             engine, "atomic_write", side_effect=interrupted_write
@@ -448,7 +534,7 @@ class TestEngine(unittest.TestCase):
         original_write = engine.atomic_write
         failed = False
 
-        def interrupted_restore(path, data):
+        def interrupted_restore(path, data, **kwargs):
             nonlocal failed
 
             if (
@@ -459,7 +545,7 @@ class TestEngine(unittest.TestCase):
                 failed = True
                 raise OSError("Simulated restoration failure")
 
-            return original_write(path, data)
+            return original_write(path, data, **kwargs)
 
         with patch.object(
             engine, "atomic_write", side_effect=interrupted_restore
@@ -506,7 +592,7 @@ class TestEngine(unittest.TestCase):
         install_failed = False
         rollback_failed = False
 
-        def interrupted_write(path, data):
+        def interrupted_write(path, data, **kwargs):
             nonlocal install_failed, rollback_failed
 
             path = Path(path)
@@ -524,7 +610,7 @@ class TestEngine(unittest.TestCase):
                 rollback_failed = True
                 raise OSError("Simulated rollback failure")
 
-            return original_write(path, data)
+            return original_write(path, data, **kwargs)
 
         with patch.object(
             engine, "atomic_write", side_effect=interrupted_write
