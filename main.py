@@ -14,7 +14,7 @@ def main():
                 pass
 
     parser = argparse.ArgumentParser(
-        description="NavigatorZH 多语言补丁工具"
+        description="Anaconda Navigator 简体中文汉化工具"
     )
     parser.add_argument(
         "command",

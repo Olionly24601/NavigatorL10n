@@ -114,5 +114,3 @@ Anaconda Navigator 及相关名称、标识归其各自权利人所有。
 ## 许可证
 
 NavigatorZH 自行编写的代码采用 [MIT License](LICENSE)。
-
-Anaconda Navigator 的原始代码、名称及相关资源仍归其各自权利人所有。
