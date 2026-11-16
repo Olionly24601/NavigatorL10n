@@ -255,6 +255,12 @@
           "original": "remove_action = create_action(self.widget, 'Remove application', triggered=self.remove_application)",
           "template": "remove_action = create_action(self.widget, {text}, triggered=self.remove_application)",
           "count": 1
+        },
+        {
+          "id": "apps.install_status_label",
+          "original": "button_label = 'Install'",
+          "template": "button_label = {text}",
+          "count": 1
         }
       ]
     },
@@ -828,7 +834,7 @@
         {
           "id": "batch8.about_description",
           "original": "f'''<b>Anaconda Navigator {__about__.__version__}</b><br>\r\n            <br>Copyright &copy; 2016 Anaconda, Inc.\r\n            <p>Created by Anaconda\r\n            <br>\r\n            <p>For bug reports and feature requests, please visit our\r\n            '''",
-          "template": "f'''<b>Anaconda Navigator {{__about__.__version__}}</b><br>\r\n            <br>Copyright &copy; 2016 Anaconda, Inc.\r\n            <p>Created by Anaconda\r\n            <br>\r\n            <p>{{{text}}}\r\n            '''",
+          "template": "f'''<b>Anaconda Navigator {{__about__.__version__}}</b><br>\r\n            <br>Copyright &copy; 2016 Anaconda, Inc.\r\n            <p>由 Anaconda 创建\r\n            <br>\r\n            <p>{{{text}}}\r\n            '''",
           "count": 1
         }
       ]
@@ -1447,6 +1453,23 @@
           "id": "logger.search",
           "original": "self.text_search.setPlaceholderText('Search...')",
           "template": "self.text_search.setPlaceholderText({text})",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "path": "config/preferences.py",
+      "rules": [
+        {
+          "id": "sidebar.documentation",
+          "original": "'Documentation', 'https://www.anaconda.com/docs/tools/anaconda-navigator/main', utm_medium='nav-docs'",
+          "template": "{text}, 'https://www.anaconda.com/docs/tools/anaconda-navigator/main', utm_medium='nav-docs'",
+          "count": 1
+        },
+        {
+          "id": "sidebar.anaconda_blog",
+          "original": "'Anaconda Blog', 'https://www.anaconda.com/blog', utm_medium='nav-blog'",
+          "template": "{text}, 'https://www.anaconda.com/blog', utm_medium='nav-blog'",
           "count": 1
         }
       ]

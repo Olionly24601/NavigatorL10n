@@ -273,6 +273,9 @@
       "Get Certified": "获取认证",
       "Get Access": "获取访问权限",
       "Get Free Access": "免费获取权限"
-    }
+    },
+    "apps.install_status_label": "安装",
+    "sidebar.documentation": "使用文档",
+    "sidebar.anaconda_blog": "Anaconda 博客"
   }
 }

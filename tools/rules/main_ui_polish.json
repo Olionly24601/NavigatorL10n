@@ -1,0 +1,28 @@
+{
+  "rules": [
+    {
+      "path": "widgets/lists/apps.py",
+      "id": "apps.install_status_label",
+      "original": "button_label = 'Install'",
+      "template": "button_label = {text}",
+      "count": 1,
+      "translation": "安装"
+    },
+    {
+      "path": "config/preferences.py",
+      "id": "sidebar.documentation",
+      "original": "'Documentation', 'https://www.anaconda.com/docs/tools/anaconda-navigator/main', utm_medium='nav-docs'",
+      "template": "{text}, 'https://www.anaconda.com/docs/tools/anaconda-navigator/main', utm_medium='nav-docs'",
+      "count": 1,
+      "translation": "使用文档"
+    },
+    {
+      "path": "config/preferences.py",
+      "id": "sidebar.anaconda_blog",
+      "original": "'Anaconda Blog', 'https://www.anaconda.com/blog', utm_medium='nav-blog'",
+      "template": "{text}, 'https://www.anaconda.com/blog', utm_medium='nav-blog'",
+      "count": 1,
+      "translation": "Anaconda 博客"
+    }
+  ]
+}
