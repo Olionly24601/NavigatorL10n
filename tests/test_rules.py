@@ -88,6 +88,16 @@ class TestTranslationRules(unittest.TestCase):
         self.assertEqual(results["2.7.1"], (27, 223, 222))
         self.assertEqual(results["2.7.4"], (31, 256, 255))
 
+    def test_rule_drafts_match_shared_language_pack(self):
+        messages = self.locale["messages"]
+        for path in (ROOT / "tools" / "rules").glob("*.json"):
+            draft = json.loads(path.read_text(encoding="utf-8"))
+            for rule in draft.get("rules", []):
+                key = rule["id"]
+                if key in messages and "translation" in rule:
+                    with self.subTest(file=path.name, rule=key):
+                        self.assertEqual(rule["translation"], messages[key])
+
     def test_274_preserves_existing_271_rules(self):
         def indexed(config):
             return {

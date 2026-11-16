@@ -1,10 +1,13 @@
 import ast
+import errno
 import hashlib
 import importlib.metadata
 import json
 import os
+import re
 import sys
 import tempfile
+from contextlib import contextmanager
 from pathlib import Path
 
 
@@ -35,6 +38,56 @@ def select_state():
 
 MANIFEST, BACKUPS = select_state()
 
+@contextmanager
+def environment_lock():
+    """Serialize modifications to a Conda prefix across NavigatorZH processes."""
+    prefix = os.path.normcase(str(Path(sys.prefix).resolve()))
+    lock_dir = Path(tempfile.gettempdir()) / "navigatorzh-locks"
+    lock_dir.mkdir(parents=True, exist_ok=True)
+    lock_path = lock_dir / (digest(prefix.encode("utf-8")) + ".lock")
+
+    with lock_path.open("a+b") as stream:
+        stream.seek(0, os.SEEK_END)
+        if stream.tell() == 0:
+            stream.write(b"\0")
+            stream.flush()
+        stream.seek(0)
+        try:
+            if os.name == "nt":
+                import msvcrt
+
+                msvcrt.locking(stream.fileno(), msvcrt.LK_NBLCK, 1)
+            else:
+                import fcntl
+
+                fcntl.flock(stream.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except OSError as error:
+            if error.errno not in (errno.EACCES, errno.EAGAIN):
+                raise
+            raise RuntimeError(
+                "当前 Conda 环境已有另一个 NavigatorZH 操作正在进行"
+            ) from error
+
+        try:
+            yield
+        finally:
+            stream.seek(0)
+            if os.name == "nt":
+                msvcrt.locking(stream.fileno(), msvcrt.LK_UNLCK, 1)
+            else:
+                fcntl.flock(stream.fileno(), fcntl.LOCK_UN)
+
+
+def verify_unchanged(target, expected_hash):
+    """Refuse to overwrite a target changed since its last validation."""
+    try:
+        current_hash = digest(target.read_bytes())
+    except OSError as error:
+        raise RuntimeError(f"目标文件无法读取，拒绝覆盖：{target}") from error
+    if current_hash != expected_hash:
+        raise RuntimeError(f"目标文件已发生其他变化，拒绝覆盖：{target}")
+
+
 def atomic_write(path, data):
     path.parent.mkdir(parents=True, exist_ok=True)
     fd, temporary = tempfile.mkstemp(
@@ -62,19 +115,34 @@ def installation():
             "当前 Python 环境未找到 Navigator，请使用 Anaconda Prompt"
         )
 
-    try:
-        version = importlib.metadata.version("anaconda-navigator")
-    except importlib.metadata.PackageNotFoundError:
-        versions = set()
-        for path in (prefix / "conda-meta").glob(
-            "anaconda-navigator-*.json"
-        ):
-            info = read_json(path)
-            if info.get("name") == "anaconda-navigator":
-                versions.add(info["version"])
-        if len(versions) != 1:
-            raise RuntimeError("无法可靠识别 Navigator 版本")
-        version = versions.pop()
+    versions_from_metadata = set()
+    site_packages = prefix / "Lib" / "site-packages"
+    for distribution in importlib.metadata.distributions(
+        path=[str(site_packages)]
+    ):
+        name = distribution.metadata.get("Name", "")
+        if re.sub(r"[-_.]+", "-", name).lower() == "anaconda-navigator":
+            versions_from_metadata.add(distribution.version)
+
+    versions_from_conda = set()
+    for path in (prefix / "conda-meta").glob("anaconda-navigator-*.json"):
+        info = read_json(path)
+        if info.get("name") == "anaconda-navigator":
+            versions_from_conda.add(info["version"])
+
+    if len(versions_from_metadata) > 1 or len(versions_from_conda) > 1:
+        raise RuntimeError("当前 Conda 环境中的 Navigator 版本记录存在冲突")
+    if (
+        versions_from_metadata
+        and versions_from_conda
+        and versions_from_metadata != versions_from_conda
+    ):
+        raise RuntimeError("Navigator 安装元数据与 Conda 记录的版本不一致")
+
+    versions = versions_from_conda or versions_from_metadata
+    if len(versions) != 1:
+        raise RuntimeError("无法可靠识别 Navigator 版本")
+    version = versions.pop()
 
     return prefix, version, root.resolve()
 
@@ -190,6 +258,11 @@ def status():
 
 
 def apply(language="zh_CN"):
+    with environment_lock():
+        return _apply(language)
+
+
+def _apply(language):
     if MANIFEST.exists():
         raise RuntimeError("已有汉化安装记录，请先恢复原版")
 
@@ -236,10 +309,11 @@ def apply(language="zh_CN"):
 
     try:
         for plan in plans:
+            verify_unchanged(plan["target"], digest(plan["original"]))
             atomic_write(plan["target"], plan["patched"])
     except Exception as error:
         try:
-            restore()
+            _restore()
         except Exception as rollback_error:
             raise RuntimeError(
                 "写入失败，自动恢复也未完成，请保留 state 目录"
@@ -252,6 +326,11 @@ def apply(language="zh_CN"):
 
 
 def restore():
+    with environment_lock():
+        return _restore()
+
+
+def _restore():
     if not MANIFEST.exists():
         print("没有需要恢复的汉化记录")
         return
@@ -263,6 +342,7 @@ def restore():
         raise RuntimeError("安装记录不属于当前 Conda 环境")
 
     operations = []
+    expected = []
 
     for entry in record["files"]:
         target = target_path(root, entry["relative"])
@@ -282,11 +362,16 @@ def restore():
                 f"文件已发生其他变化，拒绝覆盖：{target}"
             )
 
+        expected.append((target, entry["original_sha256"]))
         if current_hash == entry["patched_sha256"]:
-            operations.append((target, original))
+            operations.append((target, original, entry["patched_sha256"]))
 
-    for target, original in operations:
+    for target, original, patched_hash in operations:
+        verify_unchanged(target, patched_hash)
         atomic_write(target, original)
+
+    for target, original_hash in expected:
+        verify_unchanged(target, original_hash)
 
     MANIFEST.unlink()
     print("已恢复原始英文版本")

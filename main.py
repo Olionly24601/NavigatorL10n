@@ -1,9 +1,18 @@
 import argparse
+import sys
 
 from core.engine import apply, check, restore, status
 
 
 def main():
+    for stream in (sys.stdout, sys.stderr):
+        reconfigure = getattr(stream, "reconfigure", None)
+        if reconfigure is not None:
+            try:
+                reconfigure(errors="backslashreplace")
+            except (OSError, ValueError):
+                pass
+
     parser = argparse.ArgumentParser(
         description="NavigatorZH 多语言补丁工具"
     )

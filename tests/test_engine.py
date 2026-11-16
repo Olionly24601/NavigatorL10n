@@ -1,5 +1,8 @@
 import io
 import json
+import os
+import subprocess
+import sys
 import tempfile
 import unittest
 from contextlib import redirect_stdout
@@ -173,6 +176,153 @@ class TestEngine(unittest.TestCase):
 
         self.assertIn("已汉化", output.getvalue())
 
+        self.execute(engine.restore)
+
+    def test_operation_lock_excludes_other_processes(self):
+        code = (
+            "from core import engine\n"
+            "with engine.environment_lock():\n"
+            "    print('Unexpected lock acquisition')\n"
+        )
+        env = os.environ.copy()
+        env["PYTHONIOENCODING"] = "utf-8"
+        with engine.environment_lock():
+            result = subprocess.run(
+                [sys.executable, "-c", code],
+                cwd=Path(engine.__file__).resolve().parents[1],
+                env=env,
+                capture_output=True,
+                text=True,
+                encoding="utf-8",
+                timeout=10,
+            )
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("已有另一个 NavigatorZH 操作", result.stderr)
+        with engine.environment_lock():
+            pass
+
+    def test_restore_cannot_interrupt_install_after_manifest_write(self):
+        original_write = engine.atomic_write
+        results = []
+        code = (
+            "import sys\n"
+            "from pathlib import Path\n"
+            "from core import engine\n"
+            "engine.MANIFEST = Path(sys.argv[1])\n"
+            "engine.BACKUPS = Path(sys.argv[2])\n"
+            "engine.restore()\n"
+        )
+
+        def try_restore_when_manifest_written(path, data):
+            result = original_write(path, data)
+            if Path(path) == engine.MANIFEST:
+                env = os.environ.copy()
+                env["PYTHONIOENCODING"] = "utf-8"
+                results.append(subprocess.run(
+                    [sys.executable, "-c", code,
+                     str(engine.MANIFEST), str(engine.BACKUPS)],
+                    cwd=Path(engine.__file__).resolve().parents[1],
+                    env=env,
+                    capture_output=True,
+                    text=True,
+                    encoding="utf-8",
+                    timeout=10,
+                ))
+            return result
+
+        with patch.object(
+            engine, "atomic_write", side_effect=try_restore_when_manifest_written
+        ):
+            self.execute(engine.apply)
+
+        self.assertEqual(len(results), 1)
+        self.assertNotEqual(results[0].returncode, 0)
+        self.assertIn("已有另一个 NavigatorZH 操作", results[0].stderr)
+        self.assertTrue(engine.MANIFEST.exists())
+        for relative, original in self.originals.items():
+            self.assertNotEqual((self.source / relative).read_bytes(), original)
+        self.execute(engine.restore)
+
+    def test_apply_rejects_change_after_planning(self):
+        target = self.source / "widgets/dialogs/quit.py"
+        changed = b"title = 'Changed after planning'\n"
+        original_write = engine.atomic_write
+
+        def change_when_manifest_written(path, data):
+            if Path(path) == engine.MANIFEST:
+                target.write_bytes(changed)
+            return original_write(path, data)
+
+        with patch.object(
+            engine, "atomic_write", side_effect=change_when_manifest_written
+        ):
+            with self.assertRaisesRegex(RuntimeError, "自动恢复也未完成"):
+                self.execute(engine.apply)
+
+        self.assertEqual(target.read_bytes(), changed)
+        self.assertTrue(engine.MANIFEST.exists())
+        self.assertEqual(
+            (self.source / "widgets/tabs/home.py").read_bytes(),
+            self.originals["widgets/tabs/home.py"],
+        )
+        target.write_bytes(self.originals["widgets/dialogs/quit.py"])
+        self.execute(engine.restore)
+        self.assertFalse(engine.MANIFEST.exists())
+
+    def test_restore_rejects_change_after_preflight(self):
+        self.execute(engine.apply)
+        first_target = self.source / "widgets/dialogs/quit.py"
+        second_target = self.source / "widgets/tabs/home.py"
+        patched_second = second_target.read_bytes()
+        changed = b"button = 'External edit'\n"
+        original_write = engine.atomic_write
+
+        def change_after_first_restoration(path, data):
+            result = original_write(path, data)
+            if (
+                Path(path) == first_target
+                and data == self.originals["widgets/dialogs/quit.py"]
+            ):
+                second_target.write_bytes(changed)
+            return result
+
+        with patch.object(
+            engine, "atomic_write", side_effect=change_after_first_restoration
+        ):
+            with self.assertRaisesRegex(RuntimeError, "拒绝覆盖"):
+                self.execute(engine.restore)
+
+        self.assertEqual(
+            first_target.read_bytes(), self.originals["widgets/dialogs/quit.py"]
+        )
+        self.assertEqual(second_target.read_bytes(), changed)
+        self.assertTrue(engine.MANIFEST.exists())
+
+        second_target.write_bytes(patched_second)
+        self.execute(engine.restore)
+        self.assertFalse(engine.MANIFEST.exists())
+
+    def test_restore_keeps_manifest_if_restored_file_changes(self):
+        self.execute(engine.apply)
+        first_target = self.source / "widgets/dialogs/quit.py"
+        changed = b"title = 'Changed after restoration'\n"
+        original_write = engine.atomic_write
+
+        def change_after_restoring_other_file(path, data):
+            result = original_write(path, data)
+            if Path(path) == self.source / "widgets/tabs/home.py":
+                first_target.write_bytes(changed)
+            return result
+
+        with patch.object(
+            engine, "atomic_write", side_effect=change_after_restoring_other_file
+        ):
+            with self.assertRaisesRegex(RuntimeError, "拒绝覆盖"):
+                self.execute(engine.restore)
+
+        self.assertTrue(engine.MANIFEST.exists())
+        self.assertEqual(first_target.read_bytes(), changed)
+        first_target.write_bytes(self.originals["widgets/dialogs/quit.py"])
         self.execute(engine.restore)
 
     def test_separate_conda_environments(self):
@@ -419,6 +569,92 @@ class TestEngine(unittest.TestCase):
                 (self.source / relative).read_bytes(),
                 original,
             )
+
+
+class TestVersionIdentification(unittest.TestCase):
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temp.cleanup)
+        self.prefix = Path(self.temp.name) / "Anaconda3"
+        self.source = (
+            self.prefix / "Lib" / "site-packages" / "anaconda_navigator"
+        )
+        self.source.mkdir(parents=True)
+        (self.source / "__init__.py").write_text("", encoding="utf-8")
+
+    def add_conda_record(self, version):
+        meta = self.prefix / "conda-meta"
+        meta.mkdir(exist_ok=True)
+        (meta / f"anaconda-navigator-{version}-0.json").write_text(
+            json.dumps({"name": "anaconda-navigator", "version": version}),
+            encoding="utf-8",
+        )
+
+    def add_dist_info(self, version):
+        info = (
+            self.prefix / "Lib" / "site-packages"
+            / f"anaconda_navigator-{version}.dist-info"
+        )
+        info.mkdir()
+        (info / "METADATA").write_text(
+            f"Name: anaconda-navigator\nVersion: {version}\n",
+            encoding="utf-8",
+        )
+
+    def test_uses_metadata_from_target_prefix(self):
+        self.add_conda_record("2.7.1")
+        with (
+            patch.object(engine.sys, "prefix", str(self.prefix)),
+            patch.object(engine.importlib.metadata, "version", return_value="2.7.4"),
+        ):
+            prefix, version, root = engine.installation()
+        self.assertEqual(version, "2.7.1")
+        self.assertEqual(root, self.source.resolve())
+
+    def test_rejects_conflicting_local_metadata(self):
+        self.add_conda_record("2.7.1")
+        self.add_dist_info("2.7.4")
+        with patch.object(engine.sys, "prefix", str(self.prefix)):
+            with self.assertRaisesRegex(RuntimeError, "版本不一致"):
+                engine.installation()
+
+    def test_accepts_matching_local_metadata(self):
+        self.add_conda_record("2.7.4")
+        self.add_dist_info("2.7.4")
+        with patch.object(engine.sys, "prefix", str(self.prefix)):
+            self.assertEqual(engine.installation()[1], "2.7.4")
+
+
+class TestCliOutput(unittest.TestCase):
+    def test_success_output_with_cp1252(self):
+        import main as cli
+
+        output = io.BytesIO()
+        writer = io.TextIOWrapper(output, encoding="cp1252", errors="strict")
+        with (
+            patch.object(sys, "argv", ["main.py", "apply"]),
+            patch.object(sys, "stdout", writer),
+            patch.object(cli, "apply", side_effect=lambda _: print("已安装汉化")),
+        ):
+            cli.main()
+            writer.flush()
+        self.assertIn(b"\\u5df2", output.getvalue())
+
+    def test_error_output_with_cp1252(self):
+        import main as cli
+
+        output = io.BytesIO()
+        writer = io.TextIOWrapper(output, encoding="cp1252", errors="strict")
+        with (
+            patch.object(sys, "argv", ["main.py", "apply"]),
+            patch.object(sys, "stdout", writer),
+            patch.object(cli, "apply", side_effect=RuntimeError("文件发生变化")),
+        ):
+            with self.assertRaises(SystemExit) as result:
+                cli.main()
+            writer.flush()
+        self.assertEqual(result.exception.code, 1)
+        self.assertIn(b"\\u64cd", output.getvalue())
 
 
 if __name__ == "__main__":

@@ -64,7 +64,7 @@
       "original": "'25 Data<br>Science Apps'",
       "template": "{text}",
       "count": 1,
-      "translation": "25 款数据<br>科学应用"
+      "translation": "25 款<br>数据科学应用"
     },
     {
       "path": "widgets/dialogs/conda_tos.py",
