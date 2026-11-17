@@ -136,7 +136,7 @@
     "batch8.environment.11": "本地磁盘",
     "batch8.environment.12": "覆盖现有环境",
     "batch8.environment.13": "克隆自环境：",
-    "batch8.about_description": "如需报告问题或提出功能建议，请访问 GitHub 上的",
+    "batch8.about_description": "<p>由 Anaconda 创建<br><p>如需报告问题或提出功能建议，请访问 GitHub 上的",
     "batch9.01": "<span style=\"font-size: 12px; font-weight: 500\"><a href=\"navigator://cloud/login\" style=\"color: #43B049; text-decoration: none\">登录</a>后可将环境保存到云端</span>",
     "batch9.02": "<span style=\"font-size: 12px; font-weight: 500\">当前处于离线模式，云端选项不可用</span>",
     "batch9.03": "<span style=\"font-size: 16px; font-weight: 500\">从云端选择环境：</span>",

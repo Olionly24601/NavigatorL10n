@@ -112,6 +112,44 @@ class TestEngine(unittest.TestCase):
         with redirect_stdout(io.StringIO()):
             operation()
 
+    def test_prepare_respects_repository_lock(self):
+        from tools import rule_store
+
+        with patch.object(
+            rule_store, "project_lock", side_effect=RuntimeError("规则仓库被占用")
+        ):
+            with self.assertRaisesRegex(RuntimeError, "规则仓库被占用"):
+                self.execute(engine.check)
+
+    def test_pending_rule_transaction_blocks_check_and_apply(self):
+        pending = self.project / "state/rule_transactions/pending.json"
+        pending.parent.mkdir(parents=True, exist_ok=True)
+        pending.write_text("{}", encoding="utf-8")
+
+        with self.assertRaisesRegex(RuntimeError, "未完成的规则事务"):
+            self.execute(engine.check)
+        with self.assertRaisesRegex(RuntimeError, "未完成的规则事务"):
+            self.execute(engine.apply)
+
+        self.assertFalse(engine.MANIFEST.exists())
+        for relative, original in self.originals.items():
+            self.assertEqual((self.source / relative).read_bytes(), original)
+
+        pending.unlink()
+        self.execute(engine.check)
+
+    def test_restore_remains_available_with_pending_rule_transaction(self):
+        self.execute(engine.apply)
+        pending = self.project / "state/rule_transactions/pending.json"
+        pending.parent.mkdir(parents=True, exist_ok=True)
+        pending.write_text("{}", encoding="utf-8")
+
+        self.execute(engine.restore)
+        self.assertFalse(engine.MANIFEST.exists())
+        self.assertTrue(pending.exists())
+        for relative, original in self.originals.items():
+            self.assertEqual((self.source / relative).read_bytes(), original)
+
     def test_check_does_not_modify_files(self):
         self.execute(engine.check)
 
@@ -175,8 +213,36 @@ class TestEngine(unittest.TestCase):
             engine.status()
 
         self.assertIn("已汉化", output.getvalue())
+        self.assertIn("已安装语言：zh_CN", output.getvalue())
 
         self.execute(engine.restore)
+
+
+    def test_status_supports_legacy_record_without_language(self):
+        self.execute(engine.apply)
+
+        record = json.loads(
+            engine.MANIFEST.read_text(encoding="utf-8")
+        )
+        record.pop("language", None)
+
+        engine.MANIFEST.write_text(
+            json.dumps(record, ensure_ascii=False),
+            encoding="utf-8",
+        )
+
+        output = io.StringIO()
+
+        with redirect_stdout(output):
+            engine.status()
+
+        self.assertIn(
+            "已安装语言：未知（旧记录）",
+            output.getvalue(),
+        )
+
+        self.execute(engine.restore)
+
 
     def test_operation_lock_excludes_other_processes(self):
         code = (

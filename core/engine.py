@@ -5,11 +5,13 @@ import importlib.metadata
 import json
 import os
 import re
+import stat
 import sys
 import tempfile
 from contextlib import contextmanager
 from pathlib import Path
 
+from core.translation_validation import validate_messages
 
 PROJECT = Path(__file__).resolve().parents[1]
 STATE = PROJECT / "state"
@@ -104,8 +106,17 @@ def atomic_write(path, data, *, expected_hash=None):
             verify_unchanged(path, expected_hash)
         os.replace(temporary, path)
     finally:
+        primary_error = sys.exc_info()[0] is not None
         if os.path.exists(temporary):
-            os.unlink(temporary)
+            try:
+                if os.name == "nt":
+                    os.chmod(temporary, stat.S_IREAD | stat.S_IWRITE)
+                os.unlink(temporary)
+            except FileNotFoundError:
+                pass
+            except OSError:
+                if not primary_error:
+                    raise
 
 
 def installation():
@@ -157,6 +168,14 @@ def target_path(root, relative):
 
 
 def prepare(language):
+    from tools import rule_store
+
+    with rule_store.project_lock(PROJECT):
+        rule_store.require_clean_rules(PROJECT)
+        return _prepare_unlocked(language)
+
+
+def _prepare_unlocked(language):
     prefix, version, root = installation()
     config_path = PROJECT / "patches" / f"{version}.json"
     locale_path = PROJECT / "locales" / f"{language}.json"
@@ -174,6 +193,7 @@ def prepare(language):
         raise RuntimeError("语言包标识不一致")
 
     translations = locale["messages"]
+    validate_messages(translations)
     plans = []
 
     for item in config["files"]:
@@ -241,21 +261,28 @@ def status():
         return
 
     record = read_json(MANIFEST)
+
     if record["prefix"] != str(prefix):
         raise RuntimeError("安装记录不属于当前 Conda 环境")
 
+    language = record.get("language", "未知（旧记录）")
+    print(f"已安装语言：{language}")
+
     for entry in record["files"]:
         target = target_path(root, entry["relative"])
+
         if not target.is_file():
             state = "文件缺失"
         else:
             current = digest(target.read_bytes())
+
             if current == entry["patched_sha256"]:
                 state = "已汉化"
             elif current == entry["original_sha256"]:
                 state = "原始版本"
             else:
                 state = "文件发生其他变化"
+
         print(f"{entry['relative']}：{state}")
 
 

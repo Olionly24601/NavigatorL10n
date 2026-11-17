@@ -834,7 +834,7 @@
         {
           "id": "batch8.about_description",
           "original": "f'''<b>Anaconda Navigator {__about__.__version__}</b><br>\r\n            <br>Copyright &copy; 2016 Anaconda, Inc.\r\n            <p>Created by Anaconda\r\n            <br>\r\n            <p>For bug reports and feature requests, please visit our\r\n            '''",
-          "template": "f'''<b>Anaconda Navigator {{__about__.__version__}}</b><br>\r\n            <br>Copyright &copy; 2016 Anaconda, Inc.\r\n            <p>由 Anaconda 创建\r\n            <br>\r\n            <p>{{{text}}}\r\n            '''",
+          "template": "f'''<b>Anaconda Navigator {{__about__.__version__}}</b><br>\r\n            <br>Copyright &copy; 2016 Anaconda, Inc.\r\n            {{{text}}}\r\n            '''",
           "count": 1
         }
       ]

@@ -241,17 +241,34 @@ class TestRuleBuilder(unittest.TestCase):
 
     def test_save_only_updates_selected_version(self):
         patch_dir = self.root / "patches"
+        locale_dir = self.root / "locales"
         patch_dir.mkdir()
-        locale_path = self.root / "zh_CN.json"
+        locale_dir.mkdir()
+
         files = {}
+
         for version in ("2.7.1", "2.7.4"):
             target = patch_dir / f"{version}.json"
             original = dict(self.config, version=version)
             target.write_text(json.dumps(original), encoding="utf-8")
             files[version] = target
-        locale_path.write_text(json.dumps(self.locale), encoding="utf-8")
+
+        zh = copy.deepcopy(self.locale)
+        ja = {
+            "language": "ja_JP",
+            "messages": {
+                "sample.hello": "こんにちは",
+            },
+        }
+
+        for language, data in (("zh_CN", zh), ("ja_JP", ja)):
+            (locale_dir / f"{language}.json").write_text(
+                json.dumps(data, ensure_ascii=False),
+                encoding="utf-8",
+            )
 
         older_bytes = files["2.7.1"].read_bytes()
+
         newer = copy.deepcopy(self.config)
         newer["version"] = "2.7.4"
         newer["files"][0]["rules"].append({
@@ -261,18 +278,30 @@ class TestRuleBuilder(unittest.TestCase):
             "count": 1,
         })
 
+        zh["messages"]["sample.second"] = "世界"
+        ja["messages"]["sample.second"] = "世界"
+
         with (
             patch.object(build_rules, "PATCHES", patch_dir),
-            patch.object(build_rules, "LOCALE", locale_path),
+            patch.object(build_rules, "LOCALES", locale_dir),
             patch.object(build_rules, "PROJECT", self.root),
         ):
-            build_rules.save(newer, self.locale)
+            build_rules.save(newer, zh, {"ja_JP": ja})
 
         self.assertEqual(files["2.7.1"].read_bytes(), older_bytes)
+
         self.assertEqual(
             json.loads(files["2.7.4"].read_text(encoding="utf-8")),
             newer,
         )
+
+        for language, expected in (("zh_CN", zh), ("ja_JP", ja)):
+            actual = json.loads(
+                (locale_dir / f"{language}.json").read_text(
+                    encoding="utf-8"
+                )
+            )
+            self.assertEqual(actual, expected)
 
     def test_validate_command_does_not_require_navigator(self):
         output = io.StringIO()
@@ -311,13 +340,59 @@ class TestRuleBuilder(unittest.TestCase):
         self.assertNotIn("Navigator 2.7.1", output.getvalue())
         self.assertIn("Navigator 2.7.4", output.getvalue())
 
+    def test_direct_load_rejects_pending_transaction(self):
+        pending = self.root / "state/rule_transactions/pending.json"
+        pending.parent.mkdir(parents=True, exist_ok=True)
+        pending.write_text("{}", encoding="utf-8")
+        with patch.object(build_rules, "PROJECT", self.root):
+            with self.assertRaisesRegex(RuntimeError, "未完成的规则事务"):
+                build_rules.load("2.7.1", "zh_CN")
+
+    def test_pending_transaction_blocks_validate_and_verify(self):
+        pending = self.root / "state/rule_transactions/pending.json"
+        pending.parent.mkdir(parents=True, exist_ok=True)
+        pending.write_text("{}", encoding="utf-8")
+
+        with patch.object(build_rules, "PROJECT", self.root):
+            for command in ("validate", "verify"):
+                with self.subTest(command=command):
+                    with (
+                        patch.object(sys, "argv", ["build_rules.py", command]),
+                        patch.object(build_rules, "load") as mock_load,
+                        redirect_stdout(io.StringIO()),
+                    ):
+                        with self.assertRaisesRegex(
+                            RuntimeError, "未完成的规则事务"
+                        ):
+                            build_rules.main()
+                        mock_load.assert_not_called()
+
+    def test_validate_uses_repository_lock(self):
+        from tools import rule_store
+        with (
+            patch.object(sys, "argv", ["build_rules.py", "validate"]),
+            patch.object(build_rules, "load") as mock_load,
+            patch.object(rule_store, "project_lock", side_effect=RuntimeError("lock busy")),
+        ):
+            with self.assertRaisesRegex(RuntimeError, "lock busy"):
+                build_rules.main()
+            mock_load.assert_not_called()
+
     def test_duplicate_command_does_not_save(self):
+        japanese_locale = {
+            "language": "ja_JP",
+            "messages": {},
+        }
+
         with (
             patch.object(
                 build_rules,
-                "load",
-                return_value=(self.config, self.locale),
-            ),
+                "load_snapshot",
+                side_effect=[
+                    (self.config, self.locale),
+                    (self.config, japanese_locale),
+                ],
+            ) as mock_load,
             patch.object(
                 build_rules,
                 "add",
@@ -333,6 +408,7 @@ class TestRuleBuilder(unittest.TestCase):
         ):
             build_rules.main()
 
+        self.assertEqual(mock_load.call_count, 2)
         mock_save.assert_not_called()
 
 

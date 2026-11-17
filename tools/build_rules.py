@@ -5,6 +5,7 @@ import sys
 from datetime import datetime
 from pathlib import Path
 from uuid import uuid4
+from copy import deepcopy
 
 PROJECT = Path(__file__).resolve().parents[1]
 
@@ -12,16 +13,24 @@ if str(PROJECT) not in sys.path:
     sys.path.insert(0, str(PROJECT))
 
 from core import engine
+from core.translation_validation import validate_messages
+from tools import rule_store
 
 PATCHES = PROJECT / "patches"
-LOCALE = PROJECT / "locales" / "zh_CN.json"
+LOCALES = PROJECT / "locales"
+LOCALE = LOCALES / "zh_CN.json"
+SUPPORTED_LANGUAGES = ("zh_CN", "ja_JP")
 
 
 def available_versions():
     return sorted(path.stem for path in PATCHES.glob("*.json"))
 
 
-def load(version=None):
+def load(version=None, language="zh_CN"):
+    rule_store.require_clean_rules(PROJECT)
+    if language not in SUPPORTED_LANGUAGES:
+        raise ValueError(f"不支持的语言：{language}")
+
     if version is None:
         _, version, _ = engine.installation()
 
@@ -33,13 +42,51 @@ def load(version=None):
     if config.get("version") != version:
         raise ValueError(f"规则文件版本不一致：{rules.name}")
 
-    return config, engine.read_json(LOCALE)
+    locale_path = LOCALES / f"{language}.json"
+    if not locale_path.is_file():
+        raise ValueError(f"找不到语言包：{language}")
+
+    locale = engine.read_json(locale_path)
+    if locale.get("language") != language:
+        raise ValueError(f"语言包标识不一致：{language}")
+
+    return config, locale
+
+
+def load_snapshot(version, language, snapshot):
+    rule_store.require_clean_rules(PROJECT)
+    if language not in SUPPORTED_LANGUAGES:
+        raise ValueError(f"不支持的语言：{language}")
+    if version is None:
+        _, version, _ = engine.installation()
+
+    def read(path):
+        if not path.is_file():
+            raise ValueError(f"找不到规则或语言文件：{path}")
+        raw = path.read_bytes()
+        checksum = engine.digest(raw)
+        canonical = path.resolve()
+        if canonical in snapshot and snapshot[canonical] != checksum:
+            raise RuntimeError(f"规则维护期间源文件发生变化：{path}")
+        snapshot[canonical] = checksum
+        return json.loads(raw.decode("utf-8-sig"))
+
+    rules = PATCHES / f"{version}.json"
+    config = read(rules)
+    if config.get("version") != version:
+        raise ValueError(f"规则文件版本不一致：{rules.name}")
+
+    locale_path = LOCALES / f"{language}.json"
+    locale = read(locale_path)
+    if locale.get("language") != language:
+        raise ValueError(f"语言包标识不一致：{language}")
+    return config, locale
 
 
 def validate(config, locale):
     if (
         not isinstance(config.get("version"), str)
-        or locale.get("language") != "zh_CN"
+        or locale.get("language") not in SUPPORTED_LANGUAGES
     ):
         raise ValueError("规则版本或语言不匹配")
 
@@ -48,6 +95,8 @@ def validate(config, locale):
         or not isinstance(locale.get("messages"), dict)
     ):
         raise ValueError("规则或语言包结构异常")
+
+    validate_messages(locale["messages"])
 
     paths = set()
     used = set()
@@ -361,10 +410,23 @@ def make_rule(source, item):
     }, translated
 
 
-def add(spec_path, config, locale):
+def add(spec_path, config, locale, other_locales=None):
+    locales = {"zh_CN": locale}
+
+    if other_locales:
+        for language, data in other_locales.items():
+            if language == "zh_CN":
+                raise ValueError("重复的中文语言包")
+            if language not in SUPPORTED_LANGUAGES:
+                raise ValueError(f"不支持的语言：{language}")
+            locales[language] = data
+
     source_root, sources = originals(config)
 
-    verify(config, locale, sources)
+    for language, data in locales.items():
+        if data.get("language") != language:
+            raise ValueError(f"语言包标识不一致：{language}")
+        verify(config, data, sources)
 
     spec = engine.read_json(spec_path)
     changes = spec["rules"]
@@ -372,11 +434,18 @@ def add(spec_path, config, locale):
     if not changes:
         raise ValueError("没有新增规则候选")
 
-    file_map = {
-        entry["path"]: entry
-        for entry in config["files"]
+    working_config = deepcopy(config)
+    working_locales = {
+        language: deepcopy(data)
+        for language, data in locales.items()
     }
 
+    file_map = {
+        entry["path"]: entry
+        for entry in working_config["files"]
+    }
+
+    missing = object()
     added = 0
     skipped = 0
 
@@ -384,19 +453,58 @@ def add(spec_path, config, locale):
         relative = item["path"]
 
         if relative not in sources:
-            target = engine.target_path(
-                source_root,
-                relative,
+            target = engine.target_path(source_root, relative)
+            sources[relative] = target.read_bytes().decode("utf-8")
+
+        translations = item.get("translations", {})
+
+        if not isinstance(translations, dict):
+            raise ValueError(f"翻译字段格式错误：{item['id']}")
+
+        unknown = set(translations) - set(SUPPORTED_LANGUAGES)
+
+        if unknown:
+            raise ValueError(
+                f"未知翻译语言：{item['id']} / {sorted(unknown)}"
             )
 
-            sources[relative] = (
-                target.read_bytes().decode("utf-8")
+        if "translation" in item and "zh_CN" in translations:
+            if item["translation"] != translations["zh_CN"]:
+                raise ValueError(
+                    f"中文翻译字段冲突：{item['id']}"
+                )
+
+        provided = {}
+
+        for language in locales:
+            if language == "zh_CN" and "translation" in item:
+                value = item["translation"]
+            else:
+                value = translations.get(language, missing)
+
+            if value is not missing:
+                provided[language] = value
+
+        if not provided:
+            raise ValueError(f"没有提供翻译：{item['id']}")
+
+        rule = None
+        translated_values = {}
+
+        for language, value in provided.items():
+            candidate, translated = make_rule(
+                sources[relative],
+                {**item, "translation": value},
             )
 
-        rule, translation = make_rule(
-            sources[relative],
-            item,
-        )
+            if rule is None:
+                rule = candidate
+            elif rule != candidate:
+                raise ValueError(
+                    f"不同语言生成了不同的规则：{item['id']}"
+                )
+
+            translated_values[language] = translated
 
         rule_id = rule["id"]
         entry = file_map.get(relative)
@@ -416,25 +524,37 @@ def add(spec_path, config, locale):
         if existing is not None:
             if existing != rule:
                 raise ValueError(
-                    f"规则 ID 冲突："
-                    f"{relative} / {rule_id}"
+                    f"规则 ID 冲突：{relative} / {rule_id}"
                 )
 
-            if locale["messages"].get(rule_id) != translation:
-                raise ValueError(
-                    f"现有翻译内容不一致：{rule_id}"
+            for language, translated in translated_values.items():
+                actual = working_locales[language]["messages"].get(
+                    rule_id, missing
                 )
+
+                if actual is missing or actual != translated:
+                    raise ValueError(
+                        f"现有翻译内容不一致："
+                        f"{language} / {rule_id}"
+                    )
 
             skipped += 1
             continue
 
-        if (
-            rule_id in locale["messages"]
-            and locale["messages"][rule_id] != translation
-        ):
-            raise ValueError(
-                f"共享翻译 ID 内容冲突：{rule_id}"
-            )
+        for language in locales:
+            if language not in translated_values:
+                raise ValueError(
+                    f"新增规则缺少翻译：{language} / {rule_id}"
+                )
+
+            messages = working_locales[language]["messages"]
+            actual = messages.get(rule_id, missing)
+
+            if actual is not missing and actual != translated_values[language]:
+                raise ValueError(
+                    f"共享翻译 ID 内容冲突："
+                    f"{language} / {rule_id}"
+                )
 
         if entry is not None:
             if any(
@@ -446,50 +566,47 @@ def add(spec_path, config, locale):
                     f"{relative} / {rule_id}"
                 )
         else:
-            entry = {
-                "path": relative,
-                "rules": [],
-            }
-
-            config["files"].append(entry)
+            entry = {"path": relative, "rules": []}
+            working_config["files"].append(entry)
             file_map[relative] = entry
 
         entry["rules"].append(rule)
-        locale["messages"][rule_id] = translation
+
+        for language, translated in translated_values.items():
+            working_locales[language]["messages"][rule_id] = translated
 
         added += 1
 
-    verify(config, locale, sources)
+    for language, data in working_locales.items():
+        verify(working_config, data, sources)
+
+    config.clear()
+    config.update(working_config)
+
+    for language, data in locales.items():
+        data.clear()
+        data.update(working_locales[language])
 
     return added, skipped
 
 
-def save(config, locale):
+def save(config, locale, other_locales=None, expected_hashes=None):
+    locales = {"zh_CN": locale}
+
+    if other_locales:
+        locales.update(other_locales)
+
+    if set(locales) != set(SUPPORTED_LANGUAGES):
+        missing = set(SUPPORTED_LANGUAGES) - set(locales)
+        raise ValueError(
+            f"正式保存缺少语言包：{sorted(missing)}"
+        )
+
+    updates = {}
+
     rules_path = PATCHES / f"{config['version']}.json"
-    old_rules = rules_path.read_bytes()
-    old_locale = LOCALE.read_bytes()
 
-    folder = (
-        PROJECT / "state" / "rule_snapshots"
-    )
-
-    name = (
-        datetime.now().strftime("%Y%m%d_%H%M%S")
-        + "_"
-        + uuid4().hex[:8]
-    )
-
-    engine.atomic_write(
-        folder / f"{name}.rules.json",
-        old_rules,
-    )
-
-    engine.atomic_write(
-        folder / f"{name}.locale.json",
-        old_locale,
-    )
-
-    rules_new = (
+    updates[rules_path] = (
         json.dumps(
             config,
             ensure_ascii=False,
@@ -497,22 +614,25 @@ def save(config, locale):
         ) + "\n"
     ).encode("utf-8")
 
-    locale_new = (
-        json.dumps(
-            locale,
-            ensure_ascii=False,
-            indent=2,
-        ) + "\n"
-    ).encode("utf-8")
+    for language, data in locales.items():
+        if data.get("language") != language:
+            raise ValueError(
+                f"语言包标识不一致：{language}"
+            )
 
-    try:
-        engine.atomic_write(rules_path, rules_new)
-        engine.atomic_write(LOCALE, locale_new)
+        validate(config, data)
 
-    except Exception:
-        engine.atomic_write(rules_path, old_rules)
-        engine.atomic_write(LOCALE, old_locale)
-        raise
+        path = LOCALES / f"{language}.json"
+
+        updates[path] = (
+            json.dumps(
+                data,
+                ensure_ascii=False,
+                indent=2,
+            ) + "\n"
+        ).encode("utf-8")
+
+    rule_store.save_many(PROJECT, updates, expected_hashes=expected_hashes)
 
 
 def main():
@@ -522,97 +642,133 @@ def main():
 
     parser.add_argument(
         "command",
-        choices=("validate", "verify", "add"),
+        choices=("validate", "verify", "add", "recover"),
     )
+
     parser.add_argument(
         "spec",
         nargs="?",
         type=Path,
     )
+
     parser.add_argument(
         "--version",
-        help="Navigator 版本；validate 默认检查全部版本，其他命令默认当前环境",
+        help="Navigator 版本；validate 默认检查全部版本",
+    )
+
+    parser.add_argument(
+        "--lang",
+        choices=SUPPORTED_LANGUAGES,
+        default="zh_CN",
+        help="目标语言，默认 zh_CN",
     )
 
     args = parser.parse_args()
 
-    if args.command == "validate":
-        versions = [args.version] if args.version else available_versions()
-        if not versions:
-            raise ValueError("没有找到版本规则文件")
-
-        configs = []
-        for version in versions:
-            config, locale = load(version)
-            configs.append(config)
-
-        if args.version:
-            files, rules, keys = validate(configs[0], locale)
-            print(
-                f"Navigator {args.version}："
-                f"{files} 个文件、{rules} 条规则、"
-                f"{len(keys)} 个翻译条目，检查通过"
-            )
-        else:
-            results = validate_all(configs, locale)
-            for version, (files, rules, keys) in results.items():
-                print(
-                    f"Navigator {version}："
-                    f"{files} 个文件、{rules} 条规则、"
-                    f"{keys} 个翻译条目，检查通过"
-                )
-            print("共享语言包无未引用条目")
-        return
-
     if args.spec is not None and args.command != "add":
         parser.error("只有 add 命令接受规则草稿 JSON 路径")
 
-    version = args.version
-    config, locale = load(version)
+    if args.command == "recover":
+        with rule_store.project_lock(PROJECT):
+            recovered = rule_store.recover_pending(PROJECT)
 
-    if args.command == "verify":
-        _, sources = originals(config)
-        verify(config, locale, sources)
-
-        print(
-            f"Navigator {config['version']}："
-            "源码匹配和 Python 语法检查通过，"
-            "未修改 Navigator"
-        )
-    else:
-        if args.spec is None:
-            parser.error("add 需要指定规则草稿 JSON 路径")
-
-        added, skipped = add(args.spec, config, locale)
-
-        if added:
-            save(config, locale)
-
-        print(f"新增规则：{added}")
-        print(f"已存在并跳过：{skipped}")
-
-        if added:
-            print(
-                "所有规则检查通过，"
-                "已更新规则文件"
-            )
+        if recovered:
+            print("未完成的规则事务已恢复")
         else:
-            print(
-                "规则内容没有变化，"
-                "未重新写入规则文件"
-            )
+            print("没有需要恢复的规则事务")
+        return
 
-        print("Navigator 安装文件未修改")
+    if args.command in ("validate", "verify"):
+        with rule_store.project_lock(PROJECT):
+            rule_store.require_clean_rules(PROJECT)
+            if args.command == "validate":
+                versions = (
+                    [args.version]
+                    if args.version
+                    else available_versions()
+                )
+                if not versions:
+                    raise ValueError("没有找到版本规则文件")
+
+                configs = []
+                for version in versions:
+                    config, locale = load(version, args.lang)
+                    configs.append(config)
+
+                if args.version:
+                    files, rules, keys = validate(configs[0], locale)
+                    print(
+                        f"Navigator {args.version}："
+                        f"{files} 个文件、{rules} 条规则、"
+                        f"{len(keys)} 个翻译条目，检查通过"
+                    )
+                else:
+                    results = validate_all(configs, locale)
+                    for version, (files, rules, keys) in results.items():
+                        print(
+                            f"Navigator {version}："
+                            f"{files} 个文件、{rules} 条规则、"
+                            f"{keys} 个翻译条目，检查通过"
+                        )
+                    print("共享语言包无未引用条目")
+            else:
+                config, locale = load(args.version, args.lang)
+                _, sources = originals(config)
+                verify(config, locale, sources)
+                print(
+                    f"Navigator {config['version']}："
+                    "源码匹配和 Python 语法检查通过，"
+                    "未修改 Navigator"
+                )
+        return
+
+    if args.spec is None:
+        parser.error("add 需要指定规则草稿 JSON 路径")
+
+    if args.lang != "zh_CN":
+        parser.error(
+            "add 同时维护全部语言，请省略 --lang"
+        )
+
+    with rule_store.project_lock(PROJECT):
+        rule_store.require_clean_rules(PROJECT)
+
+        snapshot = {}
+        config, locale = load_snapshot(args.version, "zh_CN", snapshot)
+
+        other_locales = {}
+
+        for language in SUPPORTED_LANGUAGES:
+            if language == "zh_CN":
+                continue
+
+            _, data = load_snapshot(config["version"], language, snapshot)
+            other_locales[language] = data
+
+        added, skipped = add(
+            args.spec,
+            config,
+            locale,
+            other_locales,
+        )
+
+        if added:
+            save(config, locale, other_locales, expected_hashes=snapshot)
+
+    print(f"新增规则：{added}")
+    print(f"已存在并跳过：{skipped}")
+
+    if added:
+        print("所有规则检查通过，已更新规则与语言包")
+    else:
+        print("规则内容没有变化，未重新写入文件")
+
+    print("Navigator 安装文件未修改")
 
 
 if __name__ == "__main__":
     try:
         main()
-    except (
-        OSError,
-        ValueError,
-        KeyError,
-        SyntaxError,
-    ) as error:
+    except (OSError, ValueError, KeyError, SyntaxError, RuntimeError) as error:
         print(f"失败：{error}")
         raise SystemExit(1)
