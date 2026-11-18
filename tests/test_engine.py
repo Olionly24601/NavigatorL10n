@@ -18,8 +18,9 @@ class TestEngine(unittest.TestCase):
         self.temp = tempfile.TemporaryDirectory()
         self.addCleanup(self.temp.cleanup)
 
-        self.project = Path(self.temp.name) / "NavigatorZH"
-        self.prefix = Path(self.temp.name) / "Anaconda3"
+        self.root = Path(self.temp.name).resolve()
+        self.project = self.root / "NavigatorZH"
+        self.prefix = self.root / "Anaconda3"
         self.source = (
             self.prefix / "Lib" / "site-packages"
             / "anaconda_navigator"
@@ -481,7 +482,7 @@ class TestEngine(unittest.TestCase):
         self.execute(engine.apply)
 
         first_manifest = engine.MANIFEST
-        second_prefix = Path(self.temp.name) / "navigatorzh-274"
+        second_prefix = self.root / "navigatorzh-274"
         second_source = (
             second_prefix / "Lib" / "site-packages"
             / "anaconda_navigator"
@@ -727,7 +728,7 @@ class TestVersionIdentification(unittest.TestCase):
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
         self.addCleanup(self.temp.cleanup)
-        self.prefix = Path(self.temp.name) / "Anaconda3"
+        self.prefix = Path(self.temp.name).resolve() / "Anaconda3"
         self.source = (
             self.prefix / "Lib" / "site-packages" / "anaconda_navigator"
         )
