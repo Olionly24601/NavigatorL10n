@@ -4,9 +4,16 @@ NavigatorL10n は、Windows 版 Anaconda Navigator の画面を日本語また�
 
 対応バージョンは **Anaconda Navigator 2.7.1 / 2.7.4（Windows）** です。
 
-## 日本語表示のプレビュー
+## 画面プレビュー
+
+### 日本語
 
 ![Anaconda Navigator 2.7.1 の日本語表示](docs/images/navigator-ja.png)
+
+### 简体中文
+
+![Anaconda Navigator 2.7.1 の簡体字中国語表示](docs/images/navigator-zh.png)
+
 
 ## 対応言語と翻訳範囲
 
