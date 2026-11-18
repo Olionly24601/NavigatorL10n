@@ -4,9 +4,16 @@ NavigatorL10n 为 Windows 版 Anaconda Navigator 提供简体中文和日语界�
 
 支持 **Anaconda Navigator 2.7.1、2.7.4（Windows）**。
 
-## 日语界面预览
+## 界面预览
+
+### 简体中文
+
+![Anaconda Navigator 2.7.1 简体中文界面](docs/images/navigator-zh.png)
+
+### 日本語
 
 ![Anaconda Navigator 2.7.1 日语界面](docs/images/navigator-ja.png)
+
 
 ## 语言与翻译范围
 
