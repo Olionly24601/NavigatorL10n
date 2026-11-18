@@ -1,0 +1,18 @@
+# NavigatorL10n — Anaconda Navigator 中文汉化 / 日本語化
+
+> NavigatorL10n is an open-source localization tool for Anaconda Navigator on Windows. It provides Simplified Chinese (zh_CN) and Japanese (ja_JP) interface translations for Anaconda Navigator 2.7.1 and 2.7.4.
+
+The tool applies version-specific patches to Navigator's installed Python source files. It checks compatibility before applying changes, saves original files for restoration, and supports switching languages by restoring the original interface before applying another language. The translation covers Navigator's own menus, dialogs, settings, environment management, and status messages; third-party package descriptions and online content remain unchanged.
+
+Also relevant to searches for “Anaconda Navigator 汉化”, “Anaconda Navigator 中文界面”, “Anaconda Navigator 日本語化”, “Anaconda Navigator Japanese translation”, and “Anaconda Navigator Chinese language pack”.
+
+## Documentation
+
+- [Simplified Chinese README](https://github.com/Olionly24601/NavigatorL10n/blob/main/README.md): Supported versions, scope, installation, compatibility checks, and restoration instructions in Chinese.
+- [Japanese README](https://github.com/Olionly24601/NavigatorL10n/blob/main/README.ja.md): Supported versions, scope, installation, compatibility checks, and restoration instructions in Japanese.
+
+## Project and releases
+
+- [GitHub repository](https://github.com/Olionly24601/NavigatorL10n): Source code, documentation, issues, and development history.
+- [Releases](https://github.com/Olionly24601/NavigatorL10n/releases): Published versions and release notes.
+- [Issues](https://github.com/Olionly24601/NavigatorL10n/issues): Bug reports, translation feedback, and compatibility requests.
