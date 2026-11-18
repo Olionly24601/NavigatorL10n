@@ -1,8 +1,6 @@
-# NavigatorZH
-
 [简体中文](README.md) | [日本語](README.ja.md)
 
-NavigatorZH 为 Windows 版 Anaconda Navigator 提供简体中文和日语界面，通过源码补丁翻译 Navigator 的菜单、按钮、设置、弹窗和操作提示。
+NavigatorL10n 为 Windows 版 Anaconda Navigator 提供简体中文和日语界面，通过源码补丁翻译 Navigator 的菜单、按钮、设置、弹窗和操作提示。
 
 支持 **Anaconda Navigator 2.7.1、2.7.4（Windows）**。
 
@@ -17,7 +15,7 @@ NavigatorZH 为 Windows 版 Anaconda Navigator 提供简体中文和日语界面
 | 简体中文 | `zh_CN` | `--lang zh_CN`（默认） |
 | 日本語 | `ja_JP` | `--lang ja_JP` |
 
-这里的语言选项控制 Navigator 界面；NavigatorZH 自身的命令行提示目前使用中文。
+这里的语言选项控制 Navigator 界面；NavigatorL10n 自身的命令行提示目前使用中文。
 
 目前覆盖的主要界面包括：
 
@@ -31,13 +29,13 @@ NavigatorZH 为 Windows 版 Anaconda Navigator 提供简体中文和日语界面
 
 ## 安装与使用
 
-从 [Releases](https://github.com/Olionly24601/NavigatorZH/releases) 下载项目源码并解压。打开 **Anaconda Prompt**，进入 NavigatorZH 目录，激活装有目标 Navigator 的 Conda 环境。如果 Navigator 安装在 `base`，执行：
+从 [Releases](https://github.com/Olionly24601/NavigatorL10n/releases) 下载项目源码并解压。打开 **Anaconda Prompt**，进入 NavigatorL10n 目录，激活装有目标 Navigator 的 Conda 环境。如果 Navigator 安装在 `base`，执行：
 
 ```cmd
 conda activate base
 ```
 
-如果安装在其他环境，请激活对应环境。以下命令均在 NavigatorZH 项目目录中执行。
+如果安装在其他环境，请激活对应环境。以下命令均在 NavigatorL10n 项目目录中执行。
 
 ### 1. 检查兼容性
 
@@ -138,12 +136,12 @@ python tools/build_rules.py verify --lang ja_JP
 python -m unittest discover -s tests -v
 ```
 
-翻译问题、界面显示异常和版本兼容性反馈可通过 [Issues](https://github.com/Olionly24601/NavigatorZH/issues) 提交。
+翻译问题、界面显示异常和版本兼容性反馈可通过 [Issues](https://github.com/Olionly24601/NavigatorL10n/issues) 提交。
 
 ## 关于项目
 
-NavigatorZH 是独立维护的 Anaconda Navigator 本地化项目。Anaconda Navigator 及相关名称、标识归各自权利人所有。
+NavigatorL10n 是独立维护的 Anaconda Navigator 本地化项目。Anaconda Navigator 及相关名称、标识归各自权利人所有。
 
 ## 许可证
 
-NavigatorZH 自行编写的代码采用 [MIT License](LICENSE)。
+NavigatorL10n 自行编写的代码采用 [MIT License](LICENSE)。
