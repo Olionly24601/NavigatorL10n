@@ -212,7 +212,7 @@ class TestEngine(unittest.TestCase):
         with redirect_stdout(output):
             engine.status()
 
-        self.assertIn("已汉化", output.getvalue())
+        self.assertIn("已应用语言补丁", output.getvalue())
         self.assertIn("已安装语言：zh_CN", output.getvalue())
 
         self.execute(engine.restore)
@@ -786,7 +786,7 @@ class TestCliOutput(unittest.TestCase):
         with (
             patch.object(sys, "argv", ["main.py", "apply"]),
             patch.object(sys, "stdout", writer),
-            patch.object(cli, "apply", side_effect=lambda _: print("已安装汉化")),
+            patch.object(cli, "apply", side_effect=lambda _: print("已应用语言包")),
         ):
             cli.main()
             writer.flush()

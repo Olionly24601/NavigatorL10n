@@ -1,55 +1,81 @@
 # NavigatorZH
 
-为 Anaconda Navigator 提供简体中文界面的汉化工具。
+[简体中文](README.md) | [日本語](README.ja.md)
 
-NavigatorZH 主要翻译 Navigator 自身的菜单、按钮、设置项、弹窗和操作提示，让日常使用更方便。
+NavigatorZH 为 Windows 版 Anaconda Navigator 提供简体中文和日语界面，通过源码补丁翻译 Navigator 的菜单、按钮、设置、弹窗和操作提示。
 
-目前适配 **Windows 上的 Anaconda Navigator 2.7.1 和 2.7.4**。其他版本尚未适配。
+支持 **Anaconda Navigator 2.7.1、2.7.4（Windows）**。
 
-## 汉化范围
+## 语言与翻译范围
 
-目前已经完成以下界面的主要汉化：
+| 语言 | 代码 | 安装参数 |
+| --- | --- | --- |
+| 简体中文 | `zh_CN` | `--lang zh_CN`（默认） |
+| 日本語 | `ja_JP` | `--lang ja_JP` |
 
-- 主页、环境管理、学习与社区
-- 软件包管理及安装、更新、卸载操作
-- 首选项与配置窗口
-- 环境创建、导入、备份等操作
-- 账户登录、日志查看器及常见提示窗口
-- 2.7.4 新增的服务条款窗口及相关环境保护提示
+这里的语言选项控制 Navigator 界面；NavigatorZH 自身的命令行提示目前使用中文。
 
-软件包名称、应用名称、在线课程和文档内容等保留原文。
+目前覆盖的主要界面包括：
+
+- 首页、环境管理、学习与社区
+- 软件包筛选、安装、更新与卸载
+- 环境创建、克隆、删除、导入与备份
+- 账户登录、渠道管理、首选项与配置窗口
+- 启动进度、操作状态、常见错误和提示弹窗
+
+软件包及应用名称、第三方软件介绍、在线课程与文档内容保留原文。
 
 ## 安装与使用
 
-首先确认电脑安装的是受支持的 Anaconda Navigator 版本。
-
-下载项目源码并解压，打开 **Anaconda Prompt**，进入 NavigatorZH 所在文件夹，并激活安装了目标 Navigator 的 Conda 环境。例如，安装在 `base` 时执行 `conda activate base`；如果 Navigator 装在其他环境，就激活相应环境。
-
-**1. 检查兼容性**
+从 [Releases](https://github.com/Olionly24601/NavigatorZH/releases) 下载项目源码并解压。打开 **Anaconda Prompt**，进入 NavigatorZH 目录，激活装有目标 Navigator 的 Conda 环境。如果 Navigator 安装在 `base`，执行：
 
 ```cmd
-python main.py check
+conda activate base
 ```
 
-工具会自动识别当前环境中 Navigator 的版本，并检查已安装源码是否与该版本的汉化规则匹配。检查通过后再安装。
+如果安装在其他环境，请激活对应环境。以下命令均在 NavigatorZH 项目目录中执行。
 
-**2. 安装汉化**
+### 1. 检查兼容性
 
-关闭 Anaconda Navigator，执行：
+安装日语界面：
 
 ```cmd
-python main.py apply
+python main.py check --lang ja_JP
 ```
 
-安装完成后，重新打开 Navigator 即可使用中文界面。
+安装简体中文界面：
 
-**3. 查看安装状态**
+```cmd
+python main.py check --lang zh_CN
+```
+
+工具会识别当前环境中的 Navigator 版本，并检查原始源码是否与该版本的补丁规则匹配。
+
+### 2. 应用语言补丁
+
+完全退出 Anaconda Navigator 后，执行需要的语言命令。
+
+日语：
+
+```cmd
+python main.py apply --lang ja_JP
+```
+
+简体中文：
+
+```cmd
+python main.py apply --lang zh_CN
+```
+
+重新启动 Navigator，语言补丁即生效。省略 `--lang` 时默认使用简体中文。
+
+### 3. 查看状态
 
 ```cmd
 python main.py status
 ```
 
-**4. 恢复英文**
+### 4. 恢复原版
 
 关闭 Navigator，执行：
 
@@ -57,45 +83,50 @@ python main.py status
 python main.py restore
 ```
 
-恢复完成后重新打开 Navigator。
+恢复完成后重新打开 Navigator，即可使用原始英文界面。
 
-## 注意事项
+### 5. 切换语言
 
-- 汉化会修改当前 Conda 环境中 Navigator 已安装的部分 Python 源码；安装前会自动保存原始文件。
-- 请保留项目中的 `state/` 文件夹，里面包含安装记录和恢复用备份。多个 Conda 环境的记录会分别保存。
-- 更新或重新安装 Navigator 前，建议先运行 `restore` 恢复原始文件。
-- 同一个 Conda 环境的安装和恢复操作会互斥执行；若提示已有操作正在进行，请在该操作结束后重试。
-- 如果 Navigator 源码被其他程序修改，工具会在写入前再次检查并拒绝覆盖；未完成恢复时会保留安装记录和备份，请勿删除 `state/`。
-- 如果被汉化的源码文件被删除，恢复操作会停止并保留备份；需先修复原始安装文件后再尝试恢复。
-- `check` 用于尚未汉化的版本；已安装汉化时可以用 `status` 检查状态。
+从中文切换到日语，或从日语切换到中文时，先退出 Navigator 并运行 `restore`，再执行所需语言的 `apply` 命令。切换后重新启动 Navigator。
+
+## 备份与恢复
+
+- 应用语言补丁前，工具会保存被修改文件的原始内容，并记录安装状态。
+- 请保留项目中的 `state/` 目录；安装记录和恢复备份保存在这里，不同 Conda 环境分别管理。
+- 更新或重新安装 Navigator 前，先执行 `restore`。
+- 如果遇到已有安装记录，使用 `status` 查看当前状态；切换语言前先恢复原版。
+- 写入和恢复过程中会检查文件变化。操作中断或恢复失败时，保留 `state/` 中的数据，排除问题后重新执行恢复。
 
 ## 项目开发
 
-汉化内容和源码补丁分别保存在：
+主要文件：
 
-- `locales/zh_CN.json`：两种版本共用的中文翻译
-- `patches/2.7.1.json`、`patches/2.7.4.json`：对应版本的补丁规则
-- `core/engine.py`：安装、检查与恢复逻辑
+- `locales/zh_CN.json`、`locales/ja_JP.json`：两版共用的中文和日语翻译
+- `patches/2.7.1.json`、`patches/2.7.4.json`：对应 Navigator 版本的源码匹配和替换规则
+- `core/engine.py`：安装、检查和恢复逻辑
+- `tools/build_rules.py`：规则校验、源码验证与规则维护
 
-新增或修改翻译时，可以使用 `tools/build_rules.py` 构建规则。
-
-```cmd
-python tools/build_rules.py validate
-```
-
-默认检查两个版本的规则结构、翻译完整性和共享语言包未使用的条目。仅检查某个版本时：
+验证两个版本的中文规则：
 
 ```cmd
-python tools/build_rules.py validate --version 2.7.4
+python tools/build_rules.py validate --lang zh_CN
 ```
 
-使用当前已激活的 Navigator 环境执行源码匹配与 Python 语法检查：
+验证日语规则：
 
 ```cmd
-python tools/build_rules.py verify
+python tools/build_rules.py validate --lang ja_JP
 ```
 
-添加规则时使用 `python tools/build_rules.py add <规则草稿.json>`；规则将写入当前 Navigator 版本对应的补丁文件。`verify` 和 `add` 也可以使用 `--version` 显式指定版本，但指定版本必须与当前激活环境中安装的 Navigator 一致。
+在已激活的 Navigator 环境中检查源码匹配与生成代码的 Python 语法：
+
+```cmd
+python tools/build_rules.py verify --lang ja_JP
+```
+
+使用 `--version 2.7.4` 可针对指定版本执行校验；源码验证时，该版本须与当前环境实际安装的 Navigator 一致。
+
+新增规则使用 `python tools/build_rules.py add <规则草稿.json>`，规则草稿需要同时提供两种语言的译文，构建工具会同步维护语言包和版本规则。
 
 运行自动化测试：
 
@@ -103,13 +134,11 @@ python tools/build_rules.py verify
 python -m unittest discover -s tests -v
 ```
 
-欢迎反馈翻译问题、界面显示异常或兼容性问题。
+翻译问题、界面显示异常和版本兼容性反馈可通过 [Issues](https://github.com/Olionly24601/NavigatorZH/issues) 提交。
 
 ## 关于项目
 
-NavigatorZH 是一个独立的社区汉化项目，与 Anaconda 官方无关联。
-
-Anaconda Navigator 及相关名称、标识归其各自权利人所有。
+NavigatorZH 是独立维护的 Anaconda Navigator 本地化项目。Anaconda Navigator 及相关名称、标识归各自权利人所有。
 
 ## 许可证
 

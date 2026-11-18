@@ -111,7 +111,7 @@ def main():
     )
 
     print(f"审查报告已生成：{destination}")
-    print("没有修改 Anaconda Navigator 或现有汉化规则")
+    print("没有修改 Anaconda Navigator 或现有语言补丁规则")
 
 
 if __name__ == "__main__":

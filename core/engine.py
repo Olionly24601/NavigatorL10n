@@ -257,7 +257,7 @@ def status():
     print(f"安装目录：{prefix}")
 
     if not MANIFEST.exists():
-        print("状态：没有本引擎的汉化安装记录")
+        print("状态：没有本工具的语言补丁安装记录")
         return
 
     record = read_json(MANIFEST)
@@ -277,7 +277,7 @@ def status():
             current = digest(target.read_bytes())
 
             if current == entry["patched_sha256"]:
-                state = "已汉化"
+                state = "已应用语言补丁"
             elif current == entry["original_sha256"]:
                 state = "原始版本"
             else:
@@ -293,7 +293,7 @@ def apply(language="zh_CN"):
 
 def _apply(language):
     if MANIFEST.exists():
-        raise RuntimeError("已有汉化安装记录，请先恢复原版")
+        raise RuntimeError("已有语言补丁安装记录，请先恢复原版")
 
     prefix, version, plans = prepare(language)
     records = []
@@ -355,7 +355,7 @@ def _apply(language):
             "写入失败，已自动恢复原始文件"
         ) from error
 
-    print(f"已安装 {language} 汉化，重启 Navigator 后生效")
+    print(f"已应用 {language} 语言包，重启 Navigator 后生效")
 
 
 def restore():
@@ -365,7 +365,7 @@ def restore():
 
 def _restore():
     if not MANIFEST.exists():
-        print("没有需要恢复的汉化记录")
+        print("没有需要恢复的语言补丁安装记录")
         return
 
     prefix, version, root = installation()

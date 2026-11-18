@@ -39,6 +39,36 @@
           "original": "self.label_about.setText('Anaconda Navigator is still busy.<br><br>Do you want to quit?')",
           "template": "self.label_about.setText({text})",
           "count": 1
+        },
+        {
+          "id": "quit.running_apps",
+          "original": "'There are some applications running. Please select \\nthe applications you want to close on quit:'",
+          "template": "{text}",
+          "count": 1
+        },
+        {
+          "id": "quit.cancel_process_question",
+          "original": "'Conda is still busy.\\n\\nDo you want to cancel the process?'",
+          "template": "{text}",
+          "count": 1
+        },
+        {
+          "id": "quit.cancel_process_title",
+          "original": "'Cancel Process'",
+          "template": "{text}",
+          "count": 1
+        },
+        {
+          "id": "quit.close_running_title",
+          "original": "'Close running applications'",
+          "template": "{text}",
+          "count": 1
+        },
+        {
+          "id": "quit.running_cancel",
+          "original": "ButtonNormal('Cancel')",
+          "template": "ButtonNormal({text})",
+          "count": 1
         }
       ]
     },
@@ -98,6 +128,84 @@
           "original": "create_action(self, '&About',",
           "template": "create_action(self, {text},",
           "count": 1
+        },
+        {
+          "id": "status.loading_packages",
+          "original": "f'Loading packages of <b>{self.current_prefix}</b>...'",
+          "template": "f{text}",
+          "count": 1
+        },
+        {
+          "id": "status.process_cancelled",
+          "original": "'Process cancelled'",
+          "template": "{text}",
+          "count": 1
+        },
+        {
+          "id": "status.updating_package_index",
+          "original": "'Updating package index and metadata...'",
+          "template": "{text}",
+          "count": 1
+        },
+        {
+          "id": "status.updating_channels",
+          "original": "'Updating channel configuration...'",
+          "template": "{text}",
+          "count": 1
+        },
+        {
+          "id": "status.psm_tooltip_start",
+          "original": "'Some things in the Home and Environments tabs may not work because '",
+          "template": "{text}",
+          "count": 1
+        },
+        {
+          "id": "status.psm_tooltip_end",
+          "original": "'PSM On-prem can’t be reached. We will attempt to reconnect you periodically.'",
+          "template": "{text}",
+          "count": 1
+        },
+        {
+          "id": "menu.whats_new",
+          "original": "'What\\'s new'",
+          "template": "{text}",
+          "count": 1
+        },
+        {
+          "id": "status.loading_applications",
+          "original": "'Loading applications...'",
+          "template": "{text}",
+          "count": 1
+        },
+        {
+          "id": "status.loading_environments",
+          "original": "'Loading environments...'",
+          "template": "{text}",
+          "count": 1
+        },
+        {
+          "id": "status.preparing_interface",
+          "original": "self.set_splash('Preparing interface...')",
+          "template": "self.set_splash({text})",
+          "count": 1
+        },
+        {
+          "id": "status.loading_user_info",
+          "original": "self.set_splash('Loading user...')",
+          "template": "self.set_splash({text})",
+          "count": 1
+        },
+        {
+          "id": "status.loading_bundled_metadata",
+          "original": "self.set_splash('Loading bundled metadata...')",
+          "template": "self.set_splash({text})",
+          "count": 1
+        },
+        {
+          "id": "status.verifying_toolbox",
+          "original": "f'Verifying <b>anaconda-toolbox</b> on <b>{toolbox_install_worker.prefix}</b>'",
+          "template": "f{text}",
+          "count": 1
         }
       ]
     },
@@ -114,6 +222,12 @@
           "id": "cloud.browser_sign_in",
           "original": "action='Complete Anaconda Cloud sign-in in browser...'",
           "template": "action={text}",
+          "count": 1
+        },
+        {
+          "id": "status.sign_in_cloud",
+          "original": "'Sign in to Cloud'",
+          "template": "{text}",
           "count": 1
         }
       ]
@@ -172,6 +286,18 @@
           "id": "pbe.home_banner",
           "original": "text='<b>This is a protected environment.</b> Application modifications are disabled.'",
           "template": "text={text}",
+          "count": 1
+        },
+        {
+          "id": "status.refreshing_apps",
+          "original": "'Refreshing applications'",
+          "template": "{text}",
+          "count": 1
+        },
+        {
+          "id": "home.cancel_progress",
+          "original": "self.button_cancel = ButtonNormal('Cancel')",
+          "template": "self.button_cancel = ButtonNormal({text})",
           "count": 1
         }
       ]
@@ -278,6 +404,24 @@
           "id": "apps.install_status_label",
           "original": "button_label = 'Install'",
           "template": "button_label = {text}",
+          "count": 1
+        },
+        {
+          "id": "apps.icon_when_installed",
+          "original": "'Application icon will show when installed'",
+          "template": "{text}",
+          "count": 1
+        },
+        {
+          "id": "apps.icon_missing",
+          "original": "'Application icon is missing from the package recipe'",
+          "template": "{text}",
+          "count": 1
+        },
+        {
+          "id": "apps.version_available",
+          "original": "f'Version {self.versions[-1]} available'",
+          "template": "f{text}",
           "count": 1
         }
       ]
@@ -424,6 +568,54 @@
           "id": "channels.collecting_progress",
           "original": "self.update_status(action='Collecting sources...', value=0, max_value=0)",
           "template": "self.update_status(action={text}, value=0, max_value=0)",
+          "count": 1
+        },
+        {
+          "id": "channels.context_copy",
+          "original": "'&Copy'",
+          "template": "{text}",
+          "count": 1
+        },
+        {
+          "id": "channels.validation_offline",
+          "original": "\"Can't validate channel due to offline mode.\"",
+          "template": "{text}",
+          "count": 1
+        },
+        {
+          "id": "channels.invalid_channel",
+          "original": "'Invalid channel'",
+          "template": "{text}",
+          "count": 1
+        },
+        {
+          "id": "channels.validating",
+          "original": "'Validating channel...'",
+          "template": "{text}",
+          "count": 1
+        },
+        {
+          "id": "channels.empty",
+          "original": "'Channel cannot be empty'",
+          "template": "{text}",
+          "count": 1
+        },
+        {
+          "id": "channels.placeholder",
+          "original": "'Enter a channel name, file location, or url.'",
+          "template": "{text}",
+          "count": 1
+        },
+        {
+          "id": "channels.duplicate",
+          "original": "f'Channel <b>{channel}</b> is in list already.'",
+          "template": "f{text}",
+          "count": 1
+        },
+        {
+          "id": "channels.empty_tooltip",
+          "original": "'Channel cannot be empty.'",
+          "template": "{text}",
           "count": 1
         }
       ]
@@ -749,6 +941,12 @@
           "original": "ButtonNormal('Report Issue', parent=self)",
           "template": "ButtonNormal({text}, parent=self)",
           "count": 1
+        },
+        {
+          "id": "dialogs.common_cancel",
+          "original": "ButtonNormal('Cancel')",
+          "template": "ButtonNormal({text})",
+          "count": 2
         }
       ]
     },
@@ -1122,6 +1320,24 @@
           "original": "            title='Environment File Downloaded',\r\n",
           "template": "            title={text},\r\n",
           "count": 1
+        },
+        {
+          "id": "env.import_file_caption",
+          "original": "caption='Import Environment'",
+          "template": "caption={text}",
+          "count": 1
+        },
+        {
+          "id": "env.download_file_caption",
+          "original": "'Choose location to save the environment file'",
+          "template": "{text}",
+          "count": 1
+        },
+        {
+          "id": "env.download_success_message",
+          "original": "f'Environment file \"{name}\" downloaded to {path}'",
+          "template": "f{text}",
+          "count": 1
         }
       ]
     },
@@ -1193,6 +1409,12 @@
           "original": "            new_worker.start()\r\n            return\r\n\r\n        try:\r\n            os.remove(result.call.kwargs['target_file'])\r\n        except OSError:\r\n            pass\r\n\r\n        if result.status == workers.TaskStatus.FAILED:\r\n            self.add_heading_error(multiaccount_dialogs.HEADING_ERROR_TEMPLATE.format(\r\n                content='Unable to create requested file.',\r\n",
           "template": "            new_worker.start()\r\n            return\r\n\r\n        try:\r\n            os.remove(result.call.kwargs['target_file'])\r\n        except OSError:\r\n            pass\r\n\r\n        if result.status == workers.TaskStatus.FAILED:\r\n            self.add_heading_error(multiaccount_dialogs.HEADING_ERROR_TEMPLATE.format(\r\n                content={text},\r\n",
           "count": 1
+        },
+        {
+          "id": "env.backup_file_caption",
+          "original": "caption='Backup Environment'",
+          "template": "caption={text}",
+          "count": 1
         }
       ]
     },
@@ -1221,6 +1443,18 @@
           "id": "batch9.02",
           "original": "                '<span style=\"font-size: 12px; font-weight: 500\">'  # pylint: disable=implicit-str-concat\r\n                'You are in offline mode, cloud options are disabled</span>'\r\n",
           "template": "                {text}\r\n",
+          "count": 1
+        },
+        {
+          "id": "cloud.signed_in_as",
+          "original": "f'<span style=\"font-size: 12px; font-weight: 500\">You are signed in as {html.escape(account)}</span>'",
+          "template": "f{text}",
+          "count": 1
+        },
+        {
+          "id": "cloud.signing_in_progress",
+          "original": "            '<span style=\"font-size: 12px; font-weight: 500\">'\r\n            'Signing in... '\r\n            '<a href=\"navigator://cloud/cancel\" style=\"color: #43B049; text-decoration: none\">(cancel)</a>'\r\n            '</span>'",
+          "template": "{text}",
           "count": 1
         }
       ]
@@ -1637,6 +1871,24 @@
           "original": "title='Update Complete'",
           "template": "title={text}",
           "count": 1
+        },
+        {
+          "id": "env.backup_title",
+          "original": "'Backup Environment'",
+          "template": "{text}",
+          "count": 1
+        },
+        {
+          "id": "env.backup_success",
+          "original": "'Environment backed up successfully'",
+          "template": "{text}",
+          "count": 1
+        },
+        {
+          "id": "env.update_unavailable",
+          "original": "'Update Unavailable'",
+          "template": "{text}",
+          "count": 1
         }
       ]
     },
@@ -1659,6 +1911,36 @@
           "id": "pbe.frozen_environment_warning",
           "original": "'This environment is protected and cannot be modified.'",
           "template": "{text}",
+          "count": 1
+        },
+        {
+          "id": "env.conflict_name",
+          "original": "'Name:'",
+          "template": "{text}",
+          "count": 1
+        },
+        {
+          "id": "env.conflict_location",
+          "original": "'Location:'",
+          "template": "{text}",
+          "count": 1
+        },
+        {
+          "id": "env.conflict_create",
+          "original": "'Create'",
+          "template": "{text}",
+          "count": 1
+        },
+        {
+          "id": "env.conflict_cancel",
+          "original": "'Cancel'",
+          "template": "{text}",
+          "count": 1
+        },
+        {
+          "id": "env.conflict_title",
+          "original": "f'Create new environment for \\'{package}\\''",
+          "template": "f{text}",
           "count": 1
         }
       ]
@@ -1689,6 +1971,299 @@
           "original": "action_msg = f'Creating environment and installing <b>{packages[0]}</b>'",
           "template": "action_msg = {text} + f'<b>{{packages[0]}}</b>'",
           "count": 1
+        },
+        {
+          "id": "status.launching_app",
+          "original": "f'Launching <b>{package_name}</b>'",
+          "template": "f{text}",
+          "count": 1
+        },
+        {
+          "id": "errors.app_launch_message",
+          "original": "f'Application <b>{application.package}</b> launch may have produced errors.'",
+          "template": "f{text}",
+          "count": 1
+        },
+        {
+          "id": "errors.app_launch_title",
+          "original": "'Application launch error'",
+          "template": "{text}",
+          "count": 1
+        },
+        {
+          "id": "status.installing_app",
+          "original": "f'Installing application <b>{html.escape(app.display_name)}</b>'",
+          "template": "f{text}",
+          "count": 1
+        },
+        {
+          "id": "status.installing_in_environment",
+          "original": "f'Installing application <b>{worker.pkgs[0]}</b> in environment <b>{env_prefix}</b>'",
+          "template": "f{text}",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "path": "app/start.py",
+      "rules": [
+        {
+          "id": "status.initializing",
+          "original": "'Initializing...'",
+          "template": "{text}",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "path": "widgets/common.py",
+      "rules": [
+        {
+          "id": "status.psm_unreachable",
+          "original": "'<b>PSM On-prem cannot be reached.</b> '",
+          "template": "{text}",
+          "count": 1
+        },
+        {
+          "id": "status.psm_unreachable_detail",
+          "original": "'Some actions may not work as expected until connection is restored.'",
+          "template": "{text}",
+          "count": 1
+        },
+        {
+          "id": "status.psm_restored",
+          "original": "'<b>Connection to PSM On-prem server restored.</b>'",
+          "template": "{text}",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "path": "widgets/dialogs/environment/common.py",
+      "rules": [
+        {
+          "id": "env.context_copy",
+          "original": "'&Copy'",
+          "template": "{text}",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "path": "widgets/dialogs/environment/remove_dialogs.py",
+      "rules": [
+        {
+          "id": "env.remove_confirm",
+          "original": "'Do you want to remove the environment?'",
+          "template": "{text}",
+          "count": 1
+        },
+        {
+          "id": "env.remove_name",
+          "original": "'Name:'",
+          "template": "{text}",
+          "count": 1
+        },
+        {
+          "id": "env.remove_location",
+          "original": "'Location:'",
+          "template": "{text}",
+          "count": 1
+        },
+        {
+          "id": "env.remove_cancel",
+          "original": "'Cancel'",
+          "template": "{text}",
+          "count": 1
+        },
+        {
+          "id": "env.remove_button",
+          "original": "'Remove'",
+          "template": "{text}",
+          "count": 1
+        },
+        {
+          "id": "env.remove_title",
+          "original": "'Remove environment'",
+          "template": "{text}",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "path": "widgets/dialogs/login/base_dialogs.py",
+      "rules": [
+        {
+          "id": "login.form_username",
+          "original": "'Username:'",
+          "template": "{text}",
+          "count": 1
+        },
+        {
+          "id": "login.form_password",
+          "original": "'Password:'",
+          "template": "{text}",
+          "count": 1
+        },
+        {
+          "id": "login.form_submit",
+          "original": "'Sign In'",
+          "template": "{text}",
+          "count": 1
+        },
+        {
+          "id": "login.error_title",
+          "original": "'Login Error'",
+          "template": "{text}",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "path": "widgets/dialogs/login/reminder/repo_selector.py",
+      "rules": [
+        {
+          "id": "login.choose_repository",
+          "original": "'Select a repository:'",
+          "template": "{text}",
+          "count": 1
+        },
+        {
+          "id": "login.repo_continue",
+          "original": "'Continue'",
+          "template": "{text}",
+          "count": 1
+        },
+        {
+          "id": "login.cloud_sign_in",
+          "original": "'Sign in to Anaconda Cloud'",
+          "template": "{text}",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "path": "widgets/dialogs/login/team_dialogs.py",
+      "rules": [
+        {
+          "id": "login.default_channels_missing",
+          "original": "'At least one channel should be added to <b>default_channels</b>! Please add...'",
+          "template": "{text}",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "path": "widgets/dialogs/offline.py",
+      "rules": [
+        {
+          "id": "offline.remember",
+          "original": "\"Don't show again\"",
+          "template": "{text}",
+          "count": 1
+        },
+        {
+          "id": "offline.title",
+          "original": "'Offline Mode'",
+          "template": "{text}",
+          "count": 1
+        },
+        {
+          "id": "offline.ok",
+          "original": "'Ok'",
+          "template": "{text}",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "path": "widgets/main_window/issue_solvers/branding_solvers.py",
+      "rules": [
+        {
+          "id": "errors.branding_overwrite",
+          "original": "f'<b>{html.escape(issue.to_option)}</b> was overwritten by <b>{html.escape(issue.from_option)}</b>'",
+          "template": "f{text}",
+          "count": 1
+        },
+        {
+          "id": "errors.branding_conflict_title",
+          "original": "'Conflicting preferences in navigator configuration'",
+          "template": "{text}",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "path": "widgets/main_window/issue_solvers/core.py",
+      "rules": [
+        {
+          "id": "errors.broken_config",
+          "original": "'Broken Navigator configuration'",
+          "template": "{text}",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "path": "widgets/main_window/issue_solvers/default_environment_solvers.py",
+      "rules": [
+        {
+          "id": "errors.unavailable_environment",
+          "original": "f'Environment is no longer available:<br>- {html.escape(default_env)}'",
+          "template": "f{text}",
+          "count": 2
+        },
+        {
+          "id": "errors.broken_config",
+          "original": "'Broken Navigator configuration'",
+          "template": "{text}",
+          "count": 3
+        },
+        {
+          "id": "status.default_environment_updated",
+          "original": "'Default environment is updated'",
+          "template": "{text}",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "path": "widgets/main_window/issue_solvers/ssl_certificate_solvers.py",
+      "rules": [
+        {
+          "id": "errors.ssl_certificate_missing",
+          "original": "f'SSL certificate is no longer available:<br>- {html.escape(ssl_certificate)}'",
+          "template": "f{text}",
+          "count": 1
+        },
+        {
+          "id": "errors.broken_config",
+          "original": "'Broken Navigator configuration'",
+          "template": "{text}",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "path": "widgets/web/whats_new.py",
+      "rules": [
+        {
+          "id": "whats_new.previous",
+          "original": "'< prev'",
+          "template": "{text}",
+          "count": 1
+        },
+        {
+          "id": "whats_new.next",
+          "original": "'next >'",
+          "template": "{text}",
+          "count": 1
+        },
+        {
+          "id": "whats_new.title",
+          "original": "'What\\'s new'",
+          "template": "{text}",
+          "count": 2
         }
       ]
     }

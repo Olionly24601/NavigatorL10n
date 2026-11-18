@@ -85,8 +85,8 @@ class TestTranslationRules(unittest.TestCase):
             list(self.configs.values()), self.locale
         )
         self.assertEqual(set(results), set(VERSIONS))
-        self.assertEqual(results["2.7.1"], (27, 223, 222))
-        self.assertEqual(results["2.7.4"], (31, 256, 255))
+        self.assertEqual(results["2.7.1"], (44, 323, 320))
+        self.assertEqual(results["2.7.4"], (44, 341, 338))
 
     def test_rule_drafts_match_shared_language_pack(self):
         messages = self.locale["messages"]
@@ -108,7 +108,14 @@ class TestTranslationRules(unittest.TestCase):
 
         original = indexed(self.configs["2.7.1"])
         updated = indexed(self.configs["2.7.4"])
+        version_only_271 = {
+            ("widgets/dialogs/environment/conflict_dialogs.py", "env.conflict_question"),
+            ("widgets/main_window/application_components.py", "status.installing_in_new_environment"),
+        }
+        self.assertEqual(set(original) - set(updated), version_only_271)
         for key, rule in original.items():
+            if key in version_only_271:
+                continue
             with self.subTest(path=key[0], rule=key[1]):
                 self.assertEqual(updated.get(key), rule)
 
