@@ -1,8 +1,6 @@
-# NavigatorZH
-
 [简体中文](README.md) | [日本語](README.ja.md)
 
-NavigatorZH は、Windows 版 Anaconda Navigator の画面を日本語または簡体字中国語に変更するローカライズツールです。Navigator 本体の Python ソースコードにパッチを適用し、メニュー、ボタン、設定画面、ダイアログ、操作時のメッセージを翻訳します。
+NavigatorL10n は、Windows 版 Anaconda Navigator の画面を日本語または簡体字中国語に変更するローカライズツールです。Navigator 本体の Python ソースコードにパッチを適用し、メニュー、ボタン、設定画面、ダイアログ、操作時のメッセージを翻訳します。
 
 対応バージョンは **Anaconda Navigator 2.7.1 / 2.7.4（Windows）** です。
 
@@ -17,7 +15,7 @@ NavigatorZH は、Windows 版 Anaconda Navigator の画面を日本語または�
 | 日本語 | `ja_JP` | `--lang ja_JP` |
 | 簡体字中国語 | `zh_CN` | `--lang zh_CN`（デフォルト） |
 
-この言語設定は Navigator の画面に適用されます。NavigatorZH のコマンドラインメッセージは現在、中国語で表示されます。
+この言語設定は Navigator の画面に適用されます。NavigatorL10n のコマンドラインメッセージは現在、中国語で表示されます。
 
 主な翻訳対象：
 
@@ -31,7 +29,7 @@ NavigatorZH は、Windows 版 Anaconda Navigator の画面を日本語または�
 
 ## インストールと使い方
 
-[Releases](https://github.com/Olionly24601/NavigatorZH/releases) からソースコードをダウンロードして展開します。**Anaconda Prompt** を開いて NavigatorZH のフォルダーに移動し、対象の Navigator がインストールされている Conda 環境を有効にしてください。
+[Releases](https://github.com/Olionly24601/NavigatorL10n/releases) からソースコードをダウンロードして展開します。**Anaconda Prompt** を開いて NavigatorL10n のフォルダーに移動し、対象の Navigator がインストールされている Conda 環境を有効にしてください。
 
 Navigator が `base` 環境にある場合は、次のコマンドを実行します。
 
@@ -39,7 +37,7 @@ Navigator が `base` 環境にある場合は、次のコマンドを実行し�
 conda activate base
 ```
 
-別の環境にインストールされている場合は、その環境を有効にします。以降のコマンドは NavigatorZH のフォルダー内で実行してください。
+別の環境にインストールされている場合は、その環境を有効にします。以降のコマンドは NavigatorL10n のフォルダー内で実行してください。
 
 ### 1. 対応状況を確認する
 
@@ -132,12 +130,12 @@ python tools/build_rules.py verify --lang ja_JP
 python -m unittest discover -s tests -v
 ```
 
-翻訳の誤り、表示の不具合、対応バージョンに関する報告は [Issues](https://github.com/Olionly24601/NavigatorZH/issues) からお願いします。
+翻訳の誤り、表示の不具合、対応バージョンに関する報告は [Issues](https://github.com/Olionly24601/NavigatorL10n/issues) からお願いします。
 
 ## プロジェクトについて
 
-NavigatorZH は独立してメンテナンスされている Anaconda Navigator のローカライズプロジェクトです。Anaconda Navigator および関連する名称・ロゴの権利は、それぞれの権利者に帰属します。
+NavigatorL10n は独立してメンテナンスされている Anaconda Navigator のローカライズプロジェクトです。Anaconda Navigator および関連する名称・ロゴの権利は、それぞれの権利者に帰属します。
 
 ## ライセンス
 
-NavigatorZH の独自コードは [MIT License](LICENSE) で公開しています。
+NavigatorL10n の独自コードは [MIT License](LICENSE) で公開しています。

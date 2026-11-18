@@ -264,7 +264,7 @@ class TestEngine(unittest.TestCase):
                 timeout=10,
             )
         self.assertNotEqual(result.returncode, 0)
-        self.assertIn("已有另一个 NavigatorZH 操作", result.stderr)
+        self.assertIn("已有另一个 NavigatorL10n 操作", result.stderr)
         with engine.environment_lock():
             pass
 
@@ -304,7 +304,7 @@ class TestEngine(unittest.TestCase):
 
         self.assertEqual(len(results), 1)
         self.assertNotEqual(results[0].returncode, 0)
-        self.assertIn("已有另一个 NavigatorZH 操作", results[0].stderr)
+        self.assertIn("已有另一个 NavigatorL10n 操作", results[0].stderr)
         self.assertTrue(engine.MANIFEST.exists())
         for relative, original in self.originals.items():
             self.assertNotEqual((self.source / relative).read_bytes(), original)

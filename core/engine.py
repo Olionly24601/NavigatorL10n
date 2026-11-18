@@ -42,7 +42,7 @@ MANIFEST, BACKUPS = select_state()
 
 @contextmanager
 def environment_lock():
-    """Serialize modifications to a Conda prefix across NavigatorZH processes."""
+    """Serialize modifications to a Conda prefix across NavigatorL10n processes."""
     prefix = os.path.normcase(str(Path(sys.prefix).resolve()))
     lock_dir = Path(tempfile.gettempdir()) / "navigatorzh-locks"
     lock_dir.mkdir(parents=True, exist_ok=True)
@@ -67,7 +67,7 @@ def environment_lock():
             if error.errno not in (errno.EACCES, errno.EAGAIN):
                 raise
             raise RuntimeError(
-                "当前 Conda 环境已有另一个 NavigatorZH 操作正在进行"
+                "当前 Conda 环境已有另一个 NavigatorL10n 操作正在进行"
             ) from error
 
         try:
