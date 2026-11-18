@@ -14,7 +14,7 @@ class TestLocaleValidation(unittest.TestCase):
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
         self.addCleanup(self.temp.cleanup)
-        self.root = Path(self.temp.name)
+        self.root = Path(self.temp.name).resolve()
         self.source_dir = self.root / "navigator"
         self.source_dir.mkdir()
         (self.source_dir / "sample.py").write_text(

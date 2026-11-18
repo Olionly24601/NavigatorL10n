@@ -6,6 +6,10 @@ NavigatorZH 为 Windows 版 Anaconda Navigator 提供简体中文和日语界面
 
 支持 **Anaconda Navigator 2.7.1、2.7.4（Windows）**。
 
+## 日语界面预览
+
+![Anaconda Navigator 2.7.1 日语界面](docs/images/navigator-ja.png)
+
 ## 语言与翻译范围
 
 | 语言 | 代码 | 安装参数 |
