@@ -6,6 +6,10 @@ NavigatorZH は、Windows 版 Anaconda Navigator の画面を日本語または�
 
 対応バージョンは **Anaconda Navigator 2.7.1 / 2.7.4（Windows）** です。
 
+## 日本語表示のプレビュー
+
+![Anaconda Navigator 2.7.1 の日本語表示](docs/images/navigator-ja.png)
+
 ## 対応言語と翻訳範囲
 
 | 言語 | コード | 指定方法 |
